@@ -2,9 +2,9 @@
 {
     public partial class Parser
     {
-        private List<Token> _tokens;
+        private readonly List<Token> _tokens;
         private int _index;
-        private ErrorSink errorSink;
+        private readonly ErrorSink _errorSink;
 
         private Token Current => this._tokens[this._index];
         private Token? Next => this._tokens.ElementAtOrDefault(this._index + 1);
@@ -13,8 +13,8 @@
 
         private void Abort(string message)
         {
-            errorSink.Errors.Add(new Error(Current, message));
-            TakeWhile(() => If(TokenType.STOP_CONTEXT)).ToList();
+            _errorSink.Errors.Add(new Error(Current, message));
+            _ = TakeWhile(() => If(TokenType.STOP_CONTEXT)).ToList();
         }
         
         private Token Take() {
@@ -54,14 +54,14 @@
             }
         }
 
-        public bool If(TokenType type)
+        private bool If(TokenType type)
         {
             // if you want a real token type, ignore spaces and newlines
             while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) Take();
             return Current == type;
         }
 
-        public void If(TokenType type, Action parse)
+        private void If(TokenType type, Action parse)
         {
             if (If(type))
                 parse();
@@ -71,7 +71,7 @@
         {
             this._tokens = tokens;
             this._index = 0;
-            this.errorSink = errorSink;
+            this._errorSink = errorSink;
             this.Nodes = new List<AstNode>();
         }
 
@@ -86,6 +86,12 @@
                     var componentNode = parseComponent();
                     if (componentNode is not null)
                         Nodes.Add(componentNode);
+                }
+                else if (Current == TokenType.KWType)
+                {
+                    var typeDefinitionNode = parseTypeDefinition();
+                    if (typeDefinitionNode is not null)
+                        Nodes.Add(typeDefinitionNode);
                 }
                 else
                 {

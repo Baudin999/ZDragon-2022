@@ -41,7 +41,7 @@
 
             var value = Take();
             if (value is null) throw new Exception("Invalid component value.");
-            while (Current is not null && Current != TokenType.END)
+            while (Current != TokenType.END)
             {
                 if (Current == TokenType.START) Take();
                 value.Append(Take());
@@ -63,8 +63,7 @@ component Foo
 
 Where 'Foo' is the identifier of the component.");
 
-            if (id != TokenType.Word) return null;
-            else return id;
+            return id != TokenType.Word ? null : id;
         }
     }
 }

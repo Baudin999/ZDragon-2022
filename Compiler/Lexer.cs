@@ -14,7 +14,7 @@ namespace Compiler
         private const char INDENT = '▀';
         private const char NEWLINE = '\n';
 
-        public List<Token> Tokens { get; private set; } = new List<Token>();
+        public List<Token> Tokens { get; } = new();
 
 
         // clean trailing spaces from each line in the text
@@ -161,6 +161,7 @@ namespace Compiler
                         if (token?.Value == "system") token.Type = TokenType.KWSystem;
                         if (token?.Value == "endpoint") token.Type = TokenType.KWEndpoint;
                         if (token?.Value == "let") token.Type = TokenType.KWLet;
+                        if (token?.Value == "type") token.Type = TokenType.KWType;
                     }
                 }
                 else if (isNumber(c))

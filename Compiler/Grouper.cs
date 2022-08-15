@@ -10,6 +10,7 @@
         private Stack<Token> _indents = new Stack<Token>();
         private Token Current => this._tokens[this._index];
         private Token? Next => this._tokens.ElementAtOrDefault(this._index + 1);
+        public List<Token> Tokens = new();
 
         public Grouper(List<Token> tokens, ErrorSink errorSink)
         {
@@ -27,11 +28,21 @@
             while (_index < _length)
             {
                 if (Current == TokenType.KWComponent ||
+                    Current == TokenType.KWType ||
                     Current == TokenType.KWLet)
                 {
                     _inContext = true;
                     tokens.Add(Token.START_CONTEXT);
                     tokens.Add(Current);
+                    _index++;
+                }
+                else if (_inContext && Current == TokenType.Minus && Next == TokenType.GreaterThen)
+                {
+                    var next = Current.Clone();
+                    _index++;
+                    next.Append(Current);
+                    next.Type = TokenType.Next;
+                    tokens.Add(next);
                     _index++;
                 }
                 else if (_inContext && Current == TokenType.INDENT)
@@ -84,6 +95,10 @@
                     tokens.Add(Current);
                     _index++;
                 }
+                else if (Current == TokenType.EOF)
+                {
+                    _index++;
+                }
                 else
                 {
                     tokens.Add(Current);
@@ -99,6 +114,8 @@
                 _indents.Pop();
             }
             if (_inContext) tokens.Add(Token.STOP_CONTEXT);
+            tokens.Add(Token.EOF);
+            this.Tokens = tokens;
             return tokens;
         }
     }

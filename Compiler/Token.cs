@@ -105,6 +105,12 @@ namespace Compiler
                    this.StartColumn.GetHashCode() ^ 
                    this.EndColumn.GetHashCode();
         }
+
+        public Token Clone()
+        {
+            // clone the current token
+            return new Token(Type, _value, StartLine, EndLine, StartColumn, EndColumn);
+        }
     }
 
     public enum TokenType
@@ -158,7 +164,9 @@ namespace Compiler
         KWIf,
         KWElse,
         EOF,
-        Exclemation
+        Exclemation,
+        KWType,
+        Next
     }
 
 
