@@ -14,6 +14,7 @@ namespace Compiler
         public int EndLine { get; private set; }
         public int StartColumn { get; }
         public int EndColumn { get; private set; }
+        public static Token EOF => new Token(TokenType.EOF);
 
         public Token(TokenType type, string value, int startLine, int endLine, int startColumn, int endColumn)
         {
@@ -171,7 +172,8 @@ namespace Compiler
         KWLet,
         KWExtends,
         KWIf,
-        KWElse
+        KWElse,
+        EOF
     }
 
 

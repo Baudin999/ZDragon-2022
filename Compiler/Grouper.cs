@@ -6,16 +6,18 @@
         private int _length;
         private bool _inContext;
         private int _index;
+        private ErrorSink _errorSink;
         private Stack<Token> _indents = new Stack<Token>();
         private Token Current => this._tokens[this._index];
         private Token? Next => this._tokens.ElementAtOrDefault(this._index + 1);
 
-        public Grouper(List<Token> tokens)
+        public Grouper(List<Token> tokens, ErrorSink errorSink)
         {
             this._tokens = tokens;
             this._length = tokens.Count;
             this._inContext = false;
             this._index = 0;
+            this._errorSink = errorSink;
         }
 
         public List<Token> Group()

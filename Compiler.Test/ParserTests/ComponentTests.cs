@@ -9,13 +9,23 @@
 component Foo
 ";
 
-            var lexer = new Lexer(code);
-            lexer.Lex();
-            var tokens = new Grouper(lexer.Tokens).Group();
-            var nodes = new Parser(tokens).Parse();
+            var zdragon = new ZDragon().Compile(code);
 
-            Assert.NotNull(nodes);
-            Assert.NotEmpty(nodes);
+            Assert.NotNull(zdragon.Nodes);
+            Assert.NotEmpty(zdragon.Nodes);
+        }
+
+        [Fact]
+        public void ComponentShouldHaveAnIdentifier()
+        {
+            var code = @"component";
+            var zdragon = new ZDragon().Compile(code);
+
+            Assert.NotNull(zdragon.Nodes);
+            Assert.Empty(zdragon.Nodes);
+            Assert.NotNull(zdragon.Errors);
+            Assert.Single(zdragon.Errors);
+
         }
 
         [Fact]
@@ -29,15 +39,12 @@ component Foo =
     Version: 0
 ";
 
-            var lexer = new Lexer(code);
-            lexer.Lex();
-            var tokens = new Grouper(lexer.Tokens).Group();
-            var nodes = new Parser(tokens).Parse();
+            var zdragon = new ZDragon().Compile(code);
 
-            Assert.NotNull(nodes);
-            Assert.NotEmpty(nodes);
+            Assert.NotNull(zdragon.Nodes);
+            Assert.NotEmpty(zdragon.Nodes);
 
-            var fooNode = (ComponentNode)nodes[0];
+            var fooNode = (ComponentNode)zdragon.Nodes[0];
             Assert.Equal("Foo", fooNode.Id);
             Assert.Equal(3, fooNode.Attributes.Count);
         }
@@ -49,14 +56,12 @@ component Foo =
 component Foo extends Bar Other
 ";
 
-            var lexedTokens = new Lexer(code).Lex();
-            var groupedTokens = new Grouper(lexedTokens).Group();
-            var nodes = new Parser(groupedTokens).Parse();
+            var zdragon = new ZDragon().Compile(code);
 
-            Assert.NotNull(nodes);
-            Assert.NotEmpty(nodes);
+            Assert.NotNull(zdragon.Nodes);
+            Assert.NotEmpty(zdragon.Nodes);
 
-            var fooNode = (ComponentNode)nodes[0];
+            var fooNode = (ComponentNode)zdragon.Nodes[0];
             Assert.Equal("Foo", fooNode.Id);
             Assert.Empty(fooNode.Attributes);
             Assert.Equal(2, fooNode.Extends.Count);

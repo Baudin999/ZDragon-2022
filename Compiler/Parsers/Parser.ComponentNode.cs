@@ -2,10 +2,12 @@
 {
     public partial class Parser
     {
-        private ComponentNode parseComponent()
+        private ComponentNode? parseComponent()
         {
             var kw = Take(TokenType.KWComponent);
-            var id = Take(TokenType.Word);
+            var id = TakeComponentIdentifier();
+            if (id is null) return null;
+
             var attributes = new List<ComponentAttribute>();
             var extensions = new List<Token>();
 
@@ -22,14 +24,16 @@
                 _ = Take(TokenType.Equal);
                 while (If(TokenType.START))
                 {
-                    attributes.Add(parseComponentAttribute());
+                    var attribute = parseComponentAttribute();
+                    if (attribute is not null)
+                        attributes.Add(attribute);
                 }
             });
 
             return new ComponentNode(id, attributes, extensions);
         }
 
-        private ComponentAttribute parseComponentAttribute()
+        private ComponentAttribute? parseComponentAttribute()
         {
             Take(TokenType.START);
             var id = Take(TokenType.Word);
@@ -49,6 +53,18 @@
                 Take(TokenType.END);
 
             return new ComponentAttribute(id, value);
+        }
+
+        private Token? TakeComponentIdentifier()
+        {
+            var id = Take(TokenType.Word, @"A component should have an Identifier to name the component, for example:
+
+component Foo
+
+Where 'Foo' is the identifier of the component.");
+
+            if (id != TokenType.Word) return null;
+            else return id;
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 
 namespace Compiler
 {
@@ -11,6 +6,11 @@ namespace Compiler
     {
         private string _code;
         private int _length;
+
+        // Not used now, but once we get lexing errors,
+        // this will be the place to put them.
+        private ErrorSink _errorSink;
+
         private const char INDENT = '▀';
         private const char NEWLINE = '\n';
 
@@ -30,10 +30,11 @@ namespace Compiler
             return regex.Replace(code2, "\n");
         }
 
-        public Lexer(string code)
+        public Lexer(string code, ErrorSink errorSink)
         {
             this._code = CleanTrailingSpaces(code);
             this._length = this._code.Length;
+            this._errorSink = errorSink;
         }
 
         // return tokens from the code
@@ -68,7 +69,7 @@ namespace Compiler
                 if (c == INDENT)
                 {
                     int depth = 0;
-                    while (c == INDENT)
+                    while (index < _length && c == INDENT)
                     {
                         index++;
                         depth++;
@@ -140,7 +141,7 @@ namespace Compiler
                 // test for language things
                 else if (isLeadingCharacter(c))
                 {                   
-                    while (isLeadingCharacter(c) || isNumber(c))
+                    while (index < _length && isLeadingCharacter(c) || isNumber(c))
                     {
                         if (token is null)
                         {
@@ -150,10 +151,11 @@ namespace Compiler
 
                         index++;
                         column++;
-                        c = _code[index];
+                        if (index < _length)
+                            c = _code[index];
                     }
 
-                    if (tokens.Last().Equals(TokenType.NEWLINE)) {
+                    if (tokens.Count == 0 || tokens.Last().Equals(TokenType.NEWLINE)) {
                         if (token?.Value == "component") token.Type = TokenType.KWComponent;
                         if (token?.Value == "system") token.Type = TokenType.KWSystem;
                         if (token?.Value == "endpoint") token.Type = TokenType.KWEndpoint;
@@ -167,7 +169,7 @@ namespace Compiler
                 }
                 else if (isNumber(c))
                 {
-                    while (isNumber(c))
+                    while (index < _length  && isNumber(c))
                     {
                         if (token is null)
                         {
@@ -177,7 +179,8 @@ namespace Compiler
 
                         index++;
                         column++;
-                        c = _code[index];
+                        if (index < _length)
+                            c = _code[index];
                     }
                 }
                 else
@@ -198,6 +201,7 @@ namespace Compiler
                 token = null;
             }
             this.Tokens.AddRange(tokens);
+            this.Tokens.Add(Token.EOF);
             return this.Tokens;
         }
 

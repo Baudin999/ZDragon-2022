@@ -1,18 +1,21 @@
-﻿using Compiler.Parsers.Nodes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Compiler.Parsers
+﻿namespace Compiler.Parsers
 {
     public partial class Parser
     {
         private List<Token> _tokens;
         private int _index;
+        private ErrorSink errorSink;
+
         private Token Current => this._tokens[this._index];
         private Token? Next => this._tokens.ElementAtOrDefault(this._index + 1);
+
+        public List<AstNode> Nodes { get; private set; }
+
+        private void Abort(string message)
+        {
+            errorSink.Errors.Add(new Error(Current, message));
+            TakeWhile(() => If(TokenType.STOP_CONTEXT)).ToList();
+        }
         
         private Token Take() {
             Token current = this._tokens[this._index];
@@ -20,13 +23,21 @@ namespace Compiler.Parsers
             return current;
         }
 
-        private Token Take(TokenType type)
+        private Token Take(TokenType type, string message)
         {
             // if you want a real token type, ignore spaces and newlines
             while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) Take();
 
-            if (Current != type) throw new ParsingException();
+            if (Current != type)
+            {
+                Abort(message);
+            }
             return Take();
+        }
+
+        private Token Take(TokenType type)
+        {
+            return Take(type, @$"Expected '{type}' but received a '{Current.Type}'.");
         }
         private IEnumerable<Token> TakeWhile(TokenType type)
         {
@@ -34,6 +45,13 @@ namespace Compiler.Parsers
             // skip the NEWLINEs and SPACEs
             while (If(type))
                 yield return Take(type);
+        }
+        private IEnumerable<Token> TakeWhile(Func<bool> predicate)
+        {
+            while(predicate())
+            {
+                yield return Take();
+            }
         }
 
         public bool If(TokenType type)
@@ -49,20 +67,25 @@ namespace Compiler.Parsers
                 parse();
         }
 
-        public Parser(List<Token> tokens)
+        public Parser(List<Token> tokens, ErrorSink errorSink)
         {
             this._tokens = tokens;
             this._index = 0;
+            this.errorSink = errorSink;
+            this.Nodes = new List<AstNode>();
         }
 
         public List<AstNode> Parse()
         {
-            List<AstNode> result = new List<AstNode>();
+            Nodes = new List<AstNode>();
+
             while (_index < this._tokens.Count)
             {
                 if (Current == TokenType.KWComponent)
                 {
-                    result.Add(parseComponent());
+                    var componentNode = parseComponent();
+                    if (componentNode is not null)
+                        Nodes.Add(componentNode);
                 }
                 else
                 {
@@ -70,7 +93,7 @@ namespace Compiler.Parsers
                 }
             }
 
-            return result;
+            return Nodes;
         }
 
         

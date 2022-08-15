@@ -20,7 +20,8 @@ component Foo =
 
 component Bar
 ";
-            var result = new Lexer(code).Lex();
+            var errorSink = new ErrorSink();
+            var result = new Lexer(code, errorSink).Lex();
             Assert.NotNull(result);
             Assert.NotEmpty(result);
         }
@@ -39,8 +40,9 @@ component Foo =
 
 component Bar
 ";
-            var tokens = new Lexer(code).Lex();
-            var groupedTokens = new Grouper(tokens).Group();
+            var errorSink = new ErrorSink();
+            var tokens = new Lexer(code, errorSink).Lex();
+            var groupedTokens = new Grouper(tokens, errorSink).Group();
             Assert.NotNull(groupedTokens);
             Assert.NotEmpty(groupedTokens);
         }
@@ -57,8 +59,9 @@ let foo x y =
     else 
         return y
 ";
-            var tokens = new Lexer(code).Lex();
-            var groupedTokens = new Grouper(tokens).Group();
+            var errorSink = new ErrorSink();
+            var tokens = new Lexer(code, errorSink).Lex();
+            var groupedTokens = new Grouper(tokens, errorSink).Group();
             Assert.NotNull(groupedTokens);
             Assert.NotEmpty(groupedTokens);
         }
