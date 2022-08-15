@@ -47,6 +47,13 @@ namespace Compiler
             this.EndColumn++;
         }
 
+        public void Append(Token other)
+        {
+            this.EndLine = other.EndLine;
+            this.EndColumn = other.EndColumn;
+            this.value += other.Value;
+        }
+
         public static Token INDENT()
         {
             return new Token(TokenType.INDENT);

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Compiler
+﻿namespace Compiler
 {
     public class Grouper
     {
@@ -13,7 +7,6 @@ namespace Compiler
         private bool _inContext;
         private int _index;
         private Stack<Token> _indents = new Stack<Token>();
-
         private Token Current => this._tokens[this._index];
         private Token? Next => this._tokens.ElementAtOrDefault(this._index + 1);
 
@@ -43,11 +36,6 @@ namespace Compiler
                     _indents.Push(Current);
                     _index++; // skip INDENT
                 }
-                //else if (_inContext && Current == TokenType.INDENT && _indents.Count == 1)
-                //{
-                //    _indents.Push(Current);
-                //    _index++; // skip INDENT
-                //}
                 else if (_inContext && Current == TokenType.NEWLINE && Next == TokenType.SAMEDENT)
                 {
                     _index++; // skip the newline, not needed

@@ -34,12 +34,10 @@ namespace Compiler
         {
             this._code = CleanTrailingSpaces(code);
             this._length = this._code.Length;
-
-            Lex();
         }
 
         // return tokens from the code
-        private void Lex()
+        public List<Token> Lex()
         {
             // clean up
             this.Tokens.Clear();
@@ -200,6 +198,7 @@ namespace Compiler
                 token = null;
             }
             this.Tokens.AddRange(tokens);
+            return this.Tokens;
         }
 
         private static bool isLeadingCharacter(char c)
