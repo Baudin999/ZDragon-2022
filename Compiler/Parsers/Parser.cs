@@ -19,6 +19,7 @@ namespace Compiler.Parsers
             _index++;
             return current;
         }
+
         private Token Take(TokenType type)
         {
             // if you want a real token type, ignore spaces and newlines
@@ -27,11 +28,25 @@ namespace Compiler.Parsers
             if (Current != type) throw new ParsingException();
             return Take();
         }
+        private IEnumerable<Token> TakeWhile(TokenType type)
+        {
+            // Take the tokens if they are of the TokenType type, but
+            // skip the NEWLINEs and SPACEs
+            while (If(type))
+                yield return Take(type);
+        }
+
         public bool If(TokenType type)
         {
             // if you want a real token type, ignore spaces and newlines
             while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) Take();
             return Current == type;
+        }
+
+        public void If(TokenType type, Action parse)
+        {
+            if (If(type))
+                parse();
         }
 
         public Parser(List<Token> tokens)

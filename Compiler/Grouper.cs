@@ -62,6 +62,18 @@
                         tokens.Add(Token.START());
                     }
                 }
+                else if (_inContext && Current == TokenType.Word && Current.Value == "extends")
+                {
+                    Current.Type = TokenType.KWExtends;
+                }
+                else if (_inContext && Current == TokenType.Word && Current.Value == "if")
+                {
+                    Current.Type = TokenType.KWIf;
+                }
+                else if (_inContext && Current == TokenType.Word && Current.Value == "else")
+                {
+                    Current.Type = TokenType.KWElse;
+                }
 
 
                 tokens.Add(Current);

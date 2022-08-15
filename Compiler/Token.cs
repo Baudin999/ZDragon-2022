@@ -97,6 +97,29 @@ namespace Compiler
         public static bool operator ==(Token? a, TokenType b) => a?.Equals(b) ?? false;
         public static bool operator !=(Token? a, TokenType b) => !(a?.Equals(b) ?? true);
 
+        public override bool Equals(object? obj)
+        {
+            if (obj is Token _obj)
+            {
+                return _obj.Value == this.Value &&
+                    _obj.StartLine == this.StartLine &&
+                    _obj.EndLine == this.EndLine &&
+                    _obj.StartColumn == this.StartColumn &&
+                    _obj.EndColumn == this.EndColumn;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(obj, null))
+            {
+                return false;
+            }
+
+            throw new NotImplementedException();
+        }
     }
 
     public enum TokenType
@@ -145,7 +168,10 @@ namespace Compiler
         KWComponent,
         KWEndpoint,
         KWSystem,
-        KWLet
+        KWLet,
+        KWExtends,
+        KWIf,
+        KWElse
     }
 
 

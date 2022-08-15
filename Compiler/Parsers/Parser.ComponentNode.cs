@@ -7,22 +7,26 @@
             var kw = Take(TokenType.KWComponent);
             var id = Take(TokenType.Word);
             var attributes = new List<ComponentAttribute>();
+            var extensions = new List<Token>();
 
-            if (!If(TokenType.Equal))
+            // parse the extensions
+            If(TokenType.KWExtends, () =>
             {
-                // there is no equal token, so there is no reason to 
-                // continue down this path.
-                return new ComponentNode(id, attributes);
-            }
+                _ = Take(TokenType.KWExtends);
+                extensions.AddRange(TakeWhile(TokenType.Word).ToList());
+            });
 
-            var equalsToken = Take(TokenType.Equal);
-
-            while (If(TokenType.START))
+            // parse the body of the component
+            If(TokenType.Equal, () =>
             {
-                attributes.Add(parseComponentAttribute());
-            }
+                _ = Take(TokenType.Equal);
+                while (If(TokenType.START))
+                {
+                    attributes.Add(parseComponentAttribute());
+                }
+            });
 
-            return new ComponentNode(id, attributes);
+            return new ComponentNode(id, attributes, extensions);
         }
 
         private ComponentAttribute parseComponentAttribute()
