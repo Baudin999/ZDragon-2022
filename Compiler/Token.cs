@@ -56,6 +56,11 @@ namespace Compiler
             return new Token(TokenType.DEDENT);
         }
 
+        public static Token SAMEDENT()
+        {
+            return new Token(TokenType.SAMEDENT);
+        }
+
         public static Token START_CONTEXT()
         {
           return new Token(TokenType.START_CONTEXT);
@@ -64,6 +69,14 @@ namespace Compiler
         public static Token STOP_CONTEXT()
         {
             return new Token(TokenType.STOP_CONTEXT);
+        }
+        public static Token START()
+        {
+            return new Token(TokenType.START);
+        }
+        public static Token END()
+        {
+            return new Token(TokenType.END);
         }
 
 
@@ -83,6 +96,12 @@ namespace Compiler
     {
         INDENT,
         DEDENT,
+        SAMEDENT,
+        START_CONTEXT,
+        STOP_CONTEXT,
+        END,
+        START,
+        
         Word,
         GreaterThen,
         LessThen,
@@ -119,8 +138,7 @@ namespace Compiler
         KWComponent,
         KWEndpoint,
         KWSystem,
-        START_CONTEXT,
-        STOP_CONTEXT
+        KWLet
     }
 
 

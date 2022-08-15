@@ -81,8 +81,17 @@ namespace Compiler
                         c = _code[index];
                     }
 
-                    if (depth > indentDepth) tokens.Add(Token.INDENT());
-                    else if (depth < indentDepth) tokens.Add(Token.DEDENT());
+                    if (depth > indentDepth)
+                    {
+                        for (var i = indentDepth; i < depth; i++)
+                            tokens.Add(Token.INDENT());
+                    }
+                    else if (depth < indentDepth)
+                    {
+                        for (var i = depth; i < indentDepth; i++)
+                            tokens.Add(Token.DEDENT());
+                    }
+                    else tokens.Add(Token.SAMEDENT());
 
                     indentDepth = depth;
                 }
@@ -150,7 +159,8 @@ namespace Compiler
                         if (token?.Value == "component") token.Type = TokenType.KWComponent;
                         if (token?.Value == "system") token.Type = TokenType.KWSystem;
                         if (token?.Value == "endpoint") token.Type = TokenType.KWEndpoint;
-                        
+                        if (token?.Value == "let") token.Type = TokenType.KWLet;
+
                         if (token?.Type != TokenType.Word)
                         {
                             //
