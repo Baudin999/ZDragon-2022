@@ -56,6 +56,16 @@ namespace Compiler
             return new Token(TokenType.DEDENT);
         }
 
+        public static Token START_CONTEXT()
+        {
+          return new Token(TokenType.START_CONTEXT);
+        }
+
+        public static Token STOP_CONTEXT()
+        {
+            return new Token(TokenType.STOP_CONTEXT);
+        }
+
 
         public override string ToString() => $"{Type} - {value}";
 
@@ -108,7 +118,9 @@ namespace Compiler
         NEWLINE,
         KWComponent,
         KWEndpoint,
-        KWSystem
+        KWSystem,
+        START_CONTEXT,
+        STOP_CONTEXT
     }
 
 

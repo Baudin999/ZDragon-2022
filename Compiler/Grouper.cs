@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Compiler.Test
+namespace Compiler
 {
-    internal class Grouper
+    public class Grouper
     {
         private List<Token> _tokens;
         private int _length;
@@ -32,12 +32,13 @@ namespace Compiler.Test
             {
                 if (Current == TokenType.KWComponent)
                 {
-                    
                     _inContext = true;
+                    tokens.Add(Token.START_CONTEXT());
                 }
-                else if (Current == TokenType.NEWLINE && Next != TokenType.INDENT)
+                else if (Current == TokenType.NEWLINE && Next != TokenType.INDENT && _inContext)
                 {
                     _inContext = false;
+                    tokens.Add(Token.STOP_CONTEXT());
                 }
 
 

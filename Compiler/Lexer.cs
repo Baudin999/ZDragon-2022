@@ -28,15 +28,6 @@ namespace Compiler
             // regex for replacing newlines
             var regex = new Regex(" *\\r?\\n");
             return regex.Replace(code2, "\n");
-
-            //var lines = code2.Split('\n');
-            //var sb = new StringBuilder();
-            //foreach (var line in lines)
-            //{
-            //    var trimmed = line.TrimEnd();
-            //    sb.Append(trimmed + '\n');
-            //}
-            //return sb.ToString();
         }
 
         public Lexer(string code)
@@ -159,6 +150,11 @@ namespace Compiler
                         if (token?.Value == "component") token.Type = TokenType.KWComponent;
                         if (token?.Value == "system") token.Type = TokenType.KWSystem;
                         if (token?.Value == "endpoint") token.Type = TokenType.KWEndpoint;
+                        
+                        if (token?.Type != TokenType.Word)
+                        {
+                            //
+                        }
                     }
                 }
                 else if (isNumber(c))
