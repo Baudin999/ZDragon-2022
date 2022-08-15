@@ -83,14 +83,14 @@ namespace Compiler
                     if (depth > indentDepth)
                     {
                         for (var i = indentDepth; i < depth; i++)
-                            tokens.Add(Token.INDENT());
+                            tokens.Add(Token.INDENT);
                     }
                     else if (depth < indentDepth)
                     {
                         for (var i = depth; i < indentDepth; i++)
-                            tokens.Add(Token.DEDENT());
+                            tokens.Add(Token.DEDENT);
                     }
-                    else tokens.Add(Token.SAMEDENT());
+                    else tokens.Add(Token.SAMEDENT);
 
                     indentDepth = depth;
                 }
@@ -99,7 +99,7 @@ namespace Compiler
                     tokens.Add(new Token(TokenType.NEWLINE, '\n', line, column));
                     if (indentDepth > 0 && index + 1 < _length && _code[index + 1] != INDENT)
                     {
-                        tokens.Add(Token.DEDENT());
+                        tokens.Add(Token.DEDENT);
                         indentDepth = 0;
                     }
 
@@ -115,6 +115,7 @@ namespace Compiler
                 else if (c == '*') add(TokenType.Star, c);
                 else if (c == '-') add(TokenType.Minus, c);
                 else if (c == '+') add(TokenType.Plus, c);
+                else if (c == '!') add(TokenType.Exclemation, c);
                 else if (c == '(') add(TokenType.LeftParen, c);
                 else if (c == ')') add(TokenType.RightParen, c);
                 else if (c == '{') add(TokenType.LeftBrace, c);
@@ -160,11 +161,6 @@ namespace Compiler
                         if (token?.Value == "system") token.Type = TokenType.KWSystem;
                         if (token?.Value == "endpoint") token.Type = TokenType.KWEndpoint;
                         if (token?.Value == "let") token.Type = TokenType.KWLet;
-
-                        if (token?.Type != TokenType.Word)
-                        {
-                            //
-                        }
                     }
                 }
                 else if (isNumber(c))

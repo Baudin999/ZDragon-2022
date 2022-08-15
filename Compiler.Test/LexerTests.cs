@@ -58,6 +58,8 @@ let foo x y =
         return x
     else 
         return y
+
+This if is not a keyword!
 ";
             var errorSink = new ErrorSink();
             var tokens = new Lexer(code, errorSink).Lex();

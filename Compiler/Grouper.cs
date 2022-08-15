@@ -30,11 +30,13 @@
                     Current == TokenType.KWLet)
                 {
                     _inContext = true;
-                    tokens.Add(Token.START_CONTEXT());
+                    tokens.Add(Token.START_CONTEXT);
+                    tokens.Add(Current);
+                    _index++;
                 }
                 else if (_inContext && Current == TokenType.INDENT)
                 {
-                    tokens.Add(Token.START());
+                    tokens.Add(Token.START);
                     _indents.Push(Current);
                     _index++; // skip INDENT
                 }
@@ -43,8 +45,8 @@
                     _index++; // skip the newline, not needed
                     _index++; // skip SAMEDENT
 
-                    tokens.Add(Token.END());
-                    tokens.Add(Token.START());
+                    tokens.Add(Token.END);
+                    tokens.Add(Token.START);
                 }
                 else if (_inContext && Current == TokenType.NEWLINE && Next == TokenType.DEDENT)
                 {
@@ -52,42 +54,51 @@
                     _index++; // skip dedent
 
                     _indents.Pop();
-                    tokens.Add(Token.END());
+                    tokens.Add(Token.END);
                     if (_indents.Count == 0) 
                     {
                         _inContext = false;
-                        tokens.Add(Token.STOP_CONTEXT());
+                        tokens.Add(Token.STOP_CONTEXT);
                     }
                     else
                     {
-                        tokens.Add(Token.END());
-                        tokens.Add(Token.START());
+                        tokens.Add(Token.END);
+                        tokens.Add(Token.START);
                     }
                 }
                 else if (_inContext && Current == TokenType.Word && Current.Value == "extends")
                 {
                     Current.Type = TokenType.KWExtends;
+                    tokens.Add(Current);
+                    _index++;
                 }
                 else if (_inContext && Current == TokenType.Word && Current.Value == "if")
                 {
                     Current.Type = TokenType.KWIf;
+                    tokens.Add(Current);
+                    _index++;
                 }
                 else if (_inContext && Current == TokenType.Word && Current.Value == "else")
                 {
                     Current.Type = TokenType.KWElse;
+                    tokens.Add(Current);
+                    _index++;
                 }
-
-
-                tokens.Add(Current);
-                _index++;
+                else
+                {
+                    tokens.Add(Current);
+                    _index++;
+                }
+                
+                
             }
 
             while (_indents.Count > 0)
             {
-                tokens.Add(Token.END());
+                tokens.Add(Token.END);
                 _indents.Pop();
             }
-            if (_inContext) tokens.Add(Token.STOP_CONTEXT());
+            if (_inContext) tokens.Add(Token.STOP_CONTEXT);
             return tokens;
         }
     }

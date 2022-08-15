@@ -7,8 +7,8 @@ namespace Compiler
     {
         public TokenType Type { get; internal set; }
 
-        private string value = "";
-        public string Value => value;
+        private string _value = "";
+        public string Value => _value;
 
         public int StartLine { get; }
         public int EndLine { get; private set; }
@@ -19,7 +19,7 @@ namespace Compiler
         public Token(TokenType type, string value, int startLine, int endLine, int startColumn, int endColumn)
         {
             this.Type = type;
-            this.value = value;
+            this._value = value;
             StartLine = startLine;
             EndLine = endLine;
             StartColumn = startColumn;
@@ -35,7 +35,7 @@ namespace Compiler
         private Token(TokenType type)
         {
             Type = type;
-            value = "";
+            _value = "";
             StartLine = -1;
             EndLine = -1;
             StartColumn = -1;
@@ -44,7 +44,7 @@ namespace Compiler
 
         public void Add(char c)
         {
-            this.value += c;
+            this._value += c;
             this.EndColumn++;
         }
 
@@ -52,43 +52,18 @@ namespace Compiler
         {
             this.EndLine = other.EndLine;
             this.EndColumn = other.EndColumn;
-            this.value += other.Value;
+            this._value += other.Value;
         }
 
-        public static Token INDENT()
-        {
-            return new Token(TokenType.INDENT);
-        }
-        public static Token DEDENT()
-        {
-            return new Token(TokenType.DEDENT);
-        }
-
-        public static Token SAMEDENT()
-        {
-            return new Token(TokenType.SAMEDENT);
-        }
-
-        public static Token START_CONTEXT()
-        {
-          return new Token(TokenType.START_CONTEXT);
-        }
-
-        public static Token STOP_CONTEXT()
-        {
-            return new Token(TokenType.STOP_CONTEXT);
-        }
-        public static Token START()
-        {
-            return new Token(TokenType.START);
-        }
-        public static Token END()
-        {
-            return new Token(TokenType.END);
-        }
-
-
-        public override string ToString() => $"{Type} - {value}";
+        public static Token INDENT => new Token(TokenType.INDENT);
+        public static Token DEDENT => new Token(TokenType.DEDENT);
+        public static Token SAMEDENT => new Token(TokenType.SAMEDENT);
+        public static Token START_CONTEXT => new Token(TokenType.START_CONTEXT);
+        public static Token STOP_CONTEXT => new Token(TokenType.STOP_CONTEXT);
+        public static Token START => new Token(TokenType.START);
+        public static Token END => new Token(TokenType.END);
+        
+        public override string ToString() => $"{Type} - {_value}";
 
         public bool Equals(TokenType other)
         {
@@ -120,6 +95,15 @@ namespace Compiler
             }
 
             throw new NotImplementedException();
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Value.GetHashCode() ^ 
+                   this.StartLine.GetHashCode() ^ 
+                   this.EndLine.GetHashCode() ^ 
+                   this.StartColumn.GetHashCode() ^ 
+                   this.EndColumn.GetHashCode();
         }
     }
 
@@ -173,7 +157,8 @@ namespace Compiler
         KWExtends,
         KWIf,
         KWElse,
-        EOF
+        EOF,
+        Exclemation
     }
 
 
