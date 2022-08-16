@@ -55,6 +55,7 @@ namespace Compiler
             {
                 tokens.Add(new Token(t, c, line, column));
                 index++;
+                column++;
             };
 
             while (index < _length)
@@ -97,7 +98,7 @@ namespace Compiler
                 else if (c == NEWLINE)
                 {
                     tokens.Add(new Token(TokenType.NEWLINE, '\n', line, column));
-                    if (indentDepth > 0 && index + 1 < _length && _code[index + 1] != INDENT)
+                    if (indentDepth > 0 && index + 1 < _length && _code[index +1] != NEWLINE && _code[index + 1] != INDENT)
                     {
                         tokens.Add(Token.DEDENT);
                         indentDepth = 0;
@@ -133,6 +134,7 @@ namespace Compiler
                 else if (c == '|') add(TokenType.Or, c);
                 else if (c == '_') add(TokenType.Underscore, c);
                 else if (c == '.') add(TokenType.Dot, c);
+                else if (c == ',') add(TokenType.Comma, c);
                 else if (c == ':') add(TokenType.Colon, c);
                 else if (c == ';') add(TokenType.SemiColon, c);
                 else if (c == '\'') add(TokenType.Quote, c);
@@ -188,6 +190,7 @@ namespace Compiler
                     }
                     token.Add(c);
                     index++;
+                    column++;
                 }
 
             }

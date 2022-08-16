@@ -67,5 +67,38 @@ This if is not a keyword!
             Assert.NotNull(groupedTokens);
             Assert.NotEmpty(groupedTokens);
         }
+
+
+        [Fact]
+        public void TestTokens()
+        {
+            const string code = @"
+
+# This is the Foo component  
+
+This is a paragraph, these paragraphs
+are a part of the application.
+
+component Foo =
+    Title: Foo
+    Description: This is the 
+        Foo component.
+    Version: 0
+
+component Bar
+";
+
+            var splits = code.Split('\n');
+            var zdragon = new ZDragon().Compile(code);
+            foreach (var token in zdragon.lexer.Tokens)
+            {
+                if (token == TokenType.NEWLINE || token.StartLine == -1 ) continue;
+                
+                var line = splits[token.StartLine];
+                var s = line.Substring(token.StartColumn, token.EndColumn - token.StartColumn);
+                Assert.Equal(token.Value, s);
+            }
+            
+        } 
     }
 }

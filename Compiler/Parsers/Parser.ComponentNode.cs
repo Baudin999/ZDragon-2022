@@ -39,20 +39,38 @@
             var id = Take(TokenType.Word);
             var colon = Take(TokenType.Colon);
 
-            var value = TakeNext();
+            var value = TakeNext().Clone();
             if (value is null) throw new Exception("Invalid component value.");
-            Stack<Token> depth = new Stack<Token>();
+            var depth = new Stack<Token>();
             while (!(Current == TokenType.END && depth.Count == 0))
             {
+                
                 if (Current == TokenType.START)
                 {
+                    value.Add('\n');
+                    for (int i = 0; i < depth.Count * 4; ++i)
+                    {
+                        value.Add(' ');
+                    }
                     depth.Push(TakeNext());
+                }
+                else if (Current == TokenType.SAMEDENT)
+                {
+                    value.Add('\n');
+                    _ = TakeNext();
                 }
                 else if (Current == TokenType.END)
                 {
                     TakeNext();
                     depth.Pop();
                 }
+                else if (Current == TokenType.NEWLINE)
+                {
+                    if (Next == TokenType.END)
+                        value.Add('\n');
+                    _ = TakeNext();
+                }
+                
                 else
                 {
                     value.Append(TakeNext());

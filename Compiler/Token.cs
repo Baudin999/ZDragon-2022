@@ -26,7 +26,7 @@ namespace Compiler
             EndColumn = endColumn;
         }
         public Token(TokenType type, char value, int line, int column) :
-            this(type, value.ToString(), line, line, column, column)
+            this(type, value.ToString(), line, line, column, column + 1)
         {
             // empty
         }
@@ -169,7 +169,8 @@ namespace Compiler
         KWType,
         Next,
         String,
-        EmptyParamList
+        EmptyParamList,
+        Comma
     }
 
 

@@ -34,7 +34,7 @@ Where 'Foo' is the identifier of the component.", zdragon.Errors[0].Message);
             Assert.Equal(0, zdragon.Errors[0].Source.StartLine);
             Assert.Equal(0, zdragon.Errors[0].Source.EndLine);
             Assert.Equal(0, zdragon.Errors[0].Source.StartColumn);
-            Assert.Equal(8, zdragon.Errors[0].Source.EndColumn);
+            Assert.Equal(9, zdragon.Errors[0].Source.EndColumn);
         }
 
         [Fact]
@@ -103,6 +103,34 @@ component JusticeLeague =
             Assert.Equal("Superman", members.Items?[0]);
             Assert.Equal("Batman", members.Items?[1]);
             Assert.Equal("Tech Man", members.Items?[2]);
+
+        }
+        
+        [Fact]
+        public void ComponentWithMarkdownNotes()
+        {
+            const string code = @"
+component Foo =
+    Notes:
+        # These are the notes
+        
+        And with these notes we can
+        write anything we want:
+
+         * Bullet 1
+         * Bullet 2
+            * Indent 1
+         * Bullet 3
+";
+
+            var zdragon = new ZDragon().Compile(code);
+
+            Assert.NotNull(zdragon.Nodes);
+            Assert.Single(zdragon.Nodes);
+            
+            var foo = (ComponentNode)zdragon.Nodes[0];
+            var attribute = foo.Attributes[0];
+            
 
         }
     }
