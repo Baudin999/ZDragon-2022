@@ -75,5 +75,35 @@ component Foo extends Bar Other
             Assert.Empty(fooNode.Attributes);
             Assert.Equal(2, fooNode.Extends.Count);
         }
+        
+        [Fact]
+        public void ComponentListAttribute()
+        {
+            const string code = @"
+component JusticeLeague =
+    Members:
+        - Superman
+        - Batman
+        - Tech Man
+";
+
+            var zdragon = new ZDragon().Compile(code);
+
+            Assert.NotNull(zdragon.Nodes);
+            Assert.NotEmpty(zdragon.Nodes);
+
+            var justiceLeagueNode = (ComponentNode)zdragon.Nodes[0];
+            Assert.Equal("JusticeLeague", justiceLeagueNode.Id);
+            Assert.Single(justiceLeagueNode.Attributes);
+
+            var members = justiceLeagueNode.Attributes[0];
+            Assert.NotNull(members);
+            Assert.True(members.IsList);
+            Assert.Equal(3, members.Items?.Count);
+            Assert.Equal("Superman", members.Items?[0]);
+            Assert.Equal("Batman", members.Items?[1]);
+            Assert.Equal("Tech Man", members.Items?[2]);
+
+        }
     }
 }

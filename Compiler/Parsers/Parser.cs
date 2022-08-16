@@ -66,12 +66,41 @@
                 yield return TakeNext();
             }
         }
+        
 
         private bool Is(TokenType type)
         {
             // if you want a real token type, ignore spaces and newlines
             while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
             return Current == type;
+        }
+
+        private bool IsLiteral()
+        {
+            
+            return IsLiteral(Current);  
+        } 
+        
+        private bool IsLiteral(Token test)
+        {
+            // if you want a real token type, ignore spaces and newlines
+            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
+            return test == TokenType.Number || test == TokenType.String;
+        }
+
+        private bool IsOperator() => IsOperator(Current);
+        
+        private bool IsOperator(Token test)
+        {
+            
+            // if you want a real token type, ignore spaces and newlines
+            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
+            
+            return 
+                test == TokenType.Minus ||
+                test == TokenType.Plus ||
+                test == TokenType.Star ||
+                test == TokenType.Backslash;
         }
 
         private void If(TokenType type, Action parse)
@@ -112,9 +141,35 @@
                     if (letDefinitionNode is not null)
                         Nodes.Add(letDefinitionNode);
                 }
-                else
+                else if (Current == TokenType.NEWLINE) TakeNext();
+                else if (Current == TokenType.SPACE) TakeNext();
+                else if (Current == TokenType.STOP_CONTEXT) TakeNext();
+                else if (Current == TokenType.START_CONTEXT) TakeNext();
+                else if (Current == TokenType.Hash)
+                {
+                    Token? chapterToken = null;
+                    while (Current != TokenType.NEWLINE && Current != TokenType.EOF)
+                    {
+                        if (chapterToken is null) chapterToken = TakeNext().Clone();
+                        else chapterToken.Append(TakeNext());
+                    }
+                    if (chapterToken is null) Abort("Invalid chapter");
+                    else Nodes.Add(new MarkdownChapterNode(chapterToken));
+                }
+                else if (Current == TokenType.EOF)
                 {
                     TakeNext();
+                }
+                else
+                {
+                    Token? paragraphToken = null;
+                    while (! (Current == TokenType.EOF || (Current == TokenType.NEWLINE && Next == TokenType.NEWLINE)))
+                    {
+                        if (paragraphToken is null) paragraphToken = TakeNext().Clone();
+                        else paragraphToken.Append(TakeNext());
+                    }
+                    if (paragraphToken is null) Abort("Invalid paragraph");
+                    else Nodes.Add(new MarkdownParagraphNode(paragraphToken));
                 }
             }
 

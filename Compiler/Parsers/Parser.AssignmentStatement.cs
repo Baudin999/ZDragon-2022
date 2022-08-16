@@ -10,6 +10,17 @@ public partial class Parser
         if (id is null) return null;
 
         var variables = TakeWhile(TokenType.Word).ToList();
+        If(TokenType.LeftParen, () =>
+        {
+            Take();
+            Take(TokenType.RightParen);
+            variables.Add(new Token(TokenType.EmptyParamList));
+        });
+        
+        _ = Take(TokenType.Equal);
+
+        If(TokenType.START, () => Take());
+        
         if (variables.Count > 0)
         {
             return parseFunctionNode(id, variables);
@@ -17,31 +28,94 @@ public partial class Parser
         else
         {
             // just assignment of variable
-            return new VariableNode(id);
+            var body = parseExpression();
+            if (body is null)
+            {
+                Abort("Invalid assignment.");
+                return null;
+            }
+            
+            return new AssignmentExpression(id, body);
         }
     }
 
     private AstNode? parseFunctionNode(Token id, List<Token> variables)
     {
-        if (Is(TokenType.Equal))
+        var body = parseExpression();
+        if (body is null)
         {
-            _ = Take(TokenType.Equal);
-            var body = parseImplementationBody();
-            return new FunctionNode(id, variables, body);
+            Abort("Invalid function body");
+            return null;
         }
 
+        return new FunctionNode(id, variables, body);
+    }
+
+    
+
+    private Expression? parseExpression()
+    {
+        if (Current == TokenType.LeftParen)
+        {
+            _ = Take(TokenType.LeftParen);
+            var expression = parseExpression();
+            if (expression is null)
+                expression = new EmptyParamListExpression();
+            _ = Take(TokenType.RightParen);
+            return expression;
+        }
+        else
+        {
+            var head = takeExpression();
+            if (head is null) return null;
+            
+            var tail = parseExpression();
+
+            
+            if (tail is null)
+            {
+                return head;
+            }
+            else if (head is OperatorExpression ope)
+            {
+                return new OperationExpression(ope.Op, tail);
+            }
+            else if (tail is OperationExpression operationExpression)
+            {
+                return new BinaryOperationExpression(head, operationExpression.Op, operationExpression.Right);
+            }
+            else if (head is ValueExpression)
+            {
+                return new BinaryExpression(head, tail);
+            }
+            else if (head is IdentifierExpression)
+            {
+                return new BinaryExpression(head, tail);
+            }
+        }
+        
         return null;
     }
 
-    private AstNode parseImplementationBody()
+    public Expression? takeExpression()
     {
-        _ = Take(TokenType.START);
-        var left = Take();
-        var op = Take();
-        var right = Take();
-        _ = Take(TokenType.END);
-
-        return new BinaryOperation(left, op, right);
+        var token = Take();
+        if (IsLiteral(token))
+        {
+            return new ValueExpression(token);
+        }
+        else if (IsOperator(token))
+        {
+            return new OperatorExpression(token);
+        }
+        else if (token == TokenType.Word)
+        {
+            return new IdentifierExpression(token);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     private Token? TakeAssignmentIdentifier()

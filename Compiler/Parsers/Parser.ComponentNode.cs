@@ -41,10 +41,22 @@
 
             var value = TakeNext();
             if (value is null) throw new Exception("Invalid component value.");
-            while (Current != TokenType.END)
+            Stack<Token> depth = new Stack<Token>();
+            while (!(Current == TokenType.END && depth.Count == 0))
             {
-                if (Current == TokenType.START) TakeNext();
-                value.Append(TakeNext());
+                if (Current == TokenType.START)
+                {
+                    depth.Push(TakeNext());
+                }
+                else if (Current == TokenType.END)
+                {
+                    TakeNext();
+                    depth.Pop();
+                }
+                else
+                {
+                    value.Append(TakeNext());
+                }
             }
 
             // there could have been multiple indentations, these

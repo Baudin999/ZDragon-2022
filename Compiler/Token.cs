@@ -30,9 +30,8 @@ namespace Compiler
         {
             // empty
         }
-
-
-        private Token(TokenType type)
+        
+        public Token(TokenType type)
         {
             Type = type;
             _value = "";
@@ -113,8 +112,10 @@ namespace Compiler
         }
     }
 
-    public enum TokenType
+    [Flags]
+    public enum TokenType: ulong
     {
+        None,
         INDENT,
         DEDENT,
         SAMEDENT,
@@ -167,7 +168,8 @@ namespace Compiler
         Exclemation,
         KWType,
         Next,
-        String
+        String,
+        EmptyParamList
     }
 
 
