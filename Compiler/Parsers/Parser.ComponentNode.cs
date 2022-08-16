@@ -5,7 +5,7 @@
         private ComponentNode? parseComponent()
         {
             var kw = Take(TokenType.KWComponent);
-            var id = TakeComponentIdentifier();
+            var id = TakeArchitectureIdentifier("component");
             if (id is null) return null;
 
             var attributes = new List<ComponentAttribute>();
@@ -24,7 +24,7 @@
                 _ = Take(TokenType.Equal);
                 while (Is(TokenType.START))
                 {
-                    var attribute = parseComponentAttribute();
+                    var attribute = parseArchitectureAttribute();
                     if (attribute is not null)
                         attributes.Add(attribute);
                 }
@@ -33,7 +33,7 @@
             return new ComponentNode(id, attributes, extensions);
         }
 
-        private ComponentAttribute? parseComponentAttribute()
+        private ComponentAttribute? parseArchitectureAttribute()
         {
             Take(TokenType.START);
             var id = Take(TokenType.Word);
@@ -47,7 +47,7 @@
                 
                 if (Current == TokenType.START)
                 {
-                    value.Add('\n');
+                    value.Add(Environment.NewLine);
                     for (int i = 0; i < depth.Count * 4; ++i)
                     {
                         value.Add(' ');
@@ -56,7 +56,7 @@
                 }
                 else if (Current == TokenType.SAMEDENT)
                 {
-                    value.Add('\n');
+                    value.Add(Environment.NewLine);
                     _ = TakeNext();
                 }
                 else if (Current == TokenType.END)
@@ -67,7 +67,7 @@
                 else if (Current == TokenType.NEWLINE)
                 {
                     if (Next == TokenType.END)
-                        value.Add('\n');
+                        value.Add(Environment.NewLine);
                     _ = TakeNext();
                 }
                 
@@ -85,13 +85,13 @@
             return new ComponentAttribute(id, value);
         }
 
-        private Token? TakeComponentIdentifier()
+        private Token? TakeArchitectureIdentifier(string name)
         {
-            var id = Take(TokenType.Word, @"A component should have an Identifier to name the component, for example:
+            var id = Take(TokenType.Word, $@"A {name} should have an Identifier to name the {name}, for example:
 
-component Foo
+{name} Foo
 
-Where 'Foo' is the identifier of the component.");
+Where 'Foo' is the identifier of the {name}.");
 
             return id != TokenType.Word ? null : id;
         }

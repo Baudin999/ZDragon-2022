@@ -47,6 +47,12 @@ namespace Compiler
             this.EndColumn++;
         }
 
+        public void Add(string s)
+        {
+            this._value += s;
+            this.EndColumn += s.Length;
+        }
+
         public void Append(Token other)
         {
             this.EndLine = other.EndLine;

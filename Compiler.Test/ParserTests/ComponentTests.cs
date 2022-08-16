@@ -131,7 +131,15 @@ component Foo =
             var foo = (ComponentNode)zdragon.Nodes[0];
             var attribute = foo.Attributes[0];
             
+            Assert.Equal(@"# These are the notes
 
+And with these notes we can
+write anything we want:
+
+ * Bullet 1
+ * Bullet 2
+    * Indent 1
+ * Bullet 3", attribute.Value);
         }
     }
 }
