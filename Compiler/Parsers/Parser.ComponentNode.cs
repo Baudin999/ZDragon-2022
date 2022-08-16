@@ -22,7 +22,7 @@
             If(TokenType.Equal, () =>
             {
                 _ = Take(TokenType.Equal);
-                while (If(TokenType.START))
+                while (Is(TokenType.START))
                 {
                     var attribute = parseComponentAttribute();
                     if (attribute is not null)
@@ -39,12 +39,12 @@
             var id = Take(TokenType.Word);
             var colon = Take(TokenType.Colon);
 
-            var value = Take();
+            var value = TakeNext();
             if (value is null) throw new Exception("Invalid component value.");
             while (Current != TokenType.END)
             {
-                if (Current == TokenType.START) Take();
-                value.Append(Take());
+                if (Current == TokenType.START) TakeNext();
+                value.Append(TakeNext());
             }
 
             // there could have been multiple indentations, these

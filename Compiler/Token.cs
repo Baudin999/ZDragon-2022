@@ -166,7 +166,8 @@ namespace Compiler
         EOF,
         Exclemation,
         KWType,
-        Next
+        Next,
+        String
     }
 
 

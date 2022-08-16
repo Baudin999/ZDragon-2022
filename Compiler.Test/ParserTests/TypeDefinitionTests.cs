@@ -57,15 +57,15 @@ type Add = int -> int -> int
 
         var addNode = (TypeDefinitionNode)zdragon.Nodes[0];
         Assert.Equal("Add", addNode.Id);
-        Assert.IsType<FunctionApplicationNode>(addNode.Body);
-        var addBody = (FunctionApplicationNode)addNode.Body;
+        Assert.IsType<FunctionDefinitionNode>(addNode.Body);
+        var addBody = (FunctionDefinitionNode)addNode.Body;
         Assert.Equal(3, addBody.Parameters.Count);
     }
     
     [Fact]
     public void ComplexTypeDefinition()
     {
-        var code = @"
+        const string code = @"
 type Add = (int -> int) -> Maybe string -> int
 ";
 
@@ -73,17 +73,18 @@ type Add = (int -> int) -> Maybe string -> int
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
+        Assert.Empty(zdragon.Errors);
 
         var addNode = (TypeDefinitionNode)zdragon.Nodes[0];
         Assert.Equal("Add", addNode.Id);
-        Assert.IsType<FunctionApplicationNode>(addNode.Body);
-        var addBody = (FunctionApplicationNode)addNode.Body;
+        Assert.IsType<FunctionDefinitionNode>(addNode.Body);
+        var addBody = (FunctionDefinitionNode)addNode.Body;
         Assert.Equal(3, addBody.Parameters.Count);
         
         // first param is a function application
         var firstParam = addBody.Parameters[0];
-        Assert.IsType<FunctionApplicationNode>(firstParam);
-        var firstParamFunctionDefinition = (FunctionApplicationNode)firstParam;
+        Assert.IsType<FunctionDefinitionNode>(firstParam);
+        var firstParamFunctionDefinition = (FunctionDefinitionNode)firstParam;
         Assert.Equal(2, firstParamFunctionDefinition.Parameters.Count);
         
         // second parameter is a Type Application

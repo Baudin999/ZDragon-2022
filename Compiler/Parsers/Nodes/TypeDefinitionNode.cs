@@ -13,14 +13,4 @@ public class TypeDefinitionNode : AstNode
     }
 }
 
-public class FunctionApplicationNode : AstNode
-{
-    
-    public List<AstNode> Parameters { get; }
-
-    public FunctionApplicationNode(List<AstNode> parameters)
-    {
-        Parameters = parameters;
-    }   
-}
 

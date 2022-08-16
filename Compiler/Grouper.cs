@@ -95,6 +95,19 @@
                     tokens.Add(Current);
                     _index++;
                 }
+                else if (_inContext && Current == TokenType.DoubleQuote)
+                {
+                    _index++; // skip the double quote symbol 
+                    var stringToken = Current.Clone();
+                    while (Current != TokenType.DoubleQuote)
+                    {
+                        stringToken.Append(Current);
+                        _index++;
+                    }
+                    _index++; // skip the closing double quote symbol
+                    stringToken.Type = TokenType.String;
+                    tokens.Add(stringToken);
+                }
                 else if (Current == TokenType.EOF)
                 {
                     _index++;

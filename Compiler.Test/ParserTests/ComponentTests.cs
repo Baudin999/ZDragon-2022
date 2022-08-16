@@ -5,7 +5,7 @@
         [Fact]
         public void SimpleComponent()
         {
-            var code = @"
+            const string code = @"
 component Foo
 ";
 
@@ -18,7 +18,7 @@ component Foo
         [Fact]
         public void ComponentShouldHaveAnIdentifier()
         {
-            var code = @"component";
+            const string code = @"component";
             var zdragon = new ZDragon().Compile(code);
 
             Assert.NotNull(zdragon.Nodes);
@@ -26,12 +26,21 @@ component Foo
             Assert.NotNull(zdragon.Errors);
             Assert.Single(zdragon.Errors);
 
+            Assert.Equal(@"A component should have an Identifier to name the component, for example:
+
+component Foo
+
+Where 'Foo' is the identifier of the component.", zdragon.Errors[0].Message);
+            Assert.Equal(0, zdragon.Errors[0].Source.StartLine);
+            Assert.Equal(0, zdragon.Errors[0].Source.EndLine);
+            Assert.Equal(0, zdragon.Errors[0].Source.StartColumn);
+            Assert.Equal(8, zdragon.Errors[0].Source.EndColumn);
         }
 
         [Fact]
         public void SimpleComponent2()
         {
-            var code = @"
+            const string code = @"
 component Foo =
     Title: Foo
     Description: This is the
@@ -52,7 +61,7 @@ component Foo =
         [Fact]
         public void ExtendComponent()
         {
-            var code = @"
+            const string code = @"
 component Foo extends Bar Other
 ";
 

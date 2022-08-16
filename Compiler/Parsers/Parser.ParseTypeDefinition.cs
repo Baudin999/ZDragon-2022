@@ -21,9 +21,9 @@ public partial class Parser
 
         while (Current != TokenType.STOP_CONTEXT)
         {
-            if (If(TokenType.Word)) parameters.Add(parseTypeDefinitionBodyWithWord());
-            else if (If(TokenType.LeftParen)) {parameters.Add(parseNestedDefinition());}
-            else if (If(TokenType.Next))
+            if (Is(TokenType.Word)) parameters.Add(parseTypeDefinitionBodyWithWord());
+            else if (Is(TokenType.LeftParen)) {parameters.Add(parseNestedDefinition());}
+            else if (Is(TokenType.Next))
             {
                 return parseFunctionApplication(parameters[0]);
             }
@@ -59,21 +59,21 @@ public partial class Parser
     private AstNode parseFunctionApplication(AstNode astNode)
     {
         var parameters = new List<AstNode> {astNode};
-        while (If(TokenType.Next))
+        while (Is(TokenType.Next))
         {
             Take(TokenType.Next);
             var nextParam = parseTypeDefinitionBody();
-            if(If(TokenType.LeftParen)) parameters.Add(nextParam);
+            if(Is(TokenType.LeftParen)) parameters.Add(nextParam);
             else
             {
-                if (nextParam is FunctionApplicationNode fdn)
+                if (nextParam is FunctionDefinitionNode fdn)
                     parameters.AddRange(fdn.Parameters);
                 else 
                     parameters.Add(nextParam);
             }
         }
 
-        return new FunctionApplicationNode(parameters);
+        return new FunctionDefinitionNode(parameters);
     }
 
     private Token? TakeTypeDefinitionIdentifier()

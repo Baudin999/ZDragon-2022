@@ -13,26 +13,39 @@
 
         private void Abort(string message)
         {
-            _errorSink.Errors.Add(new Error(Current, message));
-            _ = TakeWhile(() => If(TokenType.STOP_CONTEXT)).ToList();
+            var target = Current.Clone();
+            if (target.StartLine == -1 && _index > 0)
+                target = this._tokens[_index - 1].Clone();
+            
+            _errorSink.Errors.Add(new Error(target, message));
+            _ = TakeWhile(() => Is(TokenType.STOP_CONTEXT)).ToList();
         }
         
-        private Token Take() {
+        private Token TakeNext() {
             Token current = this._tokens[this._index];
             _index++;
             return current;
         }
 
+        private Token Take()
+        {
+            // if you want a real token type, ignore spaces and newlines
+            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
+            return TakeNext();
+        }
+
+        
+
         private Token Take(TokenType type, string message)
         {
             // if you want a real token type, ignore spaces and newlines
-            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) Take();
+            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
 
             if (Current != type)
             {
                 Abort(message);
             }
-            return Take();
+            return TakeNext();
         }
 
         private Token Take(TokenType type)
@@ -43,27 +56,27 @@
         {
             // Take the tokens if they are of the TokenType type, but
             // skip the NEWLINEs and SPACEs
-            while (If(type))
+            while (Is(type))
                 yield return Take(type);
         }
         private IEnumerable<Token> TakeWhile(Func<bool> predicate)
         {
             while(predicate())
             {
-                yield return Take();
+                yield return TakeNext();
             }
         }
 
-        private bool If(TokenType type)
+        private bool Is(TokenType type)
         {
             // if you want a real token type, ignore spaces and newlines
-            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) Take();
+            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
             return Current == type;
         }
 
         private void If(TokenType type, Action parse)
         {
-            if (If(type))
+            if (Is(type))
                 parse();
         }
 
@@ -93,9 +106,15 @@
                     if (typeDefinitionNode is not null)
                         Nodes.Add(typeDefinitionNode);
                 }
+                else if (Current == TokenType.KWLet)
+                {
+                    var letDefinitionNode = parseAssignmentStatement();
+                    if (letDefinitionNode is not null)
+                        Nodes.Add(letDefinitionNode);
+                }
                 else
                 {
-                    Take();
+                    TakeNext();
                 }
             }
 
