@@ -129,6 +129,18 @@
                     if (componentNode is not null)
                         Nodes.Add(componentNode);
                 }
+                else if (Current == TokenType.KWSystem)
+                {
+                    var systemNode = parseSystem();
+                    if (systemNode is not null)
+                        Nodes.Add(systemNode);
+                }
+                else if (Current == TokenType.KWEndpoint)
+                {
+                    var endpointNode = parseEndpoint();
+                    if (endpointNode is not null)
+                        Nodes.Add(endpointNode);
+                }
                 else if (Current == TokenType.KWType)
                 {
                     var typeDefinitionNode = parseTypeDefinition();

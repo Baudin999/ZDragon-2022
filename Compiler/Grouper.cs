@@ -28,7 +28,9 @@
             while (_index < _length)
             {
                 if (Current == TokenType.KWComponent ||
+                    Current == TokenType.KWSystem ||
                     Current == TokenType.KWType ||
+                    Current == TokenType.KWEndpoint ||
                     Current == TokenType.KWLet)
                 {
                     _inContext = true;

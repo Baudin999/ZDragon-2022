@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compiler", "Compiler\Compil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compiler.Test", "Compiler.Test\Compiler.Test.csproj", "{EF238ED8-CB43-4754-A76C-E45A4CDAE70E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtime", "Runtime", "{93145F50-E21E-4AD8-BA21-7F7BAC583B8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agent", "Agent\Agent.csproj", "{7175E4B0-CA3C-4F1A-A419-DB3406C14663}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agent.Client", "Agent.Client\Agent.Client.csproj", "{89D9F0B9-2941-4926-A160-BD03F4C0ABA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,11 +27,23 @@ Global
 		{EF238ED8-CB43-4754-A76C-E45A4CDAE70E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF238ED8-CB43-4754-A76C-E45A4CDAE70E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF238ED8-CB43-4754-A76C-E45A4CDAE70E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7175E4B0-CA3C-4F1A-A419-DB3406C14663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7175E4B0-CA3C-4F1A-A419-DB3406C14663}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7175E4B0-CA3C-4F1A-A419-DB3406C14663}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7175E4B0-CA3C-4F1A-A419-DB3406C14663}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89D9F0B9-2941-4926-A160-BD03F4C0ABA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89D9F0B9-2941-4926-A160-BD03F4C0ABA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89D9F0B9-2941-4926-A160-BD03F4C0ABA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89D9F0B9-2941-4926-A160-BD03F4C0ABA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2C6F1508-554F-4DF2-AB91-683EDAC3D419}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7175E4B0-CA3C-4F1A-A419-DB3406C14663} = {93145F50-E21E-4AD8-BA21-7F7BAC583B8D}
+		{89D9F0B9-2941-4926-A160-BD03F4C0ABA5} = {93145F50-E21E-4AD8-BA21-7F7BAC583B8D}
 	EndGlobalSection
 EndGlobal

@@ -45,11 +45,27 @@
             while (!(Current == TokenType.END && depth.Count == 0))
             {
                 
+                /*
+                 * This is the parser for the content of an attribute,
+                 * an attribute can be either a:
+                 *  - Literal value (string or number) but with the string without quotes
+                 *  - A literal piece of markdown
+                 *  - A list
+                 *  - A reference to a function
+                 *  - A reference to a type
+                 *
+                 * Currently we only have literals and markdown, the other parts need to
+                 * be added. They will probably be "field name specific". For example,
+                 * when a field is called "Model" we will need a Record type to exist
+                 * with that name.
+                 */
+                
                 if (Current == TokenType.START)
                 {
                     value.Add(Environment.NewLine);
                     for (int i = 0; i < depth.Count * 4; ++i)
                     {
+                        // add spaces per indentation to the value
                         value.Add(' ');
                     }
                     depth.Push(TakeNext());
@@ -70,7 +86,6 @@
                         value.Add(Environment.NewLine);
                     _ = TakeNext();
                 }
-                
                 else
                 {
                     value.Append(TakeNext());

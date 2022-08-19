@@ -2,7 +2,7 @@
 
 public partial class Parser
 {
-    public TypeDefinitionNode? parseTypeDefinition()
+    private TypeDefinitionNode? parseTypeDefinition()
     {
         _ = Take(TokenType.KWType);
         var id = TakeTypeDefinitionIdentifier();
