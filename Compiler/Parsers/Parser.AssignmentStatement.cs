@@ -100,17 +100,21 @@ public partial class Parser
     public Expression? takeExpression()
     {
         var token = Take();
-        if (IsLiteral(token))
-        {
-            return new ValueExpression(token);
-        }
-        else if (IsOperator(token))
+        if (IsOperator(token))
         {
             return new OperatorExpression(token);
         }
         else if (token == TokenType.Word)
         {
             return new IdentifierExpression(token);
+        }
+        else if (token == TokenType.Number)
+        {
+            return new NumberLiteralExpression(token);
+        }
+        else if (token == TokenType.String)
+        {
+            return new StringLiteralExpression(token);
         }
         else
         {

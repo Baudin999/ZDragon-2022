@@ -101,6 +101,7 @@
                 {
                     _index++; // skip the double quote symbol 
                     var stringToken = Current.Clone();
+                    _index++;
                     while (Current != TokenType.DoubleQuote)
                     {
                         stringToken.Append(Current);

@@ -20,6 +20,27 @@ endpoint Foo
         Assert.Equal("Foo",systemNode.Id);
     }
     
+    
+    [Fact]
+    public void SimpleEndpointExtensions()
+    {
+        const string code = @"
+endpoint Foo extends Bar 
+endpoint Bar
+";
+
+        var zdragon = new ZDragon().Compile(code);
+
+        Assert.NotNull(zdragon);
+        Assert.NotNull(zdragon.Nodes);
+        Assert.Equal(2, zdragon.Nodes.Count);
+        Assert.IsType<EndpointNode>(zdragon.Nodes[0]);
+
+        var systemNode = (EndpointNode)zdragon.Nodes[0];
+        Assert.Equal("Foo",systemNode.Id);
+        Assert.Single(systemNode.Extends);
+    }
+    
     [Fact]
     public void EndpointWithContains()
     {

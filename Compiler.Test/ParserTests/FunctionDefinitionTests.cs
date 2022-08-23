@@ -59,6 +59,26 @@ let n = 2
     }
     
     [Fact]
+    public void ArgumentOfString()
+    {
+        const string code = @"
+let n = ""Carlos""
+";
+
+        var zdragon = new ZDragon().Compile(code);
+
+        Assert.NotNull(zdragon.Nodes);
+        Assert.NotEmpty(zdragon.Nodes);
+        Assert.Empty(zdragon.Errors);
+
+        Assert.IsType<AssignmentExpression>(zdragon.Nodes[0]);
+        var assignment = (AssignmentExpression)zdragon.Nodes[0];
+        Assert.Equal("n", assignment.Id);
+        Assert.IsType<StringLiteralExpression>(assignment.Body);
+        Assert.Equal("Carlos", ((StringLiteralExpression)assignment.Body).Value);
+    }
+    
+    [Fact]
     public void CombineDocumentationAndFunction()
     {
         const string code = @"

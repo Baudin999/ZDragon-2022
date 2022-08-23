@@ -75,18 +75,18 @@
             return Current == type;
         }
 
-        private bool IsLiteral()
-        {
-            
-            return IsLiteral(Current);  
-        } 
+        // private bool IsLiteral()
+        // {
+        //     
+        //     return IsLiteral(Current);  
+        // } 
         
-        private bool IsLiteral(Token test)
-        {
-            // if you want a real token type, ignore spaces and newlines
-            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
-            return test == TokenType.Number || test == TokenType.String;
-        }
+        // private bool IsLiteral(Token test)
+        // {
+        //     // if you want a real token type, ignore spaces and newlines
+        //     while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
+        //     return test == TokenType.Number || test == TokenType.String;
+        // }
 
         private bool IsOperator() => IsOperator(Current);
         
