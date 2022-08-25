@@ -42,6 +42,12 @@ let foo () =
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
         Assert.Empty(zdragon.Errors);
+
+        Assert.IsType<FunctionNode>(zdragon.Nodes[0]);
+        var assignment = (FunctionNode)zdragon.Nodes[0];
+        Assert.Equal("foo", assignment.Id);
+
+        // TODO: test for a function application expression
     }
     
     [Fact]

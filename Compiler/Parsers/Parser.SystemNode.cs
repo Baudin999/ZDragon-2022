@@ -29,6 +29,8 @@ public partial class Parser
                     attributes.Add(attribute);
             }
         });
+        
+        ExtractReferences(attributes, id);
 
         return new SystemNode(id, attributes, extensions);
     }

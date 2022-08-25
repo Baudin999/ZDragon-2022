@@ -10,12 +10,21 @@ public partial class Parser
 
         var attributes = new List<ComponentAttribute>();
         var extensions = new List<Token>();
+        AstNode? operation = null;
 
         // parse the extensions
         If(TokenType.KWExtends, () =>
         {
             _ = Take(TokenType.KWExtends);
             extensions.AddRange(TakeWhile(TokenType.Word).ToList());
+        });
+        
+        If(TokenType.Colon, () =>
+        {
+            _ = Take(TokenType.Colon);
+            _ = Take(TokenType.Colon);
+            
+            operation = parseTypeDefinitionBody();
         });
 
         // parse the body of the component
@@ -30,6 +39,6 @@ public partial class Parser
             }
         });
 
-        return new EndpointNode(id, attributes, extensions);
+        return new EndpointNode(id, attributes, extensions, operation);
     }
 }
