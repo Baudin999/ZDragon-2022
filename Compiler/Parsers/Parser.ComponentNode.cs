@@ -19,16 +19,7 @@
             });
 
             // parse the body of the component
-            If(TokenType.Equal, () =>
-            {
-                _ = Take(TokenType.Equal);
-                while (Is(TokenType.START))
-                {
-                    var attribute = parseArchitectureAttribute();
-                    if (attribute is not null)
-                        attributes.Add(attribute);
-                }
-            });
+            parseAchitectureBody(attributes);
             
             ExtractReferences(attributes, id);
 

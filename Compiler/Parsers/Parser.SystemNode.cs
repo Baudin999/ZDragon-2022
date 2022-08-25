@@ -18,8 +18,17 @@ public partial class Parser
             extensions.AddRange(TakeWhile(TokenType.Word).ToList());
         });
 
+        parseAchitectureBody(attributes);
+
+        ExtractReferences(attributes, id);
+
+        return new SystemNode(id, attributes, extensions);
+    }
+
+    private void parseAchitectureBody(List<ComponentAttribute> attributes)
+    {
         // parse the body of the component
-        If(TokenType.Equal, 
+        If(TokenType.Equal,
             () =>
             {
                 _ = Take(TokenType.Equal);
@@ -29,16 +38,6 @@ public partial class Parser
                     if (attribute is not null)
                         attributes.Add(attribute);
                 }
-            }, () =>
-            {
-                If(TokenType.START, () =>
-                {
-                   Abort("Expected '=' after 'system'");
-                });
-            });
-        
-        ExtractReferences(attributes, id);
-
-        return new SystemNode(id, attributes, extensions);
+            }, () => { If(TokenType.START, () => { Abort("Expected '=' after 'system'"); }); });
     }
 }

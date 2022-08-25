@@ -13,7 +13,7 @@ public class EndpointNode : AstNode
         Token id, 
         List<ComponentAttribute> attributes, 
         List<Token> extensions, 
-        AstNode operation)
+        AstNode? operation)
     {
         this.IdToken = id;
         Attributes = attributes;
