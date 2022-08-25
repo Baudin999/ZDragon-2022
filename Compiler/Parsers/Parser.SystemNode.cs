@@ -19,16 +19,23 @@ public partial class Parser
         });
 
         // parse the body of the component
-        If(TokenType.Equal, () =>
-        {
-            _ = Take(TokenType.Equal);
-            while (Is(TokenType.START))
+        If(TokenType.Equal, 
+            () =>
             {
-                var attribute = parseArchitectureAttribute();
-                if (attribute is not null)
-                    attributes.Add(attribute);
-            }
-        });
+                _ = Take(TokenType.Equal);
+                while (Is(TokenType.START))
+                {
+                    var attribute = parseArchitectureAttribute();
+                    if (attribute is not null)
+                        attributes.Add(attribute);
+                }
+            }, () =>
+            {
+                If(TokenType.START, () =>
+                {
+                   Abort("Expected '=' after 'system'");
+                });
+            });
         
         ExtractReferences(attributes, id);
 

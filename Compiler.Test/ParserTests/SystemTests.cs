@@ -58,4 +58,26 @@ system Foo =
             // not testing the To yet
         }
     }
+    
+    [Fact]
+    public void SimpleSystemError()
+    {
+        const string code = @"
+system Foo
+    Title: Something
+";
+
+        var zdragon = new ZDragon().Compile(code);
+
+        Assert.NotNull(zdragon);
+        Assert.NotNull(zdragon.Nodes);
+        Assert.Single(zdragon.Nodes);
+        Assert.IsType<SystemNode>(zdragon.Nodes[0]);
+
+        var systemNode = (SystemNode)zdragon.Nodes[0];
+        Assert.Equal("Foo",systemNode.Id);
+
+        Assert.Single(zdragon.Errors);
+        Assert.Equal("Expected '=' after 'system'", zdragon.Errors[0].Message);
+    }
 }

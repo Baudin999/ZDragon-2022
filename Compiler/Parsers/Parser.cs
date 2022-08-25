@@ -20,7 +20,7 @@
                 target = this._tokens[_index - 1].Clone();
             
             _errorSink.Errors.Add(new Error(target, message));
-            _ = TakeWhile(() => Is(TokenType.STOP_CONTEXT)).ToList();
+            _ = TakeWhile(() => !Is(TokenType.STOP_CONTEXT)).ToList();
         }
         
         private Token TakeNext() {
@@ -92,10 +92,14 @@
                 test == TokenType.Backslash;
         }
 
-        private void If(TokenType type, Action parse)
+        private void If(TokenType type, Action parse, Action? elseParse = null)
         {
             if (Is(type))
                 parse();
+            else
+            {
+                elseParse?.Invoke();
+            }
         }
 
         public Parser(List<Token> tokens, ErrorSink errorSink, List<NodeReference> references)
