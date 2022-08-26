@@ -11,6 +11,8 @@
 
         public List<AstNode> Nodes { get; private set; }
 
+        public List<NodeReference> References { get; }
+
         private void Abort(string message)
         {
             var target = Current.Clone();
@@ -18,7 +20,7 @@
                 target = this._tokens[_index - 1].Clone();
             
             _errorSink.Errors.Add(new Error(target, message));
-            _ = TakeWhile(() => Is(TokenType.STOP_CONTEXT)).ToList();
+            _ = TakeWhile(() => !Is(TokenType.STOP_CONTEXT)).ToList();
         }
         
         private Token TakeNext() {
@@ -75,19 +77,6 @@
             return Current == type;
         }
 
-        private bool IsLiteral()
-        {
-            
-            return IsLiteral(Current);  
-        } 
-        
-        private bool IsLiteral(Token test)
-        {
-            // if you want a real token type, ignore spaces and newlines
-            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
-            return test == TokenType.Number || test == TokenType.String;
-        }
-
         private bool IsOperator() => IsOperator(Current);
         
         private bool IsOperator(Token test)
@@ -103,18 +92,24 @@
                 test == TokenType.Backslash;
         }
 
-        private void If(TokenType type, Action parse)
+        private void If(TokenType type, Action parse, Action? elseParse = null)
         {
             if (Is(type))
                 parse();
+            else
+            {
+                elseParse?.Invoke();
+            }
         }
 
-        public Parser(List<Token> tokens, ErrorSink errorSink)
+        public Parser(List<Token> tokens, ErrorSink errorSink, List<NodeReference> references)
+        
         {
             this._tokens = tokens;
             this._index = 0;
             this._errorSink = errorSink;
             this.Nodes = new List<AstNode>();
+            this.References = references;
         }
 
         public List<AstNode> Parse()

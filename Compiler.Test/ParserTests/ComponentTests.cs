@@ -59,6 +59,29 @@ component Foo =
         }
 
         [Fact]
+        public void TestInteractions()
+        {
+            const string code = @"
+component Foo =
+    Interactions:
+        - Bar
+";
+            var zdragon = new ZDragon().Compile(code);
+
+            Assert.NotNull(zdragon.Nodes);
+            Assert.NotEmpty(zdragon.Nodes);
+            
+            var fooNode = (ComponentNode)zdragon.Nodes[0];
+            Assert.Single(fooNode.Attributes);
+            Assert.Single(zdragon.References);
+
+            var reference = zdragon.References[0];
+            Assert.Equal("Foo", reference.From);
+            Assert.Equal("Bar", reference.To);
+            Assert.Equal(ReferenceType.InteractsWith, reference.Type);
+        }
+
+        [Fact]
         public void ExtendComponent()
         {
             const string code = @"

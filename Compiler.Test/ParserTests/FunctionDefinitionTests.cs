@@ -42,6 +42,12 @@ let foo () =
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
         Assert.Empty(zdragon.Errors);
+
+        Assert.IsType<FunctionNode>(zdragon.Nodes[0]);
+        var assignment = (FunctionNode)zdragon.Nodes[0];
+        Assert.Equal("foo", assignment.Id);
+
+        // TODO: test for a function application expression
     }
     
     [Fact]
@@ -56,6 +62,26 @@ let n = 2
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
         Assert.Empty(zdragon.Errors);
+    }
+    
+    [Fact]
+    public void ArgumentOfString()
+    {
+        const string code = @"
+let n = ""Carlos""
+";
+
+        var zdragon = new ZDragon().Compile(code);
+
+        Assert.NotNull(zdragon.Nodes);
+        Assert.NotEmpty(zdragon.Nodes);
+        Assert.Empty(zdragon.Errors);
+
+        Assert.IsType<AssignmentExpression>(zdragon.Nodes[0]);
+        var assignment = (AssignmentExpression)zdragon.Nodes[0];
+        Assert.Equal("n", assignment.Id);
+        Assert.IsType<StringLiteralExpression>(assignment.Body);
+        Assert.Equal("Carlos", ((StringLiteralExpression)assignment.Body).Value);
     }
     
     [Fact]

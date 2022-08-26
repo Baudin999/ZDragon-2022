@@ -4,8 +4,8 @@ namespace Compiler
 {
     public class Lexer
     {
-        private string _code;
-        private int _length;
+        private readonly string _code;
+        private readonly int _length;
 
         // Not used now, but once we get lexing errors,
         // this will be the place to put them.

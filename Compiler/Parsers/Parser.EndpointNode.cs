@@ -10,6 +10,7 @@ public partial class Parser
 
         var attributes = new List<ComponentAttribute>();
         var extensions = new List<Token>();
+        AstNode? operation = null;
 
         // parse the extensions
         If(TokenType.KWExtends, () =>
@@ -17,19 +18,18 @@ public partial class Parser
             _ = Take(TokenType.KWExtends);
             extensions.AddRange(TakeWhile(TokenType.Word).ToList());
         });
-
-        // parse the body of the component
-        If(TokenType.Equal, () =>
+        
+        If(TokenType.Colon, () =>
         {
-            _ = Take(TokenType.Equal);
-            while (Is(TokenType.START))
-            {
-                var attribute = parseArchitectureAttribute();
-                if (attribute is not null)
-                    attributes.Add(attribute);
-            }
+            _ = Take(TokenType.Colon);
+            _ = Take(TokenType.Colon);
+            
+            operation = parseTypeDefinitionBody();
         });
 
-        return new EndpointNode(id, attributes, extensions);
+        // parse the body of the component
+        parseAchitectureBody(attributes);
+
+        return new EndpointNode(id, attributes, extensions, operation);
     }
 }
