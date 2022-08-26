@@ -13,8 +13,8 @@ public class RecordFieldNode
 {
     private readonly Token _idToken;
     public string Id => _idToken.Value;
-    public List<Token> TypeTokensTokens { get; }
-    public string Type => string.Join(" ", TypeTokensTokens.Select(t => t.Value)).Trim();
+    public List<Token> TypeTokens { get; }
+    public string Type => string.Join(" ", TypeTokens.Select(t => t.Value)).Trim();
     private List<Token> _annotationTokens;
 
     public readonly string Description;
@@ -22,7 +22,7 @@ public class RecordFieldNode
     public RecordFieldNode(Token idToken, List<Token> typeTokens, List<Token> annotationTokens)
     {
         this._idToken = idToken;
-        this.TypeTokensTokens = typeTokens;
+        this.TypeTokens = typeTokens;
         this._annotationTokens = annotationTokens;
         this.Description = Helpers.DescriptionFromAnnotations(annotationTokens);
     }

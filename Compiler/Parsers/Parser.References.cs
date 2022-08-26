@@ -25,7 +25,7 @@ public partial class Parser
             References.Add(new NodeReference(recordNode.Id, "", ReferenceType.DefinedIn));
             foreach (var field in recordNode.Attributes)
             {
-                foreach (var value in field.TypeTokensTokens)
+                foreach (var value in field.TypeTokens)
                 {
                     if (!Helpers.BaseTypes.Contains(value.Value))
                     {
