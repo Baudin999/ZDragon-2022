@@ -24,6 +24,7 @@
         public List<Token> Group()
         {
             var tokens = new List<Token>();
+            var annotations = new List<Token>();
             
             while (_index < _length)
             {
@@ -31,20 +32,56 @@
                     Current == TokenType.KWSystem ||
                     Current == TokenType.KWType ||
                     Current == TokenType.KWEndpoint ||
-                    Current == TokenType.KWLet)
+                    Current == TokenType.KWLet ||
+                    Current == TokenType.KWRecord ||
+                    Current == TokenType.KWData ||
+                    Current == TokenType.KWChoice ||
+                    Current == TokenType.KWFlow)
                 {
                     _inContext = true;
                     tokens.Add(Token.START_CONTEXT);
                     tokens.Add(Current);
+                    // the annotations come after the keyword because the parser
+                    // checks the keyword before going into the specific sub-parser
+                    tokens.AddRange(annotations);
+                    annotations = new List<Token>();
                     _index++;
+                }
+                else if (!_inContext && Current == TokenType.NEWLINE && Next == TokenType.At)
+                {
+                    // parse annotation
+                    var annotationToken = Current.Clone();
+                    _index++;
+                    while (Current != TokenType.NEWLINE)
+                    {
+                        annotationToken.Append(Current);
+                        _index++;
+                    }
+
+                    annotationToken.Type = TokenType.Annotation;
+                    annotations.Add(annotationToken);
+                }
+                else if (_inContext && Current == TokenType.At)
+                {
+                    // parse annotation
+                    var annotationToken = Current.Clone();
+                    _index++;
+                    while (Current != TokenType.NEWLINE)
+                    {
+                        annotationToken.Append(Current);
+                        _index++;
+                    }
+
+                    annotationToken.Type = TokenType.Annotation;
+                    tokens.Add(annotationToken);
                 }
                 else if (_inContext && Current == TokenType.Minus && Next == TokenType.GreaterThen)
                 {
-                    var next = Current.Clone();
+                    var nextToken = Current.Clone();
                     _index++;
-                    next.Append(Current);
-                    next.Type = TokenType.Next;
-                    tokens.Add(next);
+                    nextToken.Append(Current);
+                    nextToken.Type = TokenType.Next;
+                    tokens.Add(nextToken);
                     _index++;
                 }
                 else if (_inContext && Current == TokenType.INDENT)
@@ -58,8 +95,11 @@
                     _index++; // skip the newline, not needed
                     _index++; // skip SAMEDENT
 
-                    tokens.Add(Token.END);
-                    tokens.Add(Token.START);
+                    if (tokens.LastOrDefault() != TokenType.Annotation)
+                    {
+                        tokens.Add(Token.END);
+                        tokens.Add(Token.START);
+                    }
                 }
                 else if (_inContext && Current == TokenType.NEWLINE && Next == TokenType.DEDENT)
                 {

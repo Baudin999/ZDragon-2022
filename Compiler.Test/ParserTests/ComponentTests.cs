@@ -126,9 +126,42 @@ component JusticeLeague =
             Assert.Equal("Superman", members.Items?[0]);
             Assert.Equal("Batman", members.Items?[1]);
             Assert.Equal("Tech Man", members.Items?[2]);
-
         }
-        
+
+        [Fact(DisplayName = "Component with annotations")]
+        public void ComponentWithAnnotations()
+        {
+            const string code = @"
+@ The Justice League
+@ of America
+component JusticeLeague =
+    @ The current members of the JL
+    Members:
+        - Superman
+        - Batman
+        - Tech Man
+";
+
+            var zdragon = new ZDragon().Compile(code);
+
+            Assert.NotNull(zdragon.Nodes);
+            Assert.NotEmpty(zdragon.Nodes);
+
+            var justiceLeagueNode = (ComponentNode)zdragon.Nodes[0];
+            Assert.Equal("JusticeLeague", justiceLeagueNode.Id);
+            Assert.Single(justiceLeagueNode.Attributes);
+            Assert.Equal(@"The Justice League
+of America", justiceLeagueNode.Description);
+
+            var members = justiceLeagueNode.Attributes[0];
+            Assert.NotNull(members);
+            Assert.True(members.IsList);
+            Assert.Equal(3, members.Items?.Count);
+            Assert.Equal("Superman", members.Items?[0]);
+            Assert.Equal("Batman", members.Items?[1]);
+            Assert.Equal("Tech Man", members.Items?[2]);
+        }
+
         [Fact]
         public void ComponentWithMarkdownNotes()
         {

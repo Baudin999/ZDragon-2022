@@ -5,6 +5,7 @@ public partial class Parser
     private SystemNode? parseSystem()
     {
         var kw = Take(TokenType.KWSystem);
+        var annotations = TakeWhile(TokenType.Annotation).ToList();
         var id = TakeArchitectureIdentifier("system");
         if (id is null) return null;
 

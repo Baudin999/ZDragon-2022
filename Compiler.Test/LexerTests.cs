@@ -90,7 +90,7 @@ component Bar
 
             var splits = code.Split('\n');
             var zdragon = new ZDragon().Compile(code);
-            foreach (var token in zdragon.Lexer.Tokens)
+            foreach (var token in zdragon.Lexer?.Tokens ?? new List<Token>())
             {
                 if (token == TokenType.NEWLINE || token.StartLine == -1 ) continue;
                 

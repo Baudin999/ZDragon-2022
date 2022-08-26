@@ -164,6 +164,10 @@ namespace Compiler
                         if (token?.Value == "endpoint") token.Type = TokenType.KWEndpoint;
                         if (token?.Value == "let") token.Type = TokenType.KWLet;
                         if (token?.Value == "type") token.Type = TokenType.KWType;
+                        if (token?.Value == "record") token.Type = TokenType.KWRecord;
+                        if (token?.Value == "data") token.Type = TokenType.KWData;
+                        if (token?.Value == "choice") token.Type = TokenType.KWChoice;
+                        if (token?.Value == "flow") token.Type = TokenType.KWFlow;
                     }
                 }
                 else if (isNumber(c))

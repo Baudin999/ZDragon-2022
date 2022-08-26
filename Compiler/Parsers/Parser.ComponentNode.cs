@@ -5,6 +5,7 @@
         private ComponentNode? parseComponent()
         {
             var kw = Take(TokenType.KWComponent);
+            var annotations = TakeWhile(TokenType.Annotation).ToList();
             var id = TakeArchitectureIdentifier("component");
             if (id is null) return null;
 
@@ -23,39 +24,15 @@
             
             ExtractReferences(attributes, id);
 
-            return new ComponentNode(id, attributes, extensions);
+            return new ComponentNode(id, attributes, extensions, annotations);
         }
 
-        private void ExtractReferences(List<ComponentAttribute> attributes, Token id)
-        {
-            var interactions = attributes
-                .FirstOrDefault(a => a.Id == "Interactions");
-            if (interactions is not null)
-            {
-                var list = interactions?.Items ?? new List<string>();
-                for (var index = 0; index < list.Count; index++)
-                {
-                    var item = list[index];
-                    References.Add(new NodeReference(id.Value, item, ReferenceType.InteractsWith));
-                }
-            }
-            
-            var contains = attributes
-                .FirstOrDefault(a => a.Id == "Contains");
-            if (contains is not null)
-            {
-                var list = contains?.Items ?? new List<string>();
-                for (var index = 0; index < list.Count; index++)
-                {
-                    var item = list[index];
-                    References.Add(new NodeReference(id.Value, item, ReferenceType.Contains));
-                }
-            }
-        }
+       
 
         private ComponentAttribute? parseArchitectureAttribute()
         {
             Take(TokenType.START);
+            var annotations = TakeWhile(TokenType.Annotation).ToList();
             var id = Take(TokenType.Word);
             var colon = Take(TokenType.Colon);
 

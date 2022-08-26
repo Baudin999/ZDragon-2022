@@ -148,6 +148,12 @@
                     if (letDefinitionNode is not null)
                         Nodes.Add(letDefinitionNode);
                 }
+                else if (Current == TokenType.KWRecord)
+                {
+                    var recordDefinitionNode = parseRecordDefinition();
+                    if (recordDefinitionNode is not null)
+                        Nodes.Add(recordDefinitionNode);
+                }
                 else if (Current == TokenType.NEWLINE) TakeNext();
                 else if (Current == TokenType.SPACE) TakeNext();
                 else if (Current == TokenType.STOP_CONTEXT) TakeNext();

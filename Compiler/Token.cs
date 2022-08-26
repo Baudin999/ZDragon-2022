@@ -176,7 +176,12 @@ namespace Compiler
         Next,
         String,
         EmptyParamList,
-        Comma
+        Comma,
+        KWRecord,
+        KWData,
+        KWChoice,
+        KWFlow,
+        Annotation
     }
 
 

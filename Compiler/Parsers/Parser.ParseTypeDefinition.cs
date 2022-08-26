@@ -5,13 +5,14 @@ public partial class Parser
     private TypeDefinitionNode? parseTypeDefinition()
     {
         _ = Take(TokenType.KWType);
+        var annotations = TakeWhile(TokenType.Annotation).ToList();
         var id = TakeTypeDefinitionIdentifier();
         if (id == null) return null;
         _ = Take(TokenType.Equal);
         
         // parse the body of the type definition
         var body = parseTypeDefinitionBody();
-        
+         
         return new TypeDefinitionNode(id, body);
     }
 

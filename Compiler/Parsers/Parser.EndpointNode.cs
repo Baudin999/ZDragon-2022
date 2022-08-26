@@ -5,6 +5,7 @@ public partial class Parser
     private EndpointNode? parseEndpoint()
     {
         var kw = Take(TokenType.KWEndpoint);
+        var annotations = TakeWhile(TokenType.Annotation).ToList();
         var id = TakeArchitectureIdentifier("endpoint");
         if (id is null) return null;
 
