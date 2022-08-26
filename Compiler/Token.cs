@@ -30,6 +30,11 @@ namespace Compiler
         {
             // empty
         }
+        public Token(TokenType type, string value, int line, int column) :
+            this(type, value, line, line, column, column + 1)
+        {
+            // empty
+        }
         
         public Token(TokenType type)
         {

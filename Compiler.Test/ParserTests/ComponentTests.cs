@@ -57,6 +57,34 @@ component Foo =
             Assert.Equal("Foo", fooNode.Id);
             Assert.Equal(3, fooNode.Attributes.Count);
         }
+        
+        [Fact]
+        public void SimpleComponent3()
+        {
+            const string code = @"
+component Foo =
+    Title: Foo
+    Description: This is the
+        Foo component. And let's
+        do some more lines
+        To test the items
+    Version: 0
+    Notes:
+        # Chapter
+        
+        With a paragraph.
+    Model: Person
+";
+
+            var zdragon = new ZDragon().Compile(code);
+
+            Assert.NotNull(zdragon.Nodes);
+            Assert.NotEmpty(zdragon.Nodes);
+
+            var fooNode = (ComponentNode)zdragon.Nodes[0];
+            Assert.Equal("Foo", fooNode.Id);
+            Assert.Equal(5, fooNode.Attributes.Count);
+        }
 
         [Fact]
         public void TestInteractions()
@@ -185,6 +213,7 @@ component Foo =
             Assert.Single(zdragon.Nodes);
             
             var foo = (ComponentNode)zdragon.Nodes[0];
+            Assert.Single(foo.Attributes);
             var attribute = foo.Attributes[0];
             
             Assert.Equal(@"# These are the notes

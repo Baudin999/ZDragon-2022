@@ -6,19 +6,33 @@ public partial class Parser
     {
         if (node is ComponentNode componentNode)
         {
-            References.Add(new NodeReference(componentNode.Id, "", ReferenceType.Defined));
+            References.Add(new NodeReference(componentNode.Id, "", ReferenceType.DefinedIn));
             ExtractReferences(componentNode.Attributes, componentNode.IdToken);
         }
         else if (node is SystemNode systemNode)
         {
-            References.Add(new NodeReference(systemNode.Id, "", ReferenceType.Defined));
+            References.Add(new NodeReference(systemNode.Id, "", ReferenceType.DefinedIn));
             ExtractReferences(systemNode.Attributes, systemNode.IdToken);
         }
         else if (node is EndpointNode endpointNode)
         {
-            References.Add(new NodeReference(endpointNode.Id, "", ReferenceType.Defined));
+            References.Add(new NodeReference(endpointNode.Id, "", ReferenceType.DefinedIn));
             ExtractReferences(endpointNode.Attributes, endpointNode.IdToken);
             ExtractReferences(endpointNode.Operation, endpointNode.IdToken);
+        }
+        else if (node is RecordNode recordNode)
+        {
+            References.Add(new NodeReference(recordNode.Id, "", ReferenceType.DefinedIn));
+            foreach (var field in recordNode.Attributes)
+            {
+                foreach (var value in field.TypeTokensTokens)
+                {
+                    if (!Helpers.BaseTypes.Contains(value.Value))
+                    {
+                        References.Add(new NodeReference(recordNode.Id, value.Value, ReferenceType.UsedInrecord));
+                    }
+                }
+            }
         }
     }
 

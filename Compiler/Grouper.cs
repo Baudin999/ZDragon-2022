@@ -10,6 +10,7 @@
         private Stack<Token> _indents = new Stack<Token>();
         private Token Current => this._tokens[this._index];
         private Token? Next => this._tokens.ElementAtOrDefault(this._index + 1);
+        private Token? Peek (int offSet) => this._tokens.ElementAtOrDefault(this._index + offSet);
         public List<Token> Tokens = new();
 
         public Grouper(List<Token> tokens, ErrorSink errorSink)
@@ -71,6 +72,9 @@
                         annotationToken.Append(Current);
                         _index++;
                     }
+                    
+                    // take the newline after the annotation
+                    _index++;
 
                     annotationToken.Type = TokenType.Annotation;
                     tokens.Add(annotationToken);
@@ -90,9 +94,8 @@
                     _indents.Push(Current);
                     _index++; // skip INDENT
                 }
-                else if (_inContext && Current == TokenType.NEWLINE && Next == TokenType.SAMEDENT)
+                else if (_inContext && Current == TokenType.SAMEDENT)
                 {
-                    _index++; // skip the newline, not needed
                     _index++; // skip SAMEDENT
 
                     if (tokens.LastOrDefault() != TokenType.Annotation)
@@ -101,21 +104,22 @@
                         tokens.Add(Token.START);
                     }
                 }
-                else if (_inContext && Current == TokenType.NEWLINE && Next == TokenType.DEDENT)
+                else if (_inContext && Current == TokenType.DEDENT)
                 {
-                    _index++; // skip newline
-                    _index++; // skip dedent
-
-                    _indents.Pop();
                     tokens.Add(Token.END);
-                    if (_indents.Count == 0) 
+                    while (Current == TokenType.DEDENT)
                     {
-                        _inContext = false;
+                        tokens.Add(Token.END);
+                        _indents.Pop();
+                        _index++;
+                    }
+
+                    if (_indents.Count == 0)
+                    {
                         tokens.Add(Token.STOP_CONTEXT);
                     }
                     else
                     {
-                        tokens.Add(Token.END);
                         tokens.Add(Token.START);
                     }
                 }

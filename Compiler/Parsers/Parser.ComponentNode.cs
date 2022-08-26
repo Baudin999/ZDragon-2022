@@ -34,63 +34,48 @@
             var id = Take(TokenType.Word);
             var colon = Take(TokenType.Colon);
 
-            var value = TakeNext().Clone();
-            if (value is null) throw new Exception("Invalid component value.");
+            Token? value = null;
             var depth = new Stack<Token>();
             while (!(Current == TokenType.END && depth.Count == 0))
             {
                 
-                /*
-                 * This is the parser for the content of an attribute,
-                 * an attribute can be either a:
-                 *  - Literal value (string or number) but with the string without quotes
-                 *  - A literal piece of markdown
-                 *  - A list
-                 *  - A reference to a function
-                 *  - A reference to a type
-                 *
-                 * Currently we only have literals and markdown, the other parts need to
-                 * be added. They will probably be "field name specific". For example,
-                 * when a field is called "Model" we will need a Record type to exist
-                 * with that name.
-                 */
-                
                 if (Current == TokenType.START)
                 {
-                    value.Add(Environment.NewLine);
+                    //value?.Add(Environment.NewLine);
                     for (int i = 0; i < depth.Count * 4; ++i)
                     {
                         // add spaces per indentation to the value
-                        value.Add(' ');
+                        value?.Add(' ');
                     }
                     depth.Push(TakeNext());
                 }
                 else if (Current == TokenType.SAMEDENT)
                 {
-                    value.Add(Environment.NewLine);
-                    _ = TakeNext();
+                    value?.Add(Environment.NewLine);
+                    TakeNext();
                 }
                 else if (Current == TokenType.END)
                 {
                     TakeNext();
                     depth.Pop();
                 }
-                else if (Current == TokenType.NEWLINE)
-                {
-                    if (Next == TokenType.END)
-                        value.Add(Environment.NewLine);
-                    _ = TakeNext();
-                }
                 else
                 {
-                    value.Append(TakeNext());
+                    if (value is null)
+                    {
+                        value = TakeNext().Clone();
+                    }
+                    else
+                    {
+                        value?.Append(TakeNext());
+                    }
                 }
             }
 
             // there could have been multiple indentations, these
             // result in multiple ends.
             while (Current == TokenType.END)
-                Take(TokenType.END);
+                Take();
 
             return new ComponentAttribute(id, value, annotations);
         }

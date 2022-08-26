@@ -22,6 +22,7 @@ public enum ReferenceType
     Contains,
     InteractsWith,
     UsedInFunction,
-    Defined,
-    Aggregate
+    DefinedIn,
+    Aggregate,
+    UsedInrecord
 }

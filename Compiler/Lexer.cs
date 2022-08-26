@@ -12,7 +12,7 @@ namespace Compiler
         private ErrorSink _errorSink;
 
         private const char INDENT = '▀';
-        private const char NEWLINE = '\n';
+        private const char NEWLINE = '█';
 
         public List<Token> Tokens { get; } = new();
 
@@ -27,7 +27,7 @@ namespace Compiler
 
             // regex for replacing newlines
             var regex = new Regex(" *\\r?\\n");
-            return regex.Replace(code2, "\n");
+            return regex.Replace(code2, NEWLINE.ToString());
         }
 
         public Lexer(string code, ErrorSink errorSink)
@@ -97,12 +97,18 @@ namespace Compiler
                 }
                 else if (c == NEWLINE)
                 {
-                    tokens.Add(new Token(TokenType.NEWLINE, '\n', line, column));
-                    if (indentDepth > 0 && index + 1 < _length && _code[index +1] != NEWLINE && _code[index + 1] != INDENT)
+                    
+                    if (indentDepth > 0 && index + 1 < _length && _code[index + 1] != NEWLINE && _code[index + 1] != INDENT)
                     {
-                        tokens.Add(Token.DEDENT);
+                        for (var i = 0; i < indentDepth; ++i)
+                        {
+                            tokens.Add(Token.DEDENT);
+                        }
+
                         indentDepth = 0;
                     }
+                    
+                    tokens.Add(new Token(TokenType.NEWLINE, Environment.NewLine, line, column));
 
                     index++;
                     line++;

@@ -6,7 +6,7 @@
         private int _index;
         private readonly ErrorSink _errorSink;
 
-        private Token Current => this._tokens[this._index];
+        private Token Current => _tokens[this._index];
         private Token? Next => this._tokens.ElementAtOrDefault(this._index + 1);
 
         public List<AstNode> Nodes { get; private set; }
@@ -58,12 +58,12 @@
         {
             // Take the tokens if they are of the TokenType type, but
             // skip the NEWLINEs and SPACEs
-            while (Is(type))
+            while (Is(type) && Current != TokenType.EOF)
                 yield return Take(type);
         }
         private IEnumerable<Token> TakeWhile(Func<bool> predicate)
         {
-            while(predicate())
+            while(predicate() && Current != TokenType.EOF)
             {
                 yield return TakeNext();
             }
@@ -73,7 +73,7 @@
         private bool Is(TokenType type)
         {
             // if you want a real token type, ignore spaces and newlines
-            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
+            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE || Current == TokenType.EOF) TakeNext();
             return Current == type;
         }
 
