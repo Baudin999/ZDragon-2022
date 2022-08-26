@@ -126,7 +126,8 @@ namespace Compiler
                 else if (c == '^') add(TokenType.Pow, c);
                 else if (c == '@') add(TokenType.At, c);
                 else if (c == '!') add(TokenType.Exclamation, c);
-                else if (c == '`') add(TokenType.Tilde, c);
+                else if (c == '~') add(TokenType.Tilde, c);
+                else if (c == '`') add(TokenType.Apostrophe, c);
                 else if (c == '$') add(TokenType.Dollar, c);
                 else if (c == '%') add(TokenType.Percentage, c);
                 else if (c == '#') add(TokenType.Hash, c);

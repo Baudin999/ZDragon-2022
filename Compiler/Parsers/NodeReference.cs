@@ -20,5 +20,8 @@ public enum ReferenceType
 {
     Extends,
     Contains,
-    InteractsWith
+    InteractsWith,
+    UsedInFunction,
+    Defined,
+    Aggregate
 }

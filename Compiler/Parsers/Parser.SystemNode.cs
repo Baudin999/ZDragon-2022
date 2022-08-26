@@ -21,8 +21,6 @@ public partial class Parser
 
         parseAchitectureBody(attributes);
 
-        ExtractReferences(attributes, id);
-
         return new SystemNode(id, attributes, extensions);
     }
 

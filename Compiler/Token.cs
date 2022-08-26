@@ -181,7 +181,8 @@ namespace Compiler
         KWData,
         KWChoice,
         KWFlow,
-        Annotation
+        Annotation,
+        Apostrophe
     }
 
 

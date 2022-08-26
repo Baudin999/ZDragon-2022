@@ -68,7 +68,7 @@ let n = 2
     public void ArgumentOfString()
     {
         const string code = @"
-let n = ""Carlos""
+let n = ""Carlos and Femke""
 ";
 
         var zdragon = new ZDragon().Compile(code);
@@ -81,7 +81,7 @@ let n = ""Carlos""
         var assignment = (AssignmentExpression)zdragon.Nodes[0];
         Assert.Equal("n", assignment.Id);
         Assert.IsType<StringLiteralExpression>(assignment.Body);
-        Assert.Equal("Carlos", ((StringLiteralExpression)assignment.Body).Value);
+        Assert.Equal("Carlos and Femke", ((StringLiteralExpression)assignment.Body).Value);
     }
     
     [Fact]

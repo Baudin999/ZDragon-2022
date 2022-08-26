@@ -10,8 +10,10 @@ public class ComponentAttribute
         
     public List<string>? Items = null;
     public bool IsList => Items is not null;
+    
+    public string Description { get; } 
 
-    public ComponentAttribute(Token id, Token value)
+    public ComponentAttribute(Token id, Token value, List<Token> annotations)
     {
         this.IdToken = id;
         this.ValueToken = value;
@@ -28,6 +30,6 @@ public class ComponentAttribute
                 .ToList();
         }
 
-            
+        this.Description = Helpers.DescriptionFromAnnotations(annotations);
     }
 }

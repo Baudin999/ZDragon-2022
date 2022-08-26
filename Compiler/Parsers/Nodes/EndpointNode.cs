@@ -1,23 +1,18 @@
 ﻿namespace Compiler.Parsers.Nodes;
 
-public class EndpointNode : AstNode
+public class EndpointNode : AttributesNode<ComponentAttribute>
 {
-    public Token IdToken { get; }
-    public string Id => IdToken.Value;
-    public List<ComponentAttribute> Attributes { get; }
-    public List<Token> Extends { get; }
-    
+   
     public AstNode? Operation { get; }
 
     public EndpointNode(
-        Token id, 
+        Token idToken, 
         List<ComponentAttribute> attributes, 
         List<Token> extensions, 
-        AstNode? operation)
+        List<Token> annotations,
+        AstNode? operation) :
+        base(idToken, attributes, extensions, annotations)
     {
-        this.IdToken = id;
-        Attributes = attributes;
-        Extends = extensions;
         Operation = operation;
     }
 }

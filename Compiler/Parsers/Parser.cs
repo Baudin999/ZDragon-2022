@@ -103,7 +103,6 @@
         }
 
         public Parser(List<Token> tokens, ErrorSink errorSink, List<NodeReference> references)
-        
         {
             this._tokens = tokens;
             this._index = 0;
@@ -112,48 +111,27 @@
             this.References = references;
         }
 
+        private void AddNode(AstNode? node)
+        {
+            if (node is not null)
+            {
+                ExtractReferences(node);
+                Nodes.Add(node);
+            }
+        }
+
         public List<AstNode> Parse()
         {
             Nodes = new List<AstNode>();
 
             while (_index < this._tokens.Count)
             {
-                if (Current == TokenType.KWComponent)
-                {
-                    var componentNode = parseComponent();
-                    if (componentNode is not null)
-                        Nodes.Add(componentNode);
-                }
-                else if (Current == TokenType.KWSystem)
-                {
-                    var systemNode = parseSystem();
-                    if (systemNode is not null)
-                        Nodes.Add(systemNode);
-                }
-                else if (Current == TokenType.KWEndpoint)
-                {
-                    var endpointNode = parseEndpoint();
-                    if (endpointNode is not null)
-                        Nodes.Add(endpointNode);
-                }
-                else if (Current == TokenType.KWType)
-                {
-                    var typeDefinitionNode = parseTypeDefinition();
-                    if (typeDefinitionNode is not null)
-                        Nodes.Add(typeDefinitionNode);
-                }
-                else if (Current == TokenType.KWLet)
-                {
-                    var letDefinitionNode = parseAssignmentStatement();
-                    if (letDefinitionNode is not null)
-                        Nodes.Add(letDefinitionNode);
-                }
-                else if (Current == TokenType.KWRecord)
-                {
-                    var recordDefinitionNode = parseRecordDefinition();
-                    if (recordDefinitionNode is not null)
-                        Nodes.Add(recordDefinitionNode);
-                }
+                if (Current == TokenType.KWComponent) AddNode(parseComponent());
+                else if (Current == TokenType.KWSystem) AddNode(parseSystem());
+                else if (Current == TokenType.KWEndpoint) AddNode(parseEndpoint());
+                else if (Current == TokenType.KWType) AddNode(parseTypeDefinition());
+                else if (Current == TokenType.KWLet) AddNode(parseAssignmentStatement());
+                else if (Current == TokenType.KWRecord) AddNode(parseRecordDefinition());
                 else if (Current == TokenType.NEWLINE) TakeNext();
                 else if (Current == TokenType.SPACE) TakeNext();
                 else if (Current == TokenType.STOP_CONTEXT) TakeNext();

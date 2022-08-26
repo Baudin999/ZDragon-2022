@@ -2,6 +2,27 @@
 
 public partial class Parser
 {
+    private void ExtractReferences(AstNode node)
+    {
+        if (node is ComponentNode componentNode)
+        {
+            References.Add(new NodeReference(componentNode.Id, "", ReferenceType.Defined));
+            ExtractReferences(componentNode.Attributes, componentNode.IdToken);
+        }
+        else if (node is SystemNode systemNode)
+        {
+            References.Add(new NodeReference(systemNode.Id, "", ReferenceType.Defined));
+            ExtractReferences(systemNode.Attributes, systemNode.IdToken);
+        }
+        else if (node is EndpointNode endpointNode)
+        {
+            References.Add(new NodeReference(endpointNode.Id, "", ReferenceType.Defined));
+            ExtractReferences(endpointNode.Attributes, endpointNode.IdToken);
+            ExtractReferences(endpointNode.Operation, endpointNode.IdToken);
+        }
+    }
+
+
     private void ExtractReferences(List<ComponentAttribute> attributes, Token id)
     {
         var interactions = attributes
@@ -25,6 +46,32 @@ public partial class Parser
             {
                 var item = list[index];
                 References.Add(new NodeReference(id.Value, item, ReferenceType.Contains));
+            }
+        }
+
+        var model = attributes
+            .FirstOrDefault(a => a.Id == "Model");
+        if (model is not null)
+        {
+            References.Add(new NodeReference(id.Value, model.Value, ReferenceType.Aggregate));
+        }
+    }
+
+    
+    private void ExtractReferences(AstNode? expression, Token id)
+    {
+        if (expression is FunctionDefinitionNode fdn)
+        {
+            foreach (var parameter in fdn.Parameters)
+            {
+                ExtractReferences(parameter, id);
+            }
+        }
+        else if (expression is IdentifierNode identifierNode)
+        {
+            if (!Helpers.BaseTypes.Contains(identifierNode.Id))
+            {
+                References.Add(new NodeReference(id.Value, identifierNode.Id, ReferenceType.UsedInFunction));
             }
         }
     }

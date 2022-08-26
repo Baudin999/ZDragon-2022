@@ -27,10 +27,10 @@ public partial class Parser
             
             operation = parseTypeDefinitionBody();
         });
-
+        
         // parse the body of the component
         parseAchitectureBody(attributes);
 
-        return new EndpointNode(id, attributes, extensions, operation);
+        return new EndpointNode(id, attributes, extensions, annotations, operation);
     }
 }

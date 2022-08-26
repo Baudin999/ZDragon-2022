@@ -21,8 +21,6 @@
 
             // parse the body of the component
             parseAchitectureBody(attributes);
-            
-            ExtractReferences(attributes, id);
 
             return new ComponentNode(id, attributes, extensions, annotations);
         }
@@ -94,7 +92,7 @@
             while (Current == TokenType.END)
                 Take(TokenType.END);
 
-            return new ComponentAttribute(id, value);
+            return new ComponentAttribute(id, value, annotations);
         }
 
         private Token? TakeArchitectureIdentifier(string name)

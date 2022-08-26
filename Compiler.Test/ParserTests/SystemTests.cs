@@ -49,8 +49,10 @@ system Foo =
         Assert.Equal("OtherComponent", systemNode.Attributes[0].Items?[2]);
         
         // test of the zdragon object contains 3 References, one for each contains
-        Assert.Equal(3, zdragon.References.Count);
-        foreach (var item in zdragon.References)
+        Assert.Equal(4, zdragon.References.Count);
+
+        var containsReferences = zdragon.References.Skip(1);
+        foreach (var item in containsReferences)
         {
             Assert.Equal(ReferenceType.Contains, item.Type);
             Assert.Equal("Foo", item.From);

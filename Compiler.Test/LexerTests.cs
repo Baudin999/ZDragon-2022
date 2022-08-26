@@ -99,6 +99,18 @@ component Bar
                 Assert.Equal(token.Value, s);
             }
             
-        } 
+        }
+
+        [Fact]
+        public void TestCharacters()
+        {
+            const string code = "!@#$%^&*()_+=-`~'\":;[]{},./?><\\|";
+
+            var lexer = new Lexer(code, new ErrorSink());
+            lexer.Lex();
+            
+            Assert.Equal(33, lexer.Tokens.Count);
+
+        }
     }
 }

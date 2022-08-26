@@ -73,9 +73,9 @@ component Foo =
             
             var fooNode = (ComponentNode)zdragon.Nodes[0];
             Assert.Single(fooNode.Attributes);
-            Assert.Single(zdragon.References);
+            Assert.Equal(2, zdragon.References.Count);
 
-            var reference = zdragon.References[0];
+            var reference = zdragon.References[1];
             Assert.Equal("Foo", reference.From);
             Assert.Equal("Bar", reference.To);
             Assert.Equal(ReferenceType.InteractsWith, reference.Type);
