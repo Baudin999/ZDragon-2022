@@ -136,6 +136,10 @@
                 else if (Current == TokenType.SPACE) TakeNext();
                 else if (Current == TokenType.STOP_CONTEXT) TakeNext();
                 else if (Current == TokenType.START_CONTEXT) TakeNext();
+                else if (Current == TokenType.KWOpen)
+                {
+                    _ = TakeWhile(() => Current != TokenType.STOP_CONTEXT).ToList();
+                }
                 else if (Current == TokenType.Hash)
                 {
                     Token? chapterToken = null;

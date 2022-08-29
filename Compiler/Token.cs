@@ -189,7 +189,8 @@ namespace Compiler
         KWFlow,
         Annotation,
         Apostrophe,
-        EMPTY
+        EMPTY,
+        KWOpen
     }
 
 

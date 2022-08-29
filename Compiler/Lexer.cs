@@ -175,6 +175,7 @@ namespace Compiler
                         if (token?.Value == "data") token.Type = TokenType.KWData;
                         if (token?.Value == "choice") token.Type = TokenType.KWChoice;
                         if (token?.Value == "flow") token.Type = TokenType.KWFlow;
+                        if (token?.Value == "open") token.Type = TokenType.KWOpen;
                     }
                 }
                 else if (isNumber(c))

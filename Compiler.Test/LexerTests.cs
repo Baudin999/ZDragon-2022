@@ -1,3 +1,5 @@
+using Compiler.Resolvers;
+
 namespace Compiler.Test
 {
     public class LexerTests
@@ -110,6 +112,55 @@ component Bar
             lexer.Lex();
             
             Assert.Equal(33, lexer.Tokens.Count);
+
+        }
+        
+        
+        [Fact]
+        public void TestOpenNamespaces()
+        {
+            const string code = @"
+open Foo
+open Something.Other
+open Domains.Offering.Data
+
+component Bar =
+    Title: Bar
+";
+
+            var lexer = new Lexer(code, new ErrorSink());
+            lexer.Lex();
+            var grouper = new Grouper(lexer.Tokens, new ErrorSink());
+            grouper.Group();
+            
+            Assert.Equal(3, grouper.OpenNamespaces.Count);
+            Assert.Equal("Foo", grouper.OpenNamespaces[0]);
+            Assert.Equal("Something.Other", grouper.OpenNamespaces[1]);
+            Assert.Equal("Domains.Offering.Data", grouper.OpenNamespaces[2]);
+
+        }
+        
+        [Fact]
+        public void TestModuleResolution()
+        {
+            const string code = @"
+open Foo
+
+component Bar =
+    Interactions:
+        - Foo
+";
+
+            var resolver = new ManualResolver(new Dictionary<string, string>()
+            {
+                {"Foo", "component Foo"}
+            });
+            var textModule = new TextModule("Bar", code);
+            var zdragon = new ZDragon(resolver).Compile(textModule);
+
+            Assert.Equal(2, zdragon.References.Count);
+            Assert.Single(zdragon.ResolvedModules);
+            Assert.Empty(zdragon.Errors);
 
         }
     }

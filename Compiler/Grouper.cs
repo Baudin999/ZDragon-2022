@@ -12,6 +12,14 @@
         private Token? Next => this._tokens.ElementAtOrDefault(this._index + 1);
         private Token? Peek (int offSet) => this._tokens.ElementAtOrDefault(this._index + offSet);
         public List<Token> Tokens = new();
+        public List<string> OpenNamespaces = new List<string>();
+        
+        private Token Take()
+        {
+            var token = this.Current;
+            this._index++;
+            return token;
+        }
 
         public Grouper(List<Token> tokens, ErrorSink errorSink)
         {
@@ -46,6 +54,26 @@
                     // checks the keyword before going into the specific sub-parser
                     tokens.AddRange(annotations);
                     annotations = new List<Token>();
+                    _index++;
+                }
+                else if (Current == TokenType.KWOpen)
+                {
+                    _inContext = true;
+                    tokens.Add(Token.START_CONTEXT);
+                    tokens.Add(Take());
+                    
+                    string open = "";
+                    while (Current != TokenType.NEWLINE)
+                    {
+                        if (Current == TokenType.Word || Current == TokenType.Dot)
+                        {
+                            open += Current.Value;
+                        }
+                        tokens.Add(Take());
+                    }
+                    OpenNamespaces.Add(open);
+                    tokens.Add(Token.STOP_CONTEXT);
+                    _inContext = false;
                     _index++;
                 }
                 else if (!_inContext && Current == TokenType.NEWLINE && Next == TokenType.At)
