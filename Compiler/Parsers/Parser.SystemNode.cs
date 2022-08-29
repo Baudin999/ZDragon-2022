@@ -21,7 +21,7 @@ public partial class Parser
 
         parseAchitectureBody(attributes);
 
-        return new SystemNode(id, attributes, extensions);
+        return new SystemNode(id, attributes, extensions, annotations);
     }
 
     private void parseAchitectureBody(List<ComponentAttribute> attributes)

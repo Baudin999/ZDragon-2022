@@ -81,6 +81,7 @@ record Person =
         var zdragon = new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
+        Assert.Empty(zdragon.Errors);
         Assert.Equal(2, zdragon.Nodes.Count); 
         Assert.IsType<RecordNode>(zdragon.Nodes[1]);
         

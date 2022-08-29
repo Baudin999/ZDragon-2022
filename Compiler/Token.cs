@@ -72,6 +72,7 @@ namespace Compiler
         public static Token STOP_CONTEXT => new Token(TokenType.STOP_CONTEXT);
         public static Token START => new Token(TokenType.START);
         public static Token END => new Token(TokenType.END);
+        public static Token EMPTY => new Token(TokenType.EMPTY);
         
         public override string ToString() => $"{Type} - {_value}";
 
@@ -187,7 +188,8 @@ namespace Compiler
         KWChoice,
         KWFlow,
         Annotation,
-        Apostrophe
+        Apostrophe,
+        EMPTY
     }
 
 

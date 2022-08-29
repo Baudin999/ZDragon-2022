@@ -6,3 +6,4 @@ global using System.Threading.Tasks;
 global using Compiler;
 global using Compiler.Parsers;
 global using Compiler.Parsers.Nodes;
+global using Compiler.TypeCheckers;

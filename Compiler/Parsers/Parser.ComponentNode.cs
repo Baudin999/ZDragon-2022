@@ -35,6 +35,7 @@
             var colon = Take(TokenType.Colon);
 
             Token? value = null;
+            List<Token> valueTokens = new List<Token>();
             var depth = new Stack<Token>();
             while (!(Current == TokenType.END && depth.Count == 0))
             {
@@ -61,13 +62,18 @@
                 }
                 else
                 {
+                    var _current = TakeNext().Clone();
+                    if (_current == TokenType.Word)
+                    {
+                        valueTokens.Add(_current);
+                    }
                     if (value is null)
                     {
-                        value = TakeNext().Clone();
+                        value = _current;
                     }
                     else
                     {
-                        value?.Append(TakeNext());
+                        value?.Append(_current);
                     }
                 }
             }
@@ -77,7 +83,7 @@
             while (Current == TokenType.END)
                 Take();
 
-            return new ComponentAttribute(id, value, annotations);
+            return new ComponentAttribute(id, value ?? Token.EMPTY, valueTokens, annotations);
         }
 
         private Token? TakeArchitectureIdentifier(string name)

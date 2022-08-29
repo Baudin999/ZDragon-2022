@@ -1,16 +1,17 @@
 namespace Compiler.Parsers;
 
 public class NodeReference {
-    public NodeReference(string from, string to, ReferenceType type)
+    public NodeReference(Token from, Token to, ReferenceType type)
     {
-        From = from;
-        To = to;
+        FromToken = from;
+        ToToken = to;
         Type = type;
     }
 
-    public string To { get; }
-
-    public string From { get; }
+    public Token ToToken { get; }
+    public string To => ToToken.Value;
+    public Token FromToken { get; }
+    public string From => FromToken.Value;
     public ReferenceType Type { get; }
 }
 

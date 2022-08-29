@@ -10,6 +10,22 @@
         private ErrorSink _errorSink = new ErrorSink();
         public List<Error> Errors => _errorSink.Errors;
         public List<NodeReference> References { get; } = new();
+
+        public IAttributesNode? Get(string id)
+        {
+            return Nodes
+                .OfType<IAttributesNode>()
+                .FirstOrDefault(n => n.Id == id);
+        }
+
+        public T? Get<T>(string id) where T: IAttributesNode
+        {
+            var result = Nodes
+                .OfType<IAttributesNode>()
+                .FirstOrDefault(n => n.Id == id);
+
+            return result is not null ? (T)result : default(T);
+        }
     
 
         public ZDragon Compile(string code)
@@ -22,8 +38,12 @@
             var groupedTokens = Grouper.Group();
             Parser = new Parser(groupedTokens, _errorSink, References);
             var nodes = Parser.Parse();
-
+            
             this.Nodes = nodes;
+
+
+            var typeChecker = new TypeChecker(this);
+            var errors = typeChecker.Check();
 
             return this;
         }

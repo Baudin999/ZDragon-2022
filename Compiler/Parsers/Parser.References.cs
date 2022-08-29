@@ -6,30 +6,30 @@ public partial class Parser
     {
         if (node is ComponentNode componentNode)
         {
-            References.Add(new NodeReference(componentNode.Id, "", ReferenceType.DefinedIn));
+            References.Add(new NodeReference(componentNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn));
             ExtractReferences(componentNode.Attributes, componentNode.IdToken);
         }
         else if (node is SystemNode systemNode)
         {
-            References.Add(new NodeReference(systemNode.Id, "", ReferenceType.DefinedIn));
+            References.Add(new NodeReference(systemNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn));
             ExtractReferences(systemNode.Attributes, systemNode.IdToken);
         }
         else if (node is EndpointNode endpointNode)
         {
-            References.Add(new NodeReference(endpointNode.Id, "", ReferenceType.DefinedIn));
+            References.Add(new NodeReference(endpointNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn));
             ExtractReferences(endpointNode.Attributes, endpointNode.IdToken);
             ExtractReferences(endpointNode.Operation, endpointNode.IdToken);
         }
         else if (node is RecordNode recordNode)
         {
-            References.Add(new NodeReference(recordNode.Id, "", ReferenceType.DefinedIn));
+            References.Add(new NodeReference(recordNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn));
             foreach (var field in recordNode.Attributes)
             {
                 foreach (var value in field.TypeTokens)
                 {
                     if (!Helpers.BaseTypes.Contains(value.Value))
                     {
-                        References.Add(new NodeReference(recordNode.Id, value.Value, ReferenceType.UsedInrecord));
+                        References.Add(new NodeReference(recordNode.IdToken, value, ReferenceType.UsedInrecord));
                     }
                 }
             }
@@ -41,33 +41,32 @@ public partial class Parser
     {
         var interactions = attributes
             .FirstOrDefault(a => a.Id == "Interactions");
-        if (interactions is not null)
+        if (interactions is not null && interactions.IsList)
         {
-            var list = interactions?.Items ?? new List<string>();
-            for (var index = 0; index < list.Count; index++)
+            var list = interactions.ValueTokens;
+            for (var i = 0; i < list.Count; i++)
             {
-                var item = list[index];
-                References.Add(new NodeReference(id.Value, item, ReferenceType.InteractsWith));
+                References.Add(new NodeReference(id, list[i], ReferenceType.InteractsWith));
             }
         }
             
         var contains = attributes
             .FirstOrDefault(a => a.Id == "Contains");
-        if (contains is not null)
+        if (contains is not null && contains.IsList)
         {
-            var list = contains?.Items ?? new List<string>();
-            for (var index = 0; index < list.Count; index++)
+            var list = contains.ValueTokens;
+            for (var i = 0; i < list.Count; i++)
             {
-                var item = list[index];
-                References.Add(new NodeReference(id.Value, item, ReferenceType.Contains));
+                var item = list[i];
+                References.Add(new NodeReference(id, list[i], ReferenceType.Contains));
             }
         }
 
         var model = attributes
             .FirstOrDefault(a => a.Id == "Model");
-        if (model is not null)
+        if (model is not null && !model.IsList)
         {
-            References.Add(new NodeReference(id.Value, model.Value, ReferenceType.Aggregate));
+            References.Add(new NodeReference(id, model.ValueToken, ReferenceType.Aggregate));
         }
     }
 
@@ -85,7 +84,7 @@ public partial class Parser
         {
             if (!Helpers.BaseTypes.Contains(identifierNode.Id))
             {
-                References.Add(new NodeReference(id.Value, identifierNode.Id, ReferenceType.UsedInFunction));
+                References.Add(new NodeReference(id, identifierNode.IdToken, ReferenceType.UsedInFunction));
             }
         }
     }
