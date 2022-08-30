@@ -3,11 +3,15 @@
     public class ComponentNode : AttributesNode<ComponentAttribute>
     {
       
-        public ComponentNode(Token id, List<ComponentAttribute> attributes, List<Token> extensions,
+        [JsonConstructor]
+        public ComponentNode(Token idToken, List<ComponentAttribute> attributes, List<Token> extensionTokens,
             List<Token> annotationTokens) :
-            base(id, attributes, extensions, annotationTokens)
+            base(idToken, attributes, extensionTokens, annotationTokens)
         {
         }
 
+        
+        
+        
     }
 }

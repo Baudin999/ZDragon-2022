@@ -4,7 +4,7 @@ using Compiler.Resolvers;
 [assembly:InternalsVisibleTo("Compiler.Tests")]
 namespace Compiler
 {
-    public class ZDragon
+    public class ZDragon : IDisposable
     {
         private readonly string _basePath;
         private readonly string _outputPath;
@@ -73,15 +73,15 @@ namespace Compiler
             _resolver = resolver;
         }
 
-        public ZDragon Compile(string code)
+        public async Task<ZDragon> Compile(string code)
         {
             // create the module
             var module = new TextModule("test", code);
-            return Compile(module);
+            return await Compile(module);
         }
     
 
-        public ZDragon Compile(IModule module)
+        public async Task<ZDragon> Compile(IModule module)
         {
             Module = module;
             
@@ -99,7 +99,7 @@ namespace Compiler
             foreach (var ns in Grouper.OpenNamespaces)
             {
                 // import the namespace and resolve the IModule
-                var resolvedModule = _resolver.Resolve(ns);
+                var resolvedModule = await _resolver.Resolve(ns);
                 this.ResolvedModules.Add(resolvedModule);
             }
             
@@ -114,6 +114,16 @@ namespace Compiler
             return this;
         }
 
-        
+
+        public void Dispose()
+        {
+            foreach (var module in ResolvedModules)
+            {
+                module.Dispose();
+            }
+
+            Module.Dispose();
+            _resolver?.Dispose();
+        }
     }
 }

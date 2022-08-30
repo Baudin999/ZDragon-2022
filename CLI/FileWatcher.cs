@@ -67,12 +67,13 @@ public class FileWatcher : IObservable<FileChanged>, IDisposable
     {
         if (!locks.Contains(fileName))
         {
+            Console.WriteLine($"Broadcasting: {fileName} because of {reason}");
             foreach (var subscription in _observers)
             {
                 locks.Add(fileName);
                 subscription
                     .OnNext(new FileChanged(fileName, reason));
-                Task.Delay(300).ContinueWith((t) =>
+                Task.Delay(600).ContinueWith((t) =>
                 {
                     locks.Remove(fileName);
                 });

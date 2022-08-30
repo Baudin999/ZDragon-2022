@@ -3,7 +3,7 @@
 public class ExampleTest
 {
     [Fact]
-    public void TestSOmething()
+    public async void TestSomething()
     {
         const string code = @"
 
@@ -28,7 +28,7 @@ endpoint AddNumbers :: Int -> Int -> Int =
 
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
         Assert.Equal(4, zdragon.Nodes.Count);
         
     }

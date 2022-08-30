@@ -1,6 +1,6 @@
 ﻿namespace Compiler.Resolvers;
 
-public interface IResolver
+public interface IResolver : IDisposable
 {
-    IModule Resolve(string moduleName);
+    Task<IModule> Resolve(string moduleName);
 }

@@ -22,5 +22,10 @@
             this.Source = source;
             this.Message = message;
         }
+
+        public override string ToString()
+        {
+            return Message;
+        }
     }
 }

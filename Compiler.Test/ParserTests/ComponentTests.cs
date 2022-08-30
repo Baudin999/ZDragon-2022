@@ -3,23 +3,23 @@
     public class ComponentTests
     {
         [Fact]
-        public void SimpleComponent()
+        public async void SimpleComponent()
         {
             const string code = @"
 component Foo
 ";
 
-            var zdragon = new ZDragon().Compile(code);
+            var zdragon = await new ZDragon().Compile(code);
 
             Assert.NotNull(zdragon.Nodes);
             Assert.NotEmpty(zdragon.Nodes);
         }
 
         [Fact]
-        public void ComponentShouldHaveAnIdentifier()
+        public async void ComponentShouldHaveAnIdentifier()
         {
             const string code = @"component";
-            var zdragon = new ZDragon().Compile(code);
+            var zdragon = await new ZDragon().Compile(code);
 
             Assert.NotNull(zdragon.Nodes);
             Assert.Empty(zdragon.Nodes);
@@ -38,7 +38,7 @@ Where 'Foo' is the identifier of the component.", zdragon.Errors[0].Message);
         }
 
         [Fact]
-        public void SimpleComponent2()
+        public async void SimpleComponent2()
         {
             const string code = @"
 component Foo =
@@ -48,7 +48,7 @@ component Foo =
     Version: 0
 ";
 
-            var zdragon = new ZDragon().Compile(code);
+            var zdragon = await new ZDragon().Compile(code);
 
             Assert.NotNull(zdragon.Nodes);
             Assert.NotEmpty(zdragon.Nodes);
@@ -59,7 +59,7 @@ component Foo =
         }
         
         [Fact]
-        public void SimpleComponent3()
+        public async void SimpleComponent3()
         {
             const string code = @"
 component Foo =
@@ -76,7 +76,7 @@ component Foo =
     Model: Person
 ";
 
-            var zdragon = new ZDragon().Compile(code);
+            var zdragon = await new ZDragon().Compile(code);
 
             Assert.NotNull(zdragon.Nodes);
             Assert.NotEmpty(zdragon.Nodes);
@@ -87,14 +87,14 @@ component Foo =
         }
 
         [Fact]
-        public void TestInteractions()
+        public async void TestInteractions()
         {
             const string code = @"
 component Foo =
     Interactions:
         - Bar
 ";
-            var zdragon = new ZDragon().Compile(code);
+            var zdragon = await new ZDragon().Compile(code);
 
             Assert.NotNull(zdragon.Nodes);
             Assert.NotEmpty(zdragon.Nodes);
@@ -112,13 +112,13 @@ component Foo =
         }
 
         [Fact]
-        public void ExtendComponent()
+        public async void ExtendComponent()
         {
             const string code = @"
 component Foo extends Bar Other
 ";
 
-            var zdragon = new ZDragon().Compile(code);
+            var zdragon = await new ZDragon().Compile(code);
 
             Assert.NotNull(zdragon.Nodes);
             Assert.NotEmpty(zdragon.Nodes);
@@ -126,11 +126,11 @@ component Foo extends Bar Other
             var fooNode = (ComponentNode)zdragon.Nodes[0];
             Assert.Equal("Foo", fooNode.Id);
             Assert.Empty(fooNode.Attributes);
-            Assert.Equal(2, fooNode.Extends.Count);
+            Assert.Equal(2, fooNode.ExtensionTokenTokens.Count);
         }
         
         [Fact]
-        public void ComponentListAttribute()
+        public async void ComponentListAttribute()
         {
             const string code = @"
 component JusticeLeague =
@@ -140,7 +140,7 @@ component JusticeLeague =
         - Tech Man
 ";
 
-            var zdragon = new ZDragon().Compile(code);
+            var zdragon = await new ZDragon().Compile(code);
 
             Assert.NotNull(zdragon.Nodes);
             Assert.NotEmpty(zdragon.Nodes);
@@ -159,7 +159,7 @@ component JusticeLeague =
         }
 
         [Fact(DisplayName = "Component with annotations")]
-        public void ComponentWithAnnotations()
+        public async void ComponentWithAnnotations()
         {
             const string code = @"
 @ The Justice League
@@ -172,7 +172,7 @@ component JusticeLeague =
         - Tech Man
 ";
 
-            var zdragon = new ZDragon().Compile(code);
+            var zdragon = await new ZDragon().Compile(code);
 
             Assert.NotNull(zdragon.Nodes);
             Assert.NotEmpty(zdragon.Nodes);
@@ -193,7 +193,7 @@ of America", justiceLeagueNode.Description);
         }
 
         [Fact]
-        public void ComponentWithMarkdownNotes()
+        public async void ComponentWithMarkdownNotes()
         {
             const string code = @"
 component Foo =
@@ -209,7 +209,7 @@ component Foo =
          * Bullet 3
 ";
 
-            var zdragon = new ZDragon().Compile(code);
+            var zdragon = await new ZDragon().Compile(code);
 
             Assert.NotNull(zdragon.Nodes);
             Assert.Single(zdragon.Nodes);

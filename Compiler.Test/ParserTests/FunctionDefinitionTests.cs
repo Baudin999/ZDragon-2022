@@ -3,14 +3,14 @@
 public class FunctionDefinitionTests
 {
     [Fact]
-    public void SimpleAddFunctionDefinition()
+    public async void SimpleAddFunctionDefinition()
     {
         const string code = @"
 let Add x y =
     x + y
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
@@ -18,12 +18,12 @@ let Add x y =
     }
 
     [Fact]
-    public void SimpleNonParamFunction()
+    public async void SimpleNonParamFunction()
     {
         const string code = @"
 let foo () = 2
 ";
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
@@ -31,13 +31,13 @@ let foo () = 2
     }
     
     [Fact]
-    public void SimpleFunctionApplicationExpression()
+    public async void SimpleFunctionApplicationExpression()
     {
         const string code = @"
 let foo () =
     Add 2 3
 ";
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
@@ -51,13 +51,13 @@ let foo () =
     }
     
     [Fact]
-    public void AssignmentOfNumber()
+    public async void AssignmentOfNumber()
     {
         const string code = @"
 let n = 2
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
@@ -65,13 +65,13 @@ let n = 2
     }
     
     [Fact]
-    public void ArgumentOfString()
+    public async void ArgumentOfString()
     {
         const string code = @"
 let n = ""Carlos and Femke""
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
@@ -85,7 +85,7 @@ let n = ""Carlos and Femke""
     }
     
     [Fact]
-    public void CombineDocumentationAndFunction()
+    public async void CombineDocumentationAndFunction()
     {
         const string code = @"
 # Creating the system
@@ -103,7 +103,7 @@ component Math =
         - Add
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);

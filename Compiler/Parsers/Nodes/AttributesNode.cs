@@ -12,18 +12,20 @@ public class AttributesNode<T> : AstNode, IAttributesNode
     public string Id => IdToken.Value;
     public List<T> Attributes { get; }
         
-    public List<Token> Extends { get; }
+    public List<Token> ExtensionTokenTokens { get; }
         
-    private List<Token> _annotationTokens;
+    public List<Token> AnnotationTokens { get; }
         
     public string Description { get; } 
 
-    public AttributesNode(Token id, List<T> attributes, List<Token> extensions, List<Token> annotationTokens)
+    [JsonConstructor]
+    public AttributesNode(Token idToken, List<T> attributes, List<Token> extensionTokens, List<Token> annotationTokens)
     {
-        this.IdToken = id;
+        this.IdToken = idToken;
         Attributes = attributes;
-        Extends = extensions;
-        _annotationTokens = annotationTokens;
+        ExtensionTokenTokens = extensionTokens;
+        AnnotationTokens = annotationTokens;
+        
         Description = Helpers.DescriptionFromAnnotations(annotationTokens);
     }
 }

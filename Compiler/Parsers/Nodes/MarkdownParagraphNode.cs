@@ -3,11 +3,12 @@
 
 public class MarkdownParagraphNode : MarkdownNode
 {
-    private readonly Token _value;
-    public string Value => _value.Value;
+    private Token ValueToken { get; }
+    public string Value => ValueToken.Value;
     
-    public MarkdownParagraphNode(Token value)
+    [JsonConstructor]
+    public MarkdownParagraphNode(Token valueToken)
     {
-        _value = value;
+        ValueToken = valueToken;
     }
 }

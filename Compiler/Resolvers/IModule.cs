@@ -1,6 +1,6 @@
 ﻿namespace Compiler.Resolvers;
 
-public interface IModule
+public interface IModule : IDisposable
 {
     public string Name { get; }
     public string Text { get; }

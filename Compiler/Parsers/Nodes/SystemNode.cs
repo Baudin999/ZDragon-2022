@@ -7,8 +7,8 @@ public class SystemNode : AttributesNode<ComponentAttribute>
     // public List<ComponentAttribute> Attributes { get; }
     // public List<Token> Extends { get; }
 
-    public SystemNode(Token id, List<ComponentAttribute> attributes, List<Token> extensions, List<Token> annotationTokens) :
-        base(id, attributes, extensions, annotationTokens)
+    public SystemNode(Token isToken, List<ComponentAttribute> attributes, List<Token> extensionTokens, List<Token> annotationTokens) :
+        base(isToken, attributes, extensionTokens, annotationTokens)
     {
         // this.IdToken = id;
         // Attributes = attributes;

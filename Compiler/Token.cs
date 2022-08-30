@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json;
-
+﻿
 namespace Compiler
 {
     public class Token : IEquatable<TokenType>
@@ -16,6 +14,7 @@ namespace Compiler
         public int EndColumn { get; private set; }
         public static Token EOF => new Token(TokenType.EOF);
 
+        [JsonConstructor]
         public Token(TokenType type, string value, int startLine, int endLine, int startColumn, int endColumn)
         {
             this.Type = type;

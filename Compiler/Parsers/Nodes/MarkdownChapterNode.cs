@@ -2,11 +2,12 @@
 
 public class MarkdownChapterNode : MarkdownNode
 {
-    private readonly Token _value;
-    public string Value => _value.Value;
+    public Token ValueToken { get; }
+    public string Value => ValueToken.Value;
     
-    public MarkdownChapterNode(Token value)
+    [JsonConstructor]
+    public MarkdownChapterNode(Token valueToken)
     {
-        _value = value;
+        ValueToken = valueToken;
     }
 }

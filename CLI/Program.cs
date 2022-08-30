@@ -9,6 +9,11 @@ string basePath =
         Environment.GetCommandLineArgs()[1] : 
         Directory.GetCurrentDirectory();
 
-var fileWatcher = new FileWatcher();
-fileWatcher.Subscribe(new FileObserver(basePath));
+using var fileWatcher = new FileWatcher();
+using var fileObserver = new FileObserver(basePath);
+var unsubscribe = fileWatcher.Subscribe(fileObserver);
 fileWatcher.Start(basePath);
+unsubscribe.Dispose();
+fileWatcher.Stop();
+fileWatcher.Dispose();
+fileObserver.Dispose();

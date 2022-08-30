@@ -3,13 +3,13 @@
 public class EndpointTests
 {
     [Fact]
-    public void SimpleEndpoint()
+    public async void SimpleEndpoint()
     {
         const string code = @"
 endpoint Foo
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon);
         Assert.NotNull(zdragon.Nodes);
@@ -22,14 +22,14 @@ endpoint Foo
     
     
     [Fact]
-    public void SimpleEndpointExtensions()
+    public async void SimpleEndpointExtensions()
     {
         const string code = @"
 endpoint Foo extends Bar 
 endpoint Bar
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon);
         Assert.NotNull(zdragon.Nodes);
@@ -38,11 +38,11 @@ endpoint Bar
 
         var systemNode = (EndpointNode)zdragon.Nodes[0];
         Assert.Equal("Foo",systemNode.Id);
-        Assert.Single(systemNode.Extends);
+        Assert.Single(systemNode.ExtensionTokenTokens);
     }
     
     [Fact]
-    public void EndpointWithOperation()
+    public async void EndpointWithOperation()
     {
         const string code = @"
 endpoint Add :: Number -> Number -> Number =
@@ -50,7 +50,7 @@ endpoint Add :: Number -> Number -> Number =
     Description: Add two numbers
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon);
         Assert.NotNull(zdragon.Nodes);
@@ -65,7 +65,7 @@ endpoint Add :: Number -> Number -> Number =
     }
     
     [Fact]
-    public void EndpointWithOperation2()
+    public async void EndpointWithOperation2()
     {
         const string code = @"
 endpoint Add :: Add =
@@ -74,7 +74,7 @@ endpoint Add :: Add =
 type Add = Number -> Number -> Number
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon);
         Assert.NotNull(zdragon.Nodes);
@@ -89,7 +89,7 @@ type Add = Number -> Number -> Number
     }
     
     [Fact]
-    public void EndpointWithAnnotations()
+    public async void EndpointWithAnnotations()
     {
         const string code = @"
 @ This endpoint calculates the addition of two numbers
@@ -101,7 +101,7 @@ endpoint Add :: Int -> Int -> Int =
     Description: Add two numbers
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon);
         Assert.NotNull(zdragon.Nodes);
@@ -120,7 +120,7 @@ endpoint Add :: Int -> Int -> Int =
     }
     
     [Fact]
-    public void EndpointFunctionResultsInReferences()
+    public async void EndpointFunctionResultsInReferences()
     {
         const string code = @"
 @ This endpoint calculates the addition of two numbers
@@ -132,7 +132,7 @@ endpoint Add :: Person -> Guid -> String =
     Description: Add two numbers
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
         Assert.IsType<EndpointNode>(zdragon.Nodes[0]);
         var endpointNode = (EndpointNode)zdragon.Nodes[0];
 

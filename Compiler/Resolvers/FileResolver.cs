@@ -10,15 +10,21 @@ public class FileResolver : IResolver
     }
 
 
-    public IModule Resolve(string @namespace)
+    public async Task<IModule> Resolve(string @namespace)
     {
         // convert namespace to filename
         var filename = @namespace.Replace('.', '/') + ".car";
         
-        
         // prefix with base path
-        var path = BasePath + filename;
+        var path = Path.Combine(BasePath, filename);
         
-        return new  FileModule(path, @namespace);
+        // return the module
+        var module = await new FileModule(BasePath, path, @namespace).Init();
+        return module;
+    }
+    
+    public void Dispose()
+    {
+        // do nothing
     }
 }

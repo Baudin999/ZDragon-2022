@@ -3,13 +3,13 @@
 public class SystemTests
 {
     [Fact]
-    public void SimpleSystem()
+    public async void SimpleSystem()
     {
         const string code = @"
 system Foo
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon);
         Assert.NotNull(zdragon.Nodes);
@@ -21,7 +21,7 @@ system Foo
     }
     
     [Fact]
-    public void SystemWithContains()
+    public async void SystemWithContains()
     {
         const string code = @"
 system Foo =
@@ -31,7 +31,7 @@ system Foo =
         - OtherComponent
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon);
         Assert.NotNull(zdragon.Nodes);
@@ -62,14 +62,14 @@ system Foo =
     }
     
     [Fact]
-    public void SimpleSystemError()
+    public async void SimpleSystemError()
     {
         const string code = @"
 system Foo
     Title: Something
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon);
         Assert.NotNull(zdragon.Nodes);

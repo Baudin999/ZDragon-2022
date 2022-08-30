@@ -10,18 +10,21 @@ public class ComponentAttribute
     public List<Token> ValueTokens { get; }
     public List<string>? Items = null;
     public bool IsList => Items is not null;
+    public List<Token> AnnotationTokens { get; }
     public string Description { get; } 
 
-    public ComponentAttribute(Token id, Token value, List<Token> valueTokens, List<Token> annotations)
+    [JsonConstructor]
+    public ComponentAttribute(Token idToken, Token valueToken, List<Token> valueTokens, List<Token> annotationTokens)
     {
-        this.IdToken = id;
-        this.ValueToken = value;
+        this.IdToken = idToken;
+        this.ValueToken = valueToken;
         this.ValueTokens = valueTokens;
+        this.AnnotationTokens = annotationTokens;
 
         if (this.Value.StartsWith("-"))
         {
             // we have a list attribute
-            Items = value
+            Items = valueToken
                 .Value
                 .Trim()
                 .Split("-")
@@ -30,6 +33,6 @@ public class ComponentAttribute
                 .ToList();
         }
 
-        this.Description = Helpers.DescriptionFromAnnotations(annotations);
+        this.Description = Helpers.DescriptionFromAnnotations(annotationTokens);
     }
 }

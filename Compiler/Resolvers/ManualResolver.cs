@@ -10,8 +10,13 @@ public class ManualResolver : IResolver
     }
 
 
-    public IModule Resolve(string moduleName)
+    public async Task<IModule> Resolve(string moduleName)
     {
-        return new TextModule(moduleName, _resolutions[moduleName]);
+        return await Task.FromResult(new TextModule(moduleName, _resolutions[moduleName]));
+    }
+
+    public void Dispose()
+    {
+        _resolutions.Clear();
     }
 }

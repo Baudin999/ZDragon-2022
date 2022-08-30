@@ -25,4 +25,9 @@ public class TextModule : IModule
         _nodes = new Parser(grouper, errorSink, new List<NodeReference>()).Parse();
     }
 
+
+    public void Dispose()
+    {
+        _nodes = new List<AstNode>();
+    }
 }

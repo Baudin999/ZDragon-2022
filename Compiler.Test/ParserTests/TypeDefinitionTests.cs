@@ -3,13 +3,13 @@
 public class TypeDefinitionTests
 {
     [Fact]
-    public void SimpleAlias()
+    public async void SimpleAlias()
     {
         var code = @"
 type Id = uuid
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
@@ -22,13 +22,13 @@ type Id = uuid
     }
     
     [Fact]
-    public void SimpleTypeApplication()
+    public async void SimpleTypeApplication()
     {
         var code = @"
 type Id = Maybe string
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
@@ -44,13 +44,13 @@ type Id = Maybe string
     }
     
     [Fact]
-    public void SimpleTypeDefinition()
+    public async void SimpleTypeDefinition()
     {
         var code = @"
 type Add = int -> int -> int
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
@@ -63,13 +63,13 @@ type Add = int -> int -> int
     }
     
     [Fact]
-    public void ComplexTypeDefinition()
+    public async void ComplexTypeDefinition()
     {
         const string code = @"
 type Add = (int -> int) -> Maybe string -> int
 ";
 
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);

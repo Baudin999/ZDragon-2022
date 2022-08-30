@@ -6,12 +6,12 @@ public class EndpointNode : AttributesNode<ComponentAttribute>
     public AstNode? Operation { get; }
 
     public EndpointNode(
-        Token idToken, 
+        Token isTokenToken, 
         List<ComponentAttribute> attributes, 
-        List<Token> extensions, 
+        List<Token> extensionTokens, 
         List<Token> annotations,
         AstNode? operation) :
-        base(idToken, attributes, extensions, annotations)
+        base(isTokenToken, attributes, extensionTokens, annotations)
     {
         Operation = operation;
     }

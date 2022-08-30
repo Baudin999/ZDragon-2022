@@ -72,7 +72,7 @@ This if is not a keyword!
 
 
         [Fact]
-        public void TestTokens()
+        public async void TestTokens()
         {
             const string code = @"
 
@@ -91,7 +91,7 @@ component Bar
 ";
 
             var splits = code.Split('\n');
-            var zdragon = new ZDragon().Compile(code);
+            var zdragon = await new ZDragon().Compile(code);
             foreach (var token in zdragon.Lexer?.Tokens ?? new List<Token>())
             {
                 if (token == TokenType.NEWLINE || token.StartLine == -1 ) continue;
@@ -141,7 +141,7 @@ component Bar =
         }
         
         [Fact]
-        public void TestModuleResolution()
+        public async void TestModuleResolution()
         {
             const string code = @"
 open Foo
@@ -156,7 +156,7 @@ component Bar =
                 {"Foo", "component Foo"}
             });
             var textModule = new TextModule("Bar", code);
-            var zdragon = new ZDragon(resolver).Compile(textModule);
+            var zdragon = await new ZDragon(resolver).Compile(textModule);
 
             Assert.Equal(2, zdragon.References.Count);
             Assert.Single(zdragon.ResolvedModules);

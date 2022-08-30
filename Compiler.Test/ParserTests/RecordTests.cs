@@ -3,14 +3,14 @@
 public class RecordTests
 {
     [Fact(DisplayName = "Create simple record")]
-    public void CreateSimpleRecord()
+    public async void CreateSimpleRecord()
     {
         const string code = @"
 record Person =
     name: string
     age: int";
         
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.Single(zdragon.Nodes); 
@@ -29,7 +29,7 @@ record Person =
     
     
     [Fact(DisplayName = "Create simple record with annotations")]
-    public void CreateSimpleRecordWithAnnotations()
+    public async void CreateSimpleRecordWithAnnotations()
     {
         const string code = @"
 @ The person record
@@ -43,7 +43,7 @@ record Person =
     @ with a second annotation
     age: int";
         
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.Single(zdragon.Nodes); 
@@ -68,7 +68,7 @@ with a second annotation", record.Attributes[1].Description);
 
 
     [Fact(DisplayName = "Fields with maybe and list types")]
-    public void FieldWith()
+    public async void FieldWith()
     {
         const string code = @"
 type Name = String
@@ -78,7 +78,7 @@ record Person =
     Hobbies: List String
 ";
         
-        var zdragon = new ZDragon().Compile(code);
+        var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.Empty(zdragon.Errors);
