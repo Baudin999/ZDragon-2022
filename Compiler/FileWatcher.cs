@@ -4,15 +4,18 @@
 public struct FileChanged
 {
     public readonly string FileName;
+    public readonly FileChangeReason Reason;
 
-    public FileChanged(string fileName)
+    public FileChanged(string fileName, FileChangeReason fileChangeReason)
     {
         FileName = fileName;
+        Reason = fileChangeReason;
     }
+
 }
 public class FileWatcher : IObservable<FileChanged>, IDisposable
 {
-    private List<IObserver<FileChanged>> _observers;
+    private readonly List<IObserver<FileChanged>> _observers;
     private FileSystemWatcher? _watcher = null;
 
     public FileWatcher()
@@ -58,29 +61,45 @@ public class FileWatcher : IObservable<FileChanged>, IDisposable
         _observers.Clear();
     }
 
+    private static List<string> locks = new List<string>();
+
+    private void broadcast(string fileName, FileChangeReason reason)
+    {
+        if (!locks.Contains(fileName))
+        {
+            foreach (var subscription in _observers)
+            {
+                locks.Add(fileName);
+                subscription
+                    .OnNext(new FileChanged(fileName, reason));
+                Task.Delay(300).ContinueWith((t) =>
+                {
+                    locks.Remove(fileName);
+                });
+            }
+        }
+    }
+
     private void OnChanged(object sender, FileSystemEventArgs e)
     {
         if (e.ChangeType != WatcherChangeTypes.Changed)
         {
             return;
         }
-        Console.WriteLine($"Changed: {e.FullPath}");
+        broadcast(e.FullPath, FileChangeReason.Changed);
     }
 
     private void OnCreated(object sender, FileSystemEventArgs e)
     {
-        string value = $"Created: {e.FullPath}";
-        Console.WriteLine(value);
+        broadcast(e.FullPath, FileChangeReason.Created);
     }
 
     private void OnDeleted(object sender, FileSystemEventArgs e) =>
-        Console.WriteLine($"Deleted: {e.FullPath}");
+        broadcast(e.FullPath, FileChangeReason.Deleted);
 
     private void OnRenamed(object sender, RenamedEventArgs e)
     {
-        Console.WriteLine($"Renamed:");
-        Console.WriteLine($"    Old: {e.OldFullPath}");
-        Console.WriteLine($"    New: {e.FullPath}");
+        broadcast(e.FullPath, FileChangeReason.Renamed);
     }
 
     private void OnError(object sender, ErrorEventArgs e) =>
@@ -131,4 +150,12 @@ public class FileWatcher : IObservable<FileChanged>, IDisposable
             _watcher.Dispose();
         }
     }
+}
+
+public enum FileChangeReason
+{
+    Changed,
+    Created,
+    Deleted,
+    Renamed
 }
