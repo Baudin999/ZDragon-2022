@@ -1,4 +1,4 @@
-﻿namespace Compiler;
+﻿namespace CLI;
 
 
 public struct FileChanged
@@ -61,7 +61,7 @@ public class FileWatcher : IObservable<FileChanged>, IDisposable
         _observers.Clear();
     }
 
-    private static List<string> locks = new List<string>();
+    private static List<string> locks = new();
 
     private void broadcast(string fileName, FileChangeReason reason)
     {

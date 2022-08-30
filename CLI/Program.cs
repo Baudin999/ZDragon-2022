@@ -3,8 +3,12 @@
 
 using CLI;
 
-string basePath = Environment.GetCommandLineArgs()[1];
+// set basePath to first cli argument if present, else default to current directory
+string basePath = 
+    Environment.GetCommandLineArgs().Length > 1 ? 
+        Environment.GetCommandLineArgs()[1] : 
+        Directory.GetCurrentDirectory();
 
-var fileWatcher = new Compiler.FileWatcher();
-fileWatcher.Subscribe(new FileObserver());
+var fileWatcher = new FileWatcher();
+fileWatcher.Subscribe(new FileObserver(basePath));
 fileWatcher.Start(basePath);
