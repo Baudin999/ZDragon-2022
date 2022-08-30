@@ -15,6 +15,7 @@ public class FileResolver : IResolver
         // convert namespace to filename
         var filename = @namespace.Replace('.', '/') + ".car";
         
+        
         // prefix with base path
         var path = BasePath + filename;
         
