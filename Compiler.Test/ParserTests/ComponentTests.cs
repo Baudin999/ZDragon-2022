@@ -115,18 +115,30 @@ component Foo =
         public async void ExtendComponent()
         {
             const string code = @"
-component Foo extends Bar Other
+component Foo extends Bar Other =
+    Version: 10
+
+component Bar =
+    Title: Bar Component
+
+component Other =
+    Version: 0
 ";
 
             var zdragon = await new ZDragon().Compile(code);
 
             Assert.NotNull(zdragon.Nodes);
             Assert.NotEmpty(zdragon.Nodes);
+            Assert.Equal(3, zdragon.Nodes.Count);
 
             var fooNode = (ComponentNode)zdragon.Nodes[0];
             Assert.Equal("Foo", fooNode.Id);
-            Assert.Empty(fooNode.Attributes);
-            Assert.Equal(2, fooNode.ExtensionTokenTokens.Count);
+            Assert.Equal(2, fooNode.ExtensionTokens.Count);
+            Assert.Equal(2, fooNode.Attributes.Count);
+            Assert.Equal("Version", fooNode.Attributes[0].Id);
+            Assert.Equal("10", fooNode.Attributes[0].Value);
+            Assert.Equal("Title", fooNode.Attributes[1].Id);
+            Assert.Equal("Bar Component", fooNode.Attributes[1].Value);
         }
         
         [Fact]

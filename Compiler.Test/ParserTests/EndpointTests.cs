@@ -38,7 +38,7 @@ endpoint Bar
 
         var systemNode = (EndpointNode)zdragon.Nodes[0];
         Assert.Equal("Foo",systemNode.Id);
-        Assert.Single(systemNode.ExtensionTokenTokens);
+        Assert.Single(systemNode.ExtensionTokens);
     }
     
     [Fact]

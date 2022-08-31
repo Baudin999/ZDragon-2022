@@ -9,7 +9,7 @@ public class RecordNode : AttributesNode<RecordFieldNode>
 }
 
 
-public class RecordFieldNode
+public class RecordFieldNode : IIdentifier
 {
     private readonly Token _idToken;
     public string Id => _idToken.Value;

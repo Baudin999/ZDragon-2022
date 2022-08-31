@@ -1,18 +1,18 @@
 ﻿namespace Compiler.Parsers.Nodes;
 
-public interface IAttributesNode
+public interface IAttributesNode : IIdentifier
 {
-    string Id { get; }
     string Description { get;  }
 }
 
-public class AttributesNode<T> : AstNode, IAttributesNode
+public class AttributesNode<T> : AstNode, IAttributesNode where T : IIdentifier
 {
     public Token IdToken { get; }
     public string Id => IdToken.Value;
     public List<T> Attributes { get; }
         
-    public List<Token> ExtensionTokenTokens { get; }
+    public List<Token> ExtensionTokens { get; }
+    public List<string> Extensions { get; }
         
     public List<Token> AnnotationTokens { get; }
         
@@ -23,9 +23,20 @@ public class AttributesNode<T> : AstNode, IAttributesNode
     {
         this.IdToken = idToken;
         Attributes = attributes;
-        ExtensionTokenTokens = extensionTokens;
+        ExtensionTokens = extensionTokens;
         AnnotationTokens = annotationTokens;
         
         Description = Helpers.DescriptionFromAnnotations(annotationTokens);
+        Extensions = ExtensionTokens.Where(e => e == TokenType.Word).Select(e => e.Value).ToList();
+    }
+
+    public bool ContainsAttribute(string id)
+    {
+        return Attributes.FirstOrDefault(a => a.Id == id) is not null;
+    }
+
+    public T? GetAttribute(string id)
+    {
+        return Attributes.FirstOrDefault(a => a.Id == id);
     }
 }

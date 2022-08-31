@@ -40,7 +40,8 @@ namespace Compiler
                     {
                         if (result is AstNode astNode)
                         {
-                            astNode.Namespace = module.Namespace;
+                            if (astNode.Namespace == "")
+                                astNode.Namespace = module.Namespace;
                             Imports.Add(astNode);
                         }
                         break;
@@ -93,17 +94,17 @@ namespace Compiler
         public async Task<ZDragon> Compile(IModule module)
         {
             Module = module;
-            
+
             _errorSink = new ErrorSink();
 
             // lex the tokens from the input
             Lexer = new Lexer(module.Text, _errorSink);
             var lexedTokens = Lexer.Lex();
-            
+
             // group the tokens in lexical context
             Grouper = new Grouper(lexedTokens, _errorSink);
             var groupedTokens = Grouper.Group();
-            
+
             // resolve all the open statements
             foreach (var ns in Grouper.OpenNamespaces)
             {
@@ -111,11 +112,14 @@ namespace Compiler
                 var resolvedModule = await _resolver.Resolve(ns);
                 this.ResolvedModules.Add(resolvedModule);
             }
-            
+
             // parse the code
             Parser = new Parser(groupedTokens, _errorSink, References);
             Module.Nodes = Parser.Parse(module.Namespace);
-            
+
+            // Extend and Merge nodes
+            MergeExtensions(module);
+
             // type-check the nodes in the module
             var typeChecker = new TypeChecker(this);
             var errors = typeChecker.Check(); // type-check errors
@@ -123,6 +127,24 @@ namespace Compiler
             return this;
         }
 
+        private void MergeExtensions(IModule module)
+        {
+            foreach (var node in module.Nodes.OfType<AttributesNode<ComponentAttribute>>())
+            {
+                foreach (var extends in node.Extensions)
+                {
+                    var extendedNode = Get(extends);
+                    if (extendedNode is not null && extendedNode is AttributesNode<ComponentAttribute> atn)
+                    {
+                        foreach (var attribute in atn.Attributes)
+                        {
+                            if (!node.ContainsAttribute(attribute.Id))
+                                node.Attributes.Add(attribute.Clone());
+                        }
+                    }
+                }
+            }
+        }
 
         public void Dispose()
         {

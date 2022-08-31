@@ -1,6 +1,6 @@
 ﻿namespace Compiler.Parsers.Nodes;
 
-public class ComponentAttribute
+public class ComponentAttribute : IIdentifier
 {
 
     public Token IdToken { get; }
@@ -34,5 +34,16 @@ public class ComponentAttribute
         }
 
         this.Description = Helpers.DescriptionFromAnnotations(annotationTokens);
+    }
+
+    public ComponentAttribute Clone()
+    {
+        return new ComponentAttribute(
+                IdToken.Clone(),
+                ValueToken.Clone(),
+                ValueTokens.Select(v => v.Clone()).ToList(),
+                AnnotationTokens.Select(v => v.Clone()).ToList()
+            );
+        
     }
 }
