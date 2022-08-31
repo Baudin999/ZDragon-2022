@@ -17,6 +17,10 @@
             {
                 _ = Take(TokenType.KWExtends);
                 extensions.AddRange(TakeWhile(TokenType.Word).ToList());
+                foreach (var ext in extensions)
+                {
+                    References.Add(new NodeReference(id, ext, ReferenceType.ExtendedBy));
+                }
             });
 
             // parse the body of the component

@@ -13,13 +13,19 @@ public class NodeReference {
     public Token FromToken { get; }
     public string From => FromToken.Value;
     public ReferenceType Type { get; }
+
+
+    public override string ToString()
+    {
+        return $"{From} --{Type}-- {To}";
+    }
 }
 
 
 
 public enum ReferenceType
 {
-    Extends,
+    ExtendedBy,
     Contains,
     InteractsWith,
     UsedInFunction,
