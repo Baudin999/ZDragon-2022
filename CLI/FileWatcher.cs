@@ -71,12 +71,19 @@ public class FileWatcher : IObservable<FileChanged>, IDisposable
             foreach (var subscription in _observers)
             {
                 locks.Add(fileName);
-                subscription
-                    .OnNext(new FileChanged(fileName, reason));
-                Task.Delay(600).ContinueWith((t) =>
+                
+                // do not interfere with the other IDE's locking this file
+                Task.Delay(300).ContinueWith((t1) =>
                 {
-                    locks.Remove(fileName);
+                    subscription.OnNext(new FileChanged(fileName, reason));
+                    
+                    // release the lock
+                    Task.Delay(300).ContinueWith((t2) =>
+                    {
+                        locks.Remove(fileName);
+                    });
                 });
+                
             }
         }
     }

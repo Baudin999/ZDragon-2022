@@ -21,7 +21,7 @@ public static class FileHelpers
         if (File.Exists(path))
         {
             // create a read stream and read all the text
-            // close the stream afterawrds
+            // close the stream afterwards
             using var stream = File.OpenText(path);
             var result = await stream.ReadToEndAsync();
             stream.Close();

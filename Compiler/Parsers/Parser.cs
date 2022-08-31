@@ -111,27 +111,28 @@
             this.References = references;
         }
 
-        private void AddNode(AstNode? node)
+        private void AddNode(AstNode? node, string @namespace)
         {
             if (node is not null)
             {
+                node.Namespace = @namespace;
                 ExtractReferences(node);
                 Nodes.Add(node);
             }
         }
 
-        public List<AstNode> Parse()
+        public List<AstNode> Parse(string @namespace = "")
         {
             Nodes = new List<AstNode>();
 
             while (_index < this._tokens.Count)
             {
-                if (Current == TokenType.KWComponent) AddNode(parseComponent());
-                else if (Current == TokenType.KWSystem) AddNode(parseSystem());
-                else if (Current == TokenType.KWEndpoint) AddNode(parseEndpoint());
-                else if (Current == TokenType.KWType) AddNode(parseTypeDefinition());
-                else if (Current == TokenType.KWLet) AddNode(parseAssignmentStatement());
-                else if (Current == TokenType.KWRecord) AddNode(parseRecordDefinition());
+                if (Current == TokenType.KWComponent) AddNode(parseComponent(), @namespace);
+                else if (Current == TokenType.KWSystem) AddNode(parseSystem(), @namespace);
+                else if (Current == TokenType.KWEndpoint) AddNode(parseEndpoint(), @namespace);
+                else if (Current == TokenType.KWType) AddNode(parseTypeDefinition(), @namespace);
+                else if (Current == TokenType.KWLet) AddNode(parseAssignmentStatement(), @namespace);
+                else if (Current == TokenType.KWRecord) AddNode(parseRecordDefinition(), @namespace);
                 else if (Current == TokenType.NEWLINE) TakeNext();
                 else if (Current == TokenType.SPACE) TakeNext();
                 else if (Current == TokenType.STOP_CONTEXT) TakeNext();

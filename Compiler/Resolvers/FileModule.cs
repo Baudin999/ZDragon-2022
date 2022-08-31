@@ -8,7 +8,7 @@ public class FileModule : IModule
     private readonly string _filePath;
     private readonly string _basePath;
 
-    public string Name { get; }
+    public string Namespace { get; }
     public string Text { get; private set; }
     
     private List<AstNode> _nodes;
@@ -20,7 +20,7 @@ public class FileModule : IModule
 
     public FileModule(string basePath, string fileName, string name)
     {
-        Name = name;
+        Namespace = name;
         Text = "";
         _filePath = Path.Combine(basePath, fileName);
         _nodes = new List<AstNode>();
@@ -37,7 +37,7 @@ public class FileModule : IModule
         var jsonPath = Path.Combine(
             _basePath,
             ".bin",
-            $"{Name}.json"
+            $"{Namespace}.json"
         );
         if (File.Exists(jsonPath))
         {

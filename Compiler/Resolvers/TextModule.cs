@@ -3,7 +3,7 @@
 public class TextModule : IModule
 {
     public string Text { get; set; }
-    public string Name { get; set; }
+    public string Namespace { get; set; }
     
     private List<AstNode> _nodes;
     List<AstNode> IModule.Nodes
@@ -16,7 +16,7 @@ public class TextModule : IModule
     public TextModule(string name, string text)
     {
         this.Text = text;
-        this.Name = name;
+        this.Namespace = name;
         this._nodes = new List<AstNode>();
 
         var errorSink = new ErrorSink();

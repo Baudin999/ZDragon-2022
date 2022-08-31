@@ -13,6 +13,7 @@ namespace Compiler
         private Grouper? Grouper { get; set; }
         private Parser? Parser { get; set; }
         public List<AstNode> Nodes => Module.Nodes;
+        public List<AstNode> Imports = new List<AstNode>();
 
         private ErrorSink _errorSink = new ErrorSink();
         public List<Error> Errors => _errorSink.Errors;
@@ -24,7 +25,7 @@ namespace Compiler
 
         public IAttributesNode? Get(string id)
         {
-            var result = Nodes
+            var result = (Nodes.Concat(Imports))
                 .OfType<IAttributesNode>()
                 .FirstOrDefault(n => n.Id == id);
             
@@ -35,7 +36,15 @@ namespace Compiler
                     result = module.Nodes
                         .OfType<IAttributesNode>()
                         .FirstOrDefault(n => n.Id == id);
-                    if (result is not null) break;
+                    if (result is not null)
+                    {
+                        if (result is AstNode astNode)
+                        {
+                            astNode.Namespace = module.Namespace;
+                            Imports.Add(astNode);
+                        }
+                        break;
+                    }
                 }
             }
 
@@ -105,7 +114,7 @@ namespace Compiler
             
             // parse the code
             Parser = new Parser(groupedTokens, _errorSink, References);
-            Module.Nodes = Parser.Parse();
+            Module.Nodes = Parser.Parse(module.Namespace);
             
             // type-check the nodes in the module
             var typeChecker = new TypeChecker(this);
