@@ -130,6 +130,7 @@ component Other =
             Assert.NotNull(zdragon.Nodes);
             Assert.NotEmpty(zdragon.Nodes);
             Assert.Equal(3, zdragon.Nodes.Count);
+            Assert.Equal(5, zdragon.References.Count);
 
             var fooNode = (ComponentNode)zdragon.Nodes[0];
             Assert.Equal("Foo", fooNode.Id);
