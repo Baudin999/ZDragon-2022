@@ -1,5 +1,6 @@
 ﻿import eventbus from "./eventbus";
 import { writable, get as _get } from "svelte/store";
+import error from "svelte/types/compiler/utils/error";
 
 
 
@@ -44,6 +45,13 @@ export function setText(text) {
     });
 }
 
+export function setErrors(errors) {
+    fileState.update(state => {
+        state.errors = errors
+        return state;
+    })
+}
+
 export function setDirectory(directory) {
     
     localStorage.setItem("directory", directory);
@@ -66,9 +74,35 @@ export function setDirectory(directory) {
 
 }
 
+function saveText(text) {
+    const state = _get(fileState);
+    
+    fetch('/file', {
+        method: 'PUT',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+            path: state.currentPath,
+            text
+        })
+    })
+        .then(r => r.json())
+        .then(r => {
+            // r is a list of errors in the compilation            
+            setErrors(r);
+            eventbus.broadcast(eventbus.EVENTS.ERRORS_RECEIVED, r);
+            
+            // update the state?
+            setText(text);
+        })
+        .catch(console.log);
+}
+
 export function init() {
     eventbus.subscribe(eventbus.EVENTS.SAVING, (data) => {
-        console.log("Saving", data);
+        // console.log("Saving", data);
+        saveText(data);
     });
 
 

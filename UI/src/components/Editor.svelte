@@ -59,9 +59,27 @@
     }
 
     eventbus.subscribe(eventbus.EVENTS.SAVE, () => {
-        if (editor._focusTracker._hasFocus) {
+        if (editor && editor._focusTracker._hasFocus) {
             eventbus.broadcast(eventbus.EVENTS.SAVING, editor.getValue());
         }
+    });
+    
+    eventbus.subscribe(eventbus.EVENTS.ERRORS_RECEIVED, (errors) => {
+        if (!editor || !errors) return;
+        var model = editor.getModel();
+        
+        var markers = errors.map(e => {
+            return {
+                message: e.message,
+                startLineNumber: e.source.startLine + 1,
+                endLineNumber: e.source.endLine,
+                startColumn: e.source.startColumn + 1,
+                endColumn: e.source.endColumn + 1,
+                severity: 'error'
+            }
+        });
+        
+        monaco.editor.setModelMarkers(model, "", markers);
     });
     
 </script>
