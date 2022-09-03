@@ -6,6 +6,12 @@ public class FileSystemService
     // while keeping hte nesting
     public List<FileSystemObject> GetFileSystemObjects(string path)
     {
+        if (!Environment.OSVersion.ToString().ToLower().Contains("win") && path.StartsWith("~"))
+        {
+            var userProfileFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            path = Path.Combine(userProfileFolder, path.Replace("~", "").Substring(1));
+        }
+        
         var fileSystemObjects = new List<FileSystemObject>();
         var directories = Directory.GetDirectories(path);
         var files = Directory.GetFiles(path);

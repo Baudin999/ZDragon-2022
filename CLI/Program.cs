@@ -4,21 +4,28 @@
 using CLI;
 
 // set basePath to first cli argument if present, else default to current directory
-string basePath = 
-    Environment.GetCommandLineArgs().Length > 1 ? 
-        Environment.GetCommandLineArgs()[1] : 
-        Directory.GetCurrentDirectory();
-
-var userProfileFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-Console.WriteLine(userProfileFolder);
-
-if (!Environment.OSVersion.ToString().ToLower().Contains("win") && basePath.StartsWith("~"))
+string GetBasePath()
 {
-    // remove the tilde, and the first starting /
-    // and combine that with the user profile path
-    // to get to the actual path on a unix/linux/osx machine
-    basePath = Path.Combine(userProfileFolder, basePath.Replace("~", "").Substring(1));
+    var s =
+        Environment.GetCommandLineArgs().Length > 1
+            ? Environment.GetCommandLineArgs()[1]
+            : Directory.GetCurrentDirectory();
+
+    var userProfileFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    Console.WriteLine(userProfileFolder);
+
+    if (!Environment.OSVersion.ToString().ToLower().Contains("win") && s.StartsWith("~"))
+    {
+        // remove the tilde, and the first starting /
+        // and combine that with the user profile path
+        // to get to the actual path on a unix/linux/osx machine
+        s = Path.Combine(userProfileFolder, s.Replace("~", "").Substring(1));
+    }
+
+    return s;
 }
+
+var basePath = GetBasePath();
 
 if (!Directory.Exists(basePath))
 {

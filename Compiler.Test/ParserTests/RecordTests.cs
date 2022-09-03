@@ -101,4 +101,17 @@ record Person =
         Assert.Equal(2, record.Attributes[2].TypeTokens.Count);
 
     }
+
+
+    [Fact]
+    public void ParseRecordFieldWithRestrictions()
+    {
+        const string code = @"
+record Person =
+    FirstName: String
+        & min 4
+        & max 12
+    LastName: String & min 2 & default ""asdadsas""
+";
+    }
 }

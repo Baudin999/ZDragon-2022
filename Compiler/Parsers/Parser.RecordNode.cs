@@ -4,16 +4,12 @@ public partial class Parser
 {
     private RecordNode? parseRecordDefinition()
     {
-
-        
         var kw = Take(TokenType.KWRecord);
         var annotations = TakeWhile(TokenType.Annotation).ToList();
         var id = TakeArchitectureIdentifier("record");
         var fields = new List<RecordFieldNode>();
         if (id is null) return null;
-        
-        
-        
+
         If(TokenType.Equal, () =>
         {
             _ = Take(TokenType.Equal);

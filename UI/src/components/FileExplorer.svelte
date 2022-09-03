@@ -1,21 +1,11 @@
 ﻿<script>
     import Folder from "../components/Folder.svelte";
-    
+    import {fileState} from "../services/file";
+
     let root = [];
-
-    // set the current project path
-    fetch("/project", {
-            method: 'PUT',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify({path: "D:\\BasZDragon"})
-        })
-        .then(r => r.json())
-        .then(r => {
-            root = r;
-        });
-
+    fileState.subscribe(s => {
+        root = s.files;
+    });
 </script>
 
 

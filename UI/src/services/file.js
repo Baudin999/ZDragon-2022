@@ -2,8 +2,10 @@
 import { writable, get as _get } from "svelte/store";
 
 export const fileState = writable({
+    directory: "",
     currentPath: "",
-    text: ""
+    text: "",
+    files: []
 });
 
 
@@ -32,6 +34,29 @@ export function setText(text) {
         state.text = text;
         return state;
     });
+}
+
+export function setDirectory(directory) {
+    const state = _get(fileState);
+
+    // set the current project path
+    fetch("/project", {
+        method: 'PUT',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({path: directory})
+    })
+        .then(r => r.json())
+        .then(r => {
+            fileState.update(s => {
+                return {
+                    ...s,
+                    files: r
+                }
+            });
+        });
+
 }
 
 export function init() {

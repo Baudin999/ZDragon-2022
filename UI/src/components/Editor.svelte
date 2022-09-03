@@ -45,7 +45,7 @@
     onMount(() => {
         initEditor();
         var ro = new ResizeObserver(() => {
-            editor.layout();
+            editor?.layout();
         });
         ro.observe(editorContainer);
     });
