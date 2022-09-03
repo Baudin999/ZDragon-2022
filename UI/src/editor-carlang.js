@@ -134,7 +134,8 @@ export const theme = {
     base: "vs-dark",
     inherit: true,
     colors: {
-        "editor.background": "#273241"
+        "editor.background": "#273241",
+        "minimap.background": "#273241"
     },
     rules: [
         { token: "chapter", foreground: "#ea5dd5" },

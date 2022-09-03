@@ -1,14 +1,15 @@
 ﻿<script>
     import { onMount, onDestroy } from "svelte";
     import { writable } from "svelte/store";
+    import eventbus from "../services/eventbus";
     
     export let text = "";
     export let language = "carlang";
     export let theme = "carlangTheme";
     export let wordWrap = true;
     export let markers = writable([]);
-    // export let context = [];
     
+    let editorContainer;
     let id = "editor-" + Math.floor(Math.random() * 1000);
     let editor = null;
 
@@ -31,7 +32,7 @@
             wordWrapColumn: 120,
             wordWrap: wordWrap ? "on" : "off",
             minimap: {
-                enabled: false,
+                enabled: true,
             },
             quickSuggestions: {
                 other: false,
@@ -43,6 +44,10 @@
 
     onMount(() => {
         initEditor();
+        var ro = new ResizeObserver(() => {
+            editor.layout();
+        });
+        ro.observe(editorContainer);
     });
     onDestroy(() => {
         editor.dispose();
@@ -52,17 +57,23 @@
     $: if (text && editor) {
         editor.setValue(text);
     }
+
+    eventbus.subscribe(eventbus.EVENTS.SAVE, () => {
+        if (editor._focusTracker._hasFocus) {
+            eventbus.broadcast(eventbus.EVENTS.SAVING, editor.getValue());
+        }
+    });
     
 </script>
 
 
-<div class="editor" {id} />
+<div class="editor" {id} bind:this={editorContainer} />
 
 
 
 <style>
     .editor {
-        height: 500px;
-        width: 500px;
+        height: 100%;
+        width: 100%;
     }
 </style>

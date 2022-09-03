@@ -5,22 +5,10 @@
 	import Editor from "./pages/editor.svelte";
 	import Lexicon from "./pages/lexicon.svelte";
 	
-	import Folder from "./components/Folder.svelte";
+	
 	
 	export let url = "";
-	let root = [];
 	
-	// set the current project path
-	fetch("/project",{
-		method: 'PUT',
-		headers:{
-			'Content-Type':'application/json'
-		},
-		body: JSON.stringify({path: "D:\\BasZDragon"})
-	}).then(r => r.json())
-			.then(r => {
-				root = r;
-			});
 
 
 </script>
@@ -33,7 +21,7 @@
 			<Link to="editor">Editor</Link>
 			<Link to="lexicon">Lexicon</Link>
 		</nav>
-		<div>
+		<div class="main-container">
 			<Route path="editor" component={Editor} />
 			<Route path="about" component={About} />
 			<Route path="lexicon" component={Lexicon} />
@@ -41,17 +29,19 @@
 		</div>
 	</Router>
 
-	<span class="material-symbols-outlined">search</span>
-	<span class="material-symbols-outlined">home</span>
-	<span class="material-symbols-outlined">settings</span>
-	<span class="material-symbols-outlined">favorite</span>
-	
-	<br />
-	<Folder name="Treeview" files={root} expanded />
-	
+<!--	<span class="material-symbols-outlined">search</span>-->
+<!--	<span class="material-symbols-outlined">home</span>-->
+<!--	<span class="material-symbols-outlined">settings</span>-->
+<!--	<span class="material-symbols-outlined">favorite</span>-->
+<!--	-->
+<!--	-->
 </main>
 
 <style lang="less" global>
 	@import "./styles/main.less";
-	
+	.main-container {
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
+	}
 </style>

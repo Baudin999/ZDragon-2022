@@ -1,5 +1,5 @@
 ﻿<script>
-    import { OnFileSelected } from "./../services/treeview-interactions";
+    import { OnFileSelected } from "../services/file";
     export let name;
     export let path;
     
