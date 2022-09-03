@@ -41,8 +41,17 @@ public class ProjectController : ControllerBase
 
     }
     
-    
+    [HttpPut("/page")]
+    public string GetCurrentPagePath(ProjectSelector path)
+    {
+        // return content of the file if it exists
+        if (System.IO.File.Exists(path.Path))
+        {
+            return System.IO.File.ReadAllText(path.Path);
+        }
 
+        return "";
+    }
 }
 
 public class ProjectSelector

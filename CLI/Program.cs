@@ -37,3 +37,5 @@ unsubscribe.Dispose();
 fileWatcher.Stop();
 fileWatcher.Dispose();
 fileObserver.Dispose();
+
+

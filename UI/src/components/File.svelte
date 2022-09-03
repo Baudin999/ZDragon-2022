@@ -1,9 +1,16 @@
 ﻿<script>
+    import { OnFileSelected } from "./../services/treeview-interactions";
     export let name;
+    export let path;
+    
     $: type = name.slice(name.lastIndexOf('.') + 1);
+    
+    const selectFile = () => {
+        OnFileSelected(path);
+    }
 </script>
 
-<span>{name}</span>
+<span on:click={selectFile}>{name}</span>
 
 <style>
     span {

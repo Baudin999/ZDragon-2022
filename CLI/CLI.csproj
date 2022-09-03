@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Compiler\Compiler.csproj" />
+      <ProjectReference Include="..\UI\UI.csproj" />
     </ItemGroup>
 
 </Project>

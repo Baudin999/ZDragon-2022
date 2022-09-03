@@ -1,20 +1,22 @@
 ﻿<script>
-	var config = null;
+	import Editor from "../components/Editor.svelte";
+	import { state } from "./../services/code";
+	export let location;
 	
-	fetch("/project")
-			.then(r => r.json())
-			.then(r => {
-				config = r;
-			});
+	// the origin of the navigation, this way we can go back easilly.
+	let origin = location.origin;
+	
+	// the code
+	let text = "";
+	
+	state.subscribe(({ code }) => {
+		text = code;
+	});
 	
 </script>
 
 <div>
-	Editor
-
-	{#if config}
-		<div class="config">{config.path}</div>
-	{/if}
+	<Editor {text} />
 </div>
 
 <style lang="less">

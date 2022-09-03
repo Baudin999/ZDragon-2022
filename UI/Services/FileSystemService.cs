@@ -15,6 +15,7 @@ public class FileSystemService
             {
                 Name = Path.GetFileName(directory),
                 Type = "directory",
+                Path = directory,
                 Children = GetFileSystemObjects(directory)
             };
             fileSystemObjects.Add(fileSystemObject);
@@ -24,7 +25,8 @@ public class FileSystemService
             var fileSystemObject = new FileSystemObject
             {
                 Name = Path.GetFileName(file),
-                Type = "file"
+                Type = "file",
+                Path = file
             };
             fileSystemObjects.Add(fileSystemObject);
         }
@@ -35,9 +37,10 @@ public class FileSystemService
 
     public class FileSystemObject
     {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public List<FileSystemObject> Children { get; set; }    
+        public string Name { get; set; } = default!;
+        public string Type { get; set; } = default!;
+        public string Path { get; set; } = default!;
+        public List<FileSystemObject> Children { get; set; } = default!;    
     }
 
 }

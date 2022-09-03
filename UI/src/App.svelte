@@ -20,7 +20,6 @@
 	}).then(r => r.json())
 			.then(r => {
 				root = r;
-				console.log(root);
 			});
 
 
@@ -47,7 +46,7 @@
 	<span class="material-symbols-outlined">settings</span>
 	<span class="material-symbols-outlined">favorite</span>
 	
-	
+	<br />
 	<Folder name="Treeview" files={root} expanded />
 	
 </main>

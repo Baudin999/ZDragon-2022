@@ -2,5 +2,5 @@
 
 public class SessionParameters
 {
-    public string ProjectDirectory { get; set; }
+    public string ProjectDirectory { get; set; } = "";
 }

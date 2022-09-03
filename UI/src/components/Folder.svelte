@@ -19,7 +19,7 @@
                 {#if file.children}
                     <svelte:self name={file.name} files={file.children}/>
                 {:else}
-                    <File name={file.name}/>
+                    <File name={file.name} path="{file.path}"/>
                 {/if}
             </li>
         {/each}
