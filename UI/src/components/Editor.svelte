@@ -54,7 +54,7 @@
         editor = null;
     });
     
-    $: if (text && editor) {
+    $: if (text !== undefined && text !== null && editor) {
         editor.setValue(text);
     }
 

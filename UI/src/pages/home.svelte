@@ -1,11 +1,17 @@
 ﻿<script>
-	import {setDirectory} from "../services/file";
+	import { fileState, setDirectory } from "../services/file";
 
 	let path = "";
 	
 	const submitPath = () => {
 		setDirectory(path);
 	};
+	
+	fileState.subscribe((state) => {
+		if (state.directory) {
+			path = state.directory;
+		}
+	});
 </script>
 
 <div>

@@ -1,13 +1,14 @@
 ﻿import eventbus from "./eventbus";
 import { writable, get as _get } from "svelte/store";
 
+
+
 export const fileState = writable({
     directory: "",
     currentPath: "",
     text: "",
     files: []
 });
-
 
 export function OnFileSelected(path) {
     const state = _get(fileState);
@@ -25,7 +26,14 @@ export function OnFileSelected(path) {
     })
         .then(response => response.text())
         .then(data => {
+            localStorage.setItem("currentPath", path);
             setText(data);
+        })
+        .catch(error => {
+            state.currentPath = "";
+            state.text = "";
+            console.error('Error fetching data:', error);
+            localStorage.removeItem("currentPath");
         });
 }
 
@@ -37,7 +45,8 @@ export function setText(text) {
 }
 
 export function setDirectory(directory) {
-    const state = _get(fileState);
+    
+    localStorage.setItem("directory", directory);
 
     // set the current project path
     fetch("/project", {
@@ -50,10 +59,8 @@ export function setDirectory(directory) {
         .then(r => r.json())
         .then(r => {
             fileState.update(s => {
-                return {
-                    ...s,
-                    files: r
-                }
+                s.files = r;
+                return s;
             });
         });
 
@@ -63,4 +70,18 @@ export function init() {
     eventbus.subscribe(eventbus.EVENTS.SAVING, (data) => {
         console.log("Saving", data);
     });
+
+
+    if (localStorage.getItem("directory")) {
+        fileState.update(state => {
+            state.directory = localStorage.getItem("directory");
+            setDirectory(state.directory);
+            
+            if (localStorage.getItem("currentPath")) {
+                OnFileSelected(localStorage.getItem("currentPath"));
+            }
+            return state;
+        });
+    }
+    
 }

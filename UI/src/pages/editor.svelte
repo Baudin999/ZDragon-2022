@@ -16,7 +16,6 @@
 	let text = "";
 
 	fileState.subscribe(state => {
-		console.log(state);
 		text = state.text;
 	});
 
@@ -28,7 +27,17 @@
 		<FileExplorer />
 	</div>
 	<div class="editor">
-		<Editor {text} />
+		<div class="editor-container">
+			<div class="header">
+				Filename: {$fileState.currentPath}
+			</div>
+			<div class="middle">
+				<Editor {text} />
+			</div>
+			<div class="footer">
+				Footer
+			</div>
+			</div>
 	</div>
 	<div class="result">
 		Result
@@ -49,6 +58,21 @@
 	}
 	.editor {
 		grid-area: editor;
+		.editor-container {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			
+			.header, .footer {
+				flex: 0;
+				padding: 0 0.5rem 0.5rem 27px;
+			}
+
+			.middle {
+				flex: 1;
+			}
+		}
+		
 	}
 	.result {
 		grid-area: result;
