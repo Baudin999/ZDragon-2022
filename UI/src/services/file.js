@@ -1,6 +1,5 @@
 ﻿import eventbus from "./eventbus";
 import { writable, get as _get } from "svelte/store";
-import error from "svelte/types/compiler/utils/error";
 
 
 

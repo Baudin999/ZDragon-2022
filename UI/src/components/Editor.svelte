@@ -3,6 +3,8 @@
     import { writable } from "svelte/store";
     import eventbus from "../services/eventbus";
     
+    let monaco = window.monaco;
+    
     export let text = "";
     export let language = "carlang";
     export let theme = "carlangTheme";

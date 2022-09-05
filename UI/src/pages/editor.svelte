@@ -28,16 +28,13 @@
 	</div>
 	<div class="editor">
 		<div class="editor-container">
-			<div class="header">
+			<div class="editor-header">
 				Filename: {$fileState.currentPath}
 			</div>
-			<div class="middle">
+			<div class="editor-middle">
 				<Editor {text} />
 			</div>
-			<div class="footer">
-				Footer
-			</div>
-			</div>
+		</div>
 	</div>
 	<div class="result">
 		Result
@@ -63,12 +60,12 @@
 			display: flex;
 			flex-direction: column;
 			
-			.header, .footer {
+			.editor-header {
 				flex: 0;
 				padding: 0 0.5rem 0.5rem 27px;
 			}
 
-			.middle {
+			.editor-middle {
 				flex: 1;
 			}
 		}

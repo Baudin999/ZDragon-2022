@@ -14,20 +14,37 @@
 </script>
 
 <main>
-	<Router {url}>
-		<nav>
-			<Link to="/">Home</Link>
-			<Link to="about">About</Link>
-			<Link to="editor">Editor</Link>
-			<Link to="lexicon">Lexicon</Link>
-		</nav>
-		<div class="main-container">
-			<Route path="editor" component={Editor} />
-			<Route path="about" component={About} />
-			<Route path="lexicon" component={Lexicon} />
-			<Route path="/"><Home /></Route>
+	<div class="container">
+		<div class="root header">
+			Header
 		</div>
-	</Router>
+		<div class="root middle">
+			<Router {url}>
+				<div class="navigation">
+					<nav>
+						<Link to="/">Home</Link>
+						<Link to="about">About</Link>
+						<Link to="editor">Editor</Link>
+						<Link to="lexicon">Lexicon</Link>
+					</nav>
+				</div>
+				<div class="main-content">
+						<div class="main-container">
+							<Route path="editor" component={Editor} />
+							<Route path="about" component={About} />
+							<Route path="lexicon" component={Lexicon} />
+							<Route path="/"><Home /></Route>
+						</div>
+				</div>
+			</Router>
+		</div>
+		<div class="root footer">
+			Footer
+		</div>
+	</div>
+	
+	
+	
 
 <!--	<span class="material-symbols-outlined">search</span>-->
 <!--	<span class="material-symbols-outlined">home</span>-->
@@ -39,9 +56,38 @@
 
 <style lang="less" global>
 	@import "./styles/main.less";
-	.main-container {
+	
+	.container {
+		display: flex;
+		flex-direction: column;
 		height: 100%;
-		width: 100%;
-		overflow: hidden;
+		
+		.root.header, .root.footer {
+			padding: 0.5rem;
+			flex: 0;
+		}
+		.root.header {
+			background: @sec-background;
+		}
+		.root.middle {
+			height: 100%;
+			flex: 1;
+			display: flex;
+			flex-direction: row;
+			background: @primary-background;
+			
+			.navigation {
+				flex: 0;
+				min-width: 50px;
+			}
+			.main-content {
+				flex: 1;
+				height: 100%;
+				.main-container {
+					height: 100%;
+				}
+			}
+		}
+		
 	}
 </style>

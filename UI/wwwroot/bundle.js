@@ -2531,7 +2531,7 @@ var app = (function () {
     			div = element("div");
     			attr_dev(div, "class", "editor svelte-b3bzf");
     			attr_dev(div, "id", /*id*/ ctx[1]);
-    			add_location(div, file$5, 87, 0, 2441);
+    			add_location(div, file$5, 89, 0, 2478);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2565,6 +2565,7 @@ var app = (function () {
     function instance$6($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Editor', slots, []);
+    	let monaco = window.monaco;
     	let { text = "" } = $$props;
     	let { language = "carlang" } = $$props;
     	let { theme = "carlangTheme" } = $$props;
@@ -2666,6 +2667,7 @@ var app = (function () {
     		onDestroy,
     		writable,
     		eventbus: eventbus$1,
+    		monaco,
     		text,
     		language,
     		theme,
@@ -2678,6 +2680,7 @@ var app = (function () {
     	});
 
     	$$self.$inject_state = $$props => {
+    		if ('monaco' in $$props) monaco = $$props.monaco;
     		if ('text' in $$props) $$invalidate(2, text = $$props.text);
     		if ('language' in $$props) $$invalidate(3, language = $$props.language);
     		if ('theme' in $$props) $$invalidate(4, theme = $$props.theme);
@@ -3513,12 +3516,12 @@ var app = (function () {
 
     function create_fragment$2(ctx) {
     	let t0;
-    	let div7;
+    	let div6;
     	let div0;
     	let fileexplorer;
     	let t1;
-    	let div5;
     	let div4;
+    	let div3;
     	let div1;
     	let t2;
     	let t3_value = /*$fileState*/ ctx[1].currentPath + "";
@@ -3527,9 +3530,7 @@ var app = (function () {
     	let div2;
     	let editor;
     	let t5;
-    	let div3;
-    	let t7;
-    	let div6;
+    	let div5;
     	let current;
     	fileexplorer = new FileExplorer({ $$inline: true });
 
@@ -3541,12 +3542,12 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			t0 = space();
-    			div7 = element("div");
+    			div6 = element("div");
     			div0 = element("div");
     			create_component(fileexplorer.$$.fragment);
     			t1 = space();
-    			div5 = element("div");
     			div4 = element("div");
+    			div3 = element("div");
     			div1 = element("div");
     			t2 = text("Filename: ");
     			t3 = text(t3_value);
@@ -3554,49 +3555,42 @@ var app = (function () {
     			div2 = element("div");
     			create_component(editor.$$.fragment);
     			t5 = space();
-    			div3 = element("div");
-    			div3.textContent = "Footer";
-    			t7 = space();
-    			div6 = element("div");
-    			div6.textContent = "Result";
-    			attr_dev(div0, "class", "treeview svelte-xkapap");
+    			div5 = element("div");
+    			div5.textContent = "Result";
+    			attr_dev(div0, "class", "treeview svelte-u6cepw");
     			add_location(div0, file$2, 25, 1, 484);
-    			attr_dev(div1, "class", "header svelte-xkapap");
+    			attr_dev(div1, "class", "editor-header svelte-u6cepw");
     			add_location(div1, file$2, 30, 3, 592);
-    			attr_dev(div2, "class", "middle svelte-xkapap");
-    			add_location(div2, file$2, 33, 3, 665);
-    			attr_dev(div3, "class", "footer svelte-xkapap");
-    			add_location(div3, file$2, 36, 3, 721);
-    			attr_dev(div4, "class", "editor-container svelte-xkapap");
-    			add_location(div4, file$2, 29, 2, 558);
-    			attr_dev(div5, "class", "editor svelte-xkapap");
-    			add_location(div5, file$2, 28, 1, 535);
-    			attr_dev(div6, "class", "result svelte-xkapap");
-    			add_location(div6, file$2, 41, 1, 782);
-    			attr_dev(div7, "class", "container svelte-xkapap");
-    			add_location(div7, file$2, 24, 0, 459);
+    			attr_dev(div2, "class", "editor-middle svelte-u6cepw");
+    			add_location(div2, file$2, 33, 3, 672);
+    			attr_dev(div3, "class", "editor-container svelte-u6cepw");
+    			add_location(div3, file$2, 29, 2, 558);
+    			attr_dev(div4, "class", "editor svelte-u6cepw");
+    			add_location(div4, file$2, 28, 1, 535);
+    			attr_dev(div5, "class", "result svelte-u6cepw");
+    			add_location(div5, file$2, 38, 1, 750);
+    			attr_dev(div6, "class", "container svelte-u6cepw");
+    			add_location(div6, file$2, 24, 0, 459);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, t0, anchor);
-    			insert_dev(target, div7, anchor);
-    			append_dev(div7, div0);
+    			insert_dev(target, div6, anchor);
+    			append_dev(div6, div0);
     			mount_component(fileexplorer, div0, null);
-    			append_dev(div7, t1);
-    			append_dev(div7, div5);
-    			append_dev(div5, div4);
-    			append_dev(div4, div1);
+    			append_dev(div6, t1);
+    			append_dev(div6, div4);
+    			append_dev(div4, div3);
+    			append_dev(div3, div1);
     			append_dev(div1, t2);
     			append_dev(div1, t3);
-    			append_dev(div4, t4);
-    			append_dev(div4, div2);
+    			append_dev(div3, t4);
+    			append_dev(div3, div2);
     			mount_component(editor, div2, null);
-    			append_dev(div4, t5);
-    			append_dev(div4, div3);
-    			append_dev(div7, t7);
-    			append_dev(div7, div6);
+    			append_dev(div6, t5);
+    			append_dev(div6, div5);
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
@@ -3618,7 +3612,7 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(div7);
+    			if (detaching) detach_dev(div6);
     			destroy_component(fileexplorer);
     			destroy_component(editor);
     		}
@@ -3786,7 +3780,7 @@ var app = (function () {
     /* src/App.svelte generated by Svelte v3.49.0 */
     const file = "src/App.svelte";
 
-    // (19:3) <Link to="/">
+    // (25:6) <Link to="/">
     function create_default_slot_5(ctx) {
     	let t;
 
@@ -3806,14 +3800,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_5.name,
     		type: "slot",
-    		source: "(19:3) <Link to=\\\"/\\\">",
+    		source: "(25:6) <Link to=\\\"/\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (20:3) <Link to="about">
+    // (26:6) <Link to="about">
     function create_default_slot_4(ctx) {
     	let t;
 
@@ -3833,14 +3827,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_4.name,
     		type: "slot",
-    		source: "(20:3) <Link to=\\\"about\\\">",
+    		source: "(26:6) <Link to=\\\"about\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (21:3) <Link to="editor">
+    // (27:6) <Link to="editor">
     function create_default_slot_3(ctx) {
     	let t;
 
@@ -3860,14 +3854,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_3.name,
     		type: "slot",
-    		source: "(21:3) <Link to=\\\"editor\\\">",
+    		source: "(27:6) <Link to=\\\"editor\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (22:3) <Link to="lexicon">
+    // (28:6) <Link to="lexicon">
     function create_default_slot_2(ctx) {
     	let t;
 
@@ -3887,14 +3881,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_2.name,
     		type: "slot",
-    		source: "(22:3) <Link to=\\\"lexicon\\\">",
+    		source: "(28:6) <Link to=\\\"lexicon\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (28:3) <Route path="/">
+    // (36:7) <Route path="/">
     function create_default_slot_1(ctx) {
     	let home;
     	let current;
@@ -3926,15 +3920,16 @@ var app = (function () {
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(28:3) <Route path=\\\"/\\\">",
+    		source: "(36:7) <Route path=\\\"/\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (17:1) <Router {url}>
+    // (22:3) <Router {url}>
     function create_default_slot(ctx) {
+    	let div0;
     	let nav;
     	let link0;
     	let t0;
@@ -3944,7 +3939,8 @@ var app = (function () {
     	let t2;
     	let link3;
     	let t3;
-    	let div;
+    	let div2;
+    	let div1;
     	let route0;
     	let t4;
     	let route1;
@@ -4016,6 +4012,7 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			div0 = element("div");
     			nav = element("nav");
     			create_component(link0.$$.fragment);
     			t0 = space();
@@ -4025,7 +4022,8 @@ var app = (function () {
     			t2 = space();
     			create_component(link3.$$.fragment);
     			t3 = space();
-    			div = element("div");
+    			div2 = element("div");
+    			div1 = element("div");
     			create_component(route0.$$.fragment);
     			t4 = space();
     			create_component(route1.$$.fragment);
@@ -4033,12 +4031,17 @@ var app = (function () {
     			create_component(route2.$$.fragment);
     			t6 = space();
     			create_component(route3.$$.fragment);
-    			add_location(nav, file, 17, 2, 308);
-    			attr_dev(div, "class", "main-container");
-    			add_location(div, file, 23, 2, 458);
+    			add_location(nav, file, 23, 5, 442);
+    			attr_dev(div0, "class", "navigation");
+    			add_location(div0, file, 22, 4, 412);
+    			attr_dev(div1, "class", "main-container");
+    			add_location(div1, file, 31, 6, 653);
+    			attr_dev(div2, "class", "main-content");
+    			add_location(div2, file, 30, 4, 620);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, nav, anchor);
+    			insert_dev(target, div0, anchor);
+    			append_dev(div0, nav);
     			mount_component(link0, nav, null);
     			append_dev(nav, t0);
     			mount_component(link1, nav, null);
@@ -4047,14 +4050,15 @@ var app = (function () {
     			append_dev(nav, t2);
     			mount_component(link3, nav, null);
     			insert_dev(target, t3, anchor);
-    			insert_dev(target, div, anchor);
-    			mount_component(route0, div, null);
-    			append_dev(div, t4);
-    			mount_component(route1, div, null);
-    			append_dev(div, t5);
-    			mount_component(route2, div, null);
-    			append_dev(div, t6);
-    			mount_component(route3, div, null);
+    			insert_dev(target, div2, anchor);
+    			append_dev(div2, div1);
+    			mount_component(route0, div1, null);
+    			append_dev(div1, t4);
+    			mount_component(route1, div1, null);
+    			append_dev(div1, t5);
+    			mount_component(route2, div1, null);
+    			append_dev(div1, t6);
+    			mount_component(route3, div1, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
@@ -4118,13 +4122,13 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(nav);
+    			if (detaching) detach_dev(div0);
     			destroy_component(link0);
     			destroy_component(link1);
     			destroy_component(link2);
     			destroy_component(link3);
     			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(div2);
     			destroy_component(route0);
     			destroy_component(route1);
     			destroy_component(route2);
@@ -4136,7 +4140,7 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(17:1) <Router {url}>",
+    		source: "(22:3) <Router {url}>",
     		ctx
     	});
 
@@ -4145,7 +4149,13 @@ var app = (function () {
 
     function create_fragment(ctx) {
     	let main;
+    	let div3;
+    	let div0;
+    	let t1;
+    	let div1;
     	let router;
+    	let t2;
+    	let div2;
     	let current;
 
     	router = new Router({
@@ -4160,7 +4170,23 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			main = element("main");
+    			div3 = element("div");
+    			div0 = element("div");
+    			div0.textContent = "Header";
+    			t1 = space();
+    			div1 = element("div");
     			create_component(router.$$.fragment);
+    			t2 = space();
+    			div2 = element("div");
+    			div2.textContent = "Footer";
+    			attr_dev(div0, "class", "root header");
+    			add_location(div0, file, 17, 2, 317);
+    			attr_dev(div1, "class", "root middle");
+    			add_location(div1, file, 20, 2, 364);
+    			attr_dev(div2, "class", "root footer");
+    			add_location(div2, file, 40, 2, 920);
+    			attr_dev(div3, "class", "container");
+    			add_location(div3, file, 16, 1, 291);
     			add_location(main, file, 15, 0, 283);
     		},
     		l: function claim(nodes) {
@@ -4168,7 +4194,13 @@ var app = (function () {
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, main, anchor);
-    			mount_component(router, main, null);
+    			append_dev(main, div3);
+    			append_dev(div3, div0);
+    			append_dev(div3, t1);
+    			append_dev(div3, div1);
+    			mount_component(router, div1, null);
+    			append_dev(div3, t2);
+    			append_dev(div3, div2);
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
