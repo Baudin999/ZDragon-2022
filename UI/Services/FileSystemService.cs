@@ -17,9 +17,12 @@ public class FileSystemService
         var files = Directory.GetFiles(path);
         foreach (var directory in directories)
         {
+            var name = Path.GetFileName(directory);
+            if (name.StartsWith(".")) continue;
+            
             var fileSystemObject = new FileSystemObject
             {
-                Name = Path.GetFileName(directory),
+                Name = name,
                 Type = "directory",
                 Path = directory,
                 Children = GetFileSystemObjects(directory)

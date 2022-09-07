@@ -6,11 +6,10 @@ import { writable, get as _get } from "svelte/store";
 export const fileState = writable({
     directory: "",
     currentPath: "",
-    text: "",
-    files: []
+    text: ""
 });
 
-export function OnFileSelected(path) {
+export function setFilePath(path) {
     const state = _get(fileState);
     
     if (path === state.currentPath) return;
@@ -51,26 +50,28 @@ export function setErrors(errors) {
     })
 }
 
-export function setDirectory(directory) {
+export async function setDirectory(directory) {
     
     localStorage.setItem("directory", directory);
 
     // set the current project path
-    fetch("/project", {
+    let result = await fetch("/project", {
         method: 'PUT',
         headers:{
             'Content-Type':'application/json'
         },
         body: JSON.stringify({path: directory})
-    })
-        .then(r => r.json())
-        .then(r => {
-            fileState.update(s => {
-                s.files = r;
-                return s;
-            });
-        });
-
+    });
+    let obj = await result.json();
+    
+    fileState.update(s => {
+        s.files = obj;
+        s.currentPath = "";
+        s.text = "";
+        s.directory = directory;
+        return s;
+    });
+    
 }
 
 function saveText(text) {
@@ -98,23 +99,17 @@ function saveText(text) {
         .catch(console.log);
 }
 
-export function init() {
+export async function init() {
     eventbus.subscribe(eventbus.EVENTS.SAVING, (data) => {
         // console.log("Saving", data);
         saveText(data);
     });
-
-
+    
     if (localStorage.getItem("directory")) {
-        fileState.update(state => {
-            state.directory = localStorage.getItem("directory");
-            setDirectory(state.directory);
-            
-            if (localStorage.getItem("currentPath")) {
-                OnFileSelected(localStorage.getItem("currentPath"));
-            }
-            return state;
-        });
+        await setDirectory(localStorage.getItem("directory"));
+    }
+    if (localStorage.getItem("currentPath")) {
+        setFilePath(localStorage.getItem("currentPath"));
     }
     
 }

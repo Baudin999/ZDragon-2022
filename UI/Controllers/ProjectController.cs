@@ -34,7 +34,7 @@ public class ProjectController : ControllerBase
         if (!string.IsNullOrEmpty(projectSelector.Path))
         {
             _sessionParameters.ProjectDirectory = projectSelector.Path;
-        return new FileSystemService().GetFileSystemObjects(projectSelector.Path);
+            return new FileSystemService().GetFileSystemObjects(projectSelector.Path);
         }
 
         return new List<FileSystemService.FileSystemObject>();

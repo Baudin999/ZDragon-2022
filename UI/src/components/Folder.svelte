@@ -3,7 +3,7 @@
 
     export let expanded = false;
     export let name;
-    export let files;
+    export let files = [];
 
     function toggle() {
         expanded = !expanded;

@@ -14,17 +14,13 @@
 	
 	// the code
 	let text = "";
-
-	fileState.subscribe(state => {
-		text = state.text;
-	});
-
-	
+		
 </script>
+
 
 <div class="container">
 	<div class="treeview">
-		<FileExplorer />
+		<FileExplorer files={$fileState.files} />
 	</div>
 	<div class="editor">
 		<div class="editor-container">
@@ -32,7 +28,7 @@
 				Filename: {$fileState.currentPath}
 			</div>
 			<div class="editor-middle">
-				<Editor {text} />
+				<Editor text={$fileState.text} />
 			</div>
 		</div>
 	</div>
@@ -40,6 +36,7 @@
 		Result
 	</div>
 </div>
+
 
 <style lang="less">
 	.container {
@@ -62,7 +59,8 @@
 			
 			.editor-header {
 				flex: 0;
-				padding: 0 0.5rem 0.5rem 27px;
+				padding: 0.5rem 0.5rem 0.5rem 30px;
+				font-family: monospace;
 			}
 
 			.editor-middle {
