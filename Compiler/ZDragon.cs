@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Compiler.Resolvers;
+using Compiler.Transpilers;
 
 [assembly:InternalsVisibleTo("Compiler.Tests")]
 namespace Compiler
@@ -14,6 +15,7 @@ namespace Compiler
         private Parser? Parser { get; set; }
         public List<AstNode> Nodes => Module.Nodes;
         public List<AstNode> Imports = new List<AstNode>();
+        public List<AstNode> AllNodes => Nodes.Concat(Imports).ToList();
 
         private ErrorSink _errorSink = new ErrorSink();
         public List<Error> Errors => _errorSink.Errors;
@@ -61,6 +63,12 @@ namespace Compiler
         {
             _basePath = basePath;
             _outputPath = Path.Combine(basePath, ".out");
+
+            if (!Directory.Exists(_basePath))
+                Directory.CreateDirectory(_basePath);
+            if (!Directory.Exists(_outputPath))
+                Directory.CreateDirectory(_outputPath);
+            
             Module = new TextModule("", "");
             _resolver = resolver;
         }
@@ -125,6 +133,21 @@ namespace Compiler
             var errors = typeChecker.Check(); // type-check errors
 
             return this;
+        }
+
+        public async Task MainPage()
+        {
+            var html = new HtmlTranspiler().Run(this.AllNodes);
+            var path = Path.Combine(_outputPath, Module.Namespace, "index.html");
+            await FileHelpers.SaveFileAsync(path, html);
+        }
+
+        public async Task ComponentDiagram()
+        {
+            var plantuml = new ArchitectureTranspiler().Run(this.AllNodes);
+            var bytes = await TranspilationService.ToSvg(plantuml);
+            var path = Path.Combine(_outputPath, Module.Namespace, "components.svg");
+            await FileHelpers.SaveFileAsync(path, bytes);
         }
 
         private void MergeExtensions(IModule module)

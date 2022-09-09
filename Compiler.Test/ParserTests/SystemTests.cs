@@ -82,4 +82,33 @@ system Foo
         Assert.Single(zdragon.Errors);
         Assert.Equal("Expected '=' after 'system'", zdragon.Errors[0].Message);
     }
+    
+    [Fact]
+    public async void ComponentInsideSystem()
+    {
+        const string code = @"
+system Container =
+    Contains:
+        - ProfileStore
+
+@ The profile Store
+component ProfileStore =
+    Title: Profile Store
+    Description: This is the description 
+        of the Profile Strore
+
+";
+
+        var zdragon = await new ZDragon().Compile(code);
+
+        Assert.NotNull(zdragon);
+        Assert.NotNull(zdragon.Nodes);
+        Assert.Equal(2, zdragon.Nodes.Count);
+        Assert.IsType<SystemNode>(zdragon.Nodes[0]);
+
+        var systemNode = (SystemNode)zdragon.Nodes[0];
+        Assert.Equal("Container",systemNode.Id);
+
+        Assert.Empty(zdragon.Errors);
+    }
 }

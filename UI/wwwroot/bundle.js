@@ -2275,16 +2275,20 @@ var app = (function () {
 
     function saveText(text) {
         const state = get_store_value(fileState);
+        let body = {
+            path: state.currentPath,
+            text,
+            root: state.directory
+        };
+        
+        console.log(body);
         
         fetch('/file', {
             method: 'PUT',
             headers:{
                 'Content-Type':'application/json'
             },
-            body: JSON.stringify({
-                path: state.currentPath,
-                text
-            })
+            body: JSON.stringify(body)
         })
             .then(r => r.json())
             .then(r => {

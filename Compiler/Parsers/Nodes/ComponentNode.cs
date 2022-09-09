@@ -1,6 +1,6 @@
 ﻿namespace Compiler.Parsers.Nodes
 {
-    public class ComponentNode : AttributesNode<ComponentAttribute>
+    public class ComponentNode : AttributesNode<ComponentAttribute>, IArchitectureNode
     {
       
         [JsonConstructor]
@@ -9,9 +9,5 @@
             base(idToken, attributes, extensionTokens, annotationTokens)
         {
         }
-
-        
-        
-        
     }
 }

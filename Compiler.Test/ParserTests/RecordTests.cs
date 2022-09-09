@@ -113,5 +113,6 @@ record Person =
         & max 12
     LastName: String & min 2 & default ""asdadsas""
 ";
+        Assert.NotNull(code);
     }
 }

@@ -4,7 +4,7 @@ namespace Compiler.Resolvers;
 
 public static class FileHelpers
 {
-    public static readonly JsonSerializerSettings JsonSerializationSettings = new JsonSerializerSettings
+    private static readonly JsonSerializerSettings JsonSerializationSettings = new JsonSerializerSettings
     {
         TypeNameHandling = TypeNameHandling.Objects,
         MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead,
@@ -15,6 +15,27 @@ public static class FileHelpers
             new Newtonsoft.Json.Converters.StringEnumConverter()
         }
     };
+    
+    public static string GenerateNamespaceFromFileName(string basePath, string fileName)
+    {
+        var relativePath = Path.GetRelativePath(basePath, fileName);
+        var pathWithoutExtension = Path.ChangeExtension(relativePath, null);
+        var namespaceParts = pathWithoutExtension.Split(Path.DirectorySeparatorChar);
+        var namespaceName = string.Join(".", namespaceParts);
+        return namespaceName;    
+    }
+    
+    public static string SystemBasePath(string basePath)
+    {
+        if (!Environment.OSVersion.ToString().ToLower().Contains("win") && basePath.StartsWith("~"))
+        {
+            var userProfileFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            basePath = Path.Combine(userProfileFolder, basePath.Replace("~", "").Substring(1));
+        }
+
+        return basePath;
+    }
+
 
     public static async Task<string?> ReadFileAsync(string path)
     {

@@ -13,10 +13,10 @@ public class TextModule : IModule
     }
 
     
-    public TextModule(string name, string text)
+    public TextModule(string @namespace, string text)
     {
         this.Text = text;
-        this.Namespace = name;
+        this.Namespace = @namespace;
         this._nodes = new List<AstNode>();
 
         var errorSink = new ErrorSink();

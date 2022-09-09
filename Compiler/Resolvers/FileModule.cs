@@ -18,11 +18,11 @@ public class FileModule : IModule
         set => _nodes = value;
     }
 
-    public FileModule(string basePath, string fileName, string name)
+    public FileModule(string basePath, string filePath, string? text = null)
     {
-        Namespace = name;
-        Text = "";
-        _filePath = Path.Combine(basePath, fileName);
+        Namespace = FileHelpers.GenerateNamespaceFromFileName(basePath, filePath);
+        Text = text ?? "";
+        _filePath = Path.Combine(basePath, filePath);
         _nodes = new List<AstNode>();
         _basePath = basePath;
     }
@@ -31,9 +31,16 @@ public class FileModule : IModule
     {
         Text = await FileHelpers.ReadFileAsync(_filePath) ?? "";
     }
+
+    public async Task SaveText()
+    {
+        await FileHelpers.SaveFileAsync(_filePath, Text);
+    }
     
     public async Task<FileModule> Init()
     {
+        // load the pre-compiled AST from teh file system.
+        
         var jsonPath = Path.Combine(
             _basePath,
             ".bin",
