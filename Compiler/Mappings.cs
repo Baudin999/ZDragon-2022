@@ -8,6 +8,38 @@ namespace Compiler
 {
     internal static class Mappings
     {
+        public static List<int> Operators = new List<int> {
+            0x26,               // &
+            0x2A,               // *
+            0x40,               // @
+            0x5C,               // \
+            0x60,               // `
+            0x7C,               // |
+            0x5E,               // ^
+            0x7D,               // }
+            0x5D,               // ]
+            0x29,               // )
+            0x3A,               // :
+            0x2C,               // ,
+            0x2E,               // .
+            0x22,               // "
+            0x3D,               // =
+            0x21,               // !
+            0x3E,               // >
+            0x23,               // #
+            0x3C,               // <
+            0x2D,               // -
+            0x7B,               // {
+            0x5B,               // [
+            0x28,               // (
+            0x25,               // %
+            0x2B,               // +
+            0x3F,               // ?
+            0x3B,               // ;
+            0x27,               // '
+            0x2F,               // /
+            0x7E                // ~
+        };
         internal static List<int> Letters = new List<int> {
             0x61, // a
             0x62, // b
@@ -76,6 +108,84 @@ namespace Compiler
             0x38, // 8
             0x39, // 9
         };
+        
+        public static Dictionary<string, TokenKind> CombinedOperatorDefinitions = new Dictionary<string, TokenKind> {
+                { "=>", TokenKind.Lambda },
+                { "::", TokenKind.TypeDef }
+            };
+
+        public static Dictionary<string, TokenKind> SingleOperatorDefinitions = new Dictionary<string, TokenKind> {
+                { "=", TokenKind.Equal },
+                { ">", TokenKind.GreaterThen },
+                { "<", TokenKind.LessThen },
+                { "(", TokenKind.LeftParen },
+                { ")", TokenKind.RightParen },
+                { "{", TokenKind.LeftBrace },
+                { "}", TokenKind.RightBrace },
+                { "\"", TokenKind.DoubleQuote },
+                { "'", TokenKind.Quote },
+                { "+", TokenKind.Plus },
+                { "-", TokenKind.Minus },
+                { "*", TokenKind.Star },
+                { "/", TokenKind.Slash },
+                { "\\", TokenKind.Backslash },
+                { ",", TokenKind.Comma },
+                { ".", TokenKind.Dot },
+                { "^", TokenKind.Pow },
+                { "~", TokenKind.Tilde },
+                { "#", TokenKind.Hash },
+                { "|", TokenKind.Or },
+                { "&", TokenKind.And },
+                { ":", TokenKind.Colon },
+                { "%", TokenKind.Percentage },
+                { "`", TokenKind.Apostrophe },
+                { ";", TokenKind.SemiColon },
+                { "@", TokenKind.At }
+            };
+
+
+        public static Dictionary<string, TokenKind> Keywords = new Dictionary<string, TokenKind> {
+                // type system 
+                { "record", TokenKind.KWRecord },
+                { "type", TokenKind.KWType },
+                { "data", TokenKind.KWData },
+                { "choice", TokenKind.KWChoice },
+                { "open", TokenKind.KWOpen },
+                { "extends", TokenKind.KWExtends },
+                { "aggregate", TokenKind.KWAggregate },
+
+                // doc types
+                { "view", TokenKind.KWView },
+                { "guideline", TokenKind.KWGuideline },
+                { "requirement", TokenKind.KWRequirement },
+                { "include", TokenKind.KWInclude },
+                { "image", TokenKind.KWImage },
+
+                // architecture
+                { "person", TokenKind.KWPerson },
+                { "system", TokenKind.KWSystem },
+                { "component", TokenKind.KWComponent },
+                { "endpoint", TokenKind.KWEndpoint },
+                { "interaction", TokenKind.KWInteraction },
+                { "business", TokenKind.KWBusiness },
+
+                // planning
+                { "roadmap",    TokenKind.KWRoadmap },
+                { "milestone",  TokenKind.KWMilestone },
+                { "task",       TokenKind.KWTask },
+
+                // flow
+                { "flow", TokenKind.KWFlow },
+                { "if", TokenKind.KWIf },
+                { "else", TokenKind.KWElse },
+                { "where", TokenKind.KWWhere },
+                { "while", TokenKind.KWWhile },
+                { "let", TokenKind.KWLet },
+                { "end", TokenKind.KWEnd },
+
+                // rendering
+                { "hidden", TokenKind.KWHidden }
+            };
     }
 }
 

@@ -51,7 +51,7 @@ namespace Compiler
             var line = 0;
             var column = 0;
 
-            var add = (TokenType t, char c) =>
+            var add = (TokenKind t, char c) =>
             {
                 tokens.Add(new Token(t, c, line, column));
                 index++;
@@ -108,45 +108,45 @@ namespace Compiler
                         indentDepth = 0;
                     }
                     
-                    tokens.Add(new Token(TokenType.NEWLINE, Environment.NewLine, line, column));
+                    tokens.Add(new Token(TokenKind.NEWLINE, Environment.NewLine, line, column));
 
                     index++;
                     line++;
                     column = 0;
                 }
-                else if (c == '>') add(TokenType.GreaterThen, c);
-                else if (c == '<') add(TokenType.LessThen, c);
-                else if (c == '\\') add(TokenType.Backslash, c);
-                else if (c == '/') add(TokenType.Slash, c);
-                else if (c == '=') add(TokenType.Equal, c);
-                else if (c == '*') add(TokenType.Star, c);
-                else if (c == '-') add(TokenType.Minus, c);
-                else if (c == '+') add(TokenType.Plus, c);
-                else if (c == '!') add(TokenType.Exclemation, c);
-                else if (c == '(') add(TokenType.LeftParen, c);
-                else if (c == ')') add(TokenType.RightParen, c);
-                else if (c == '{') add(TokenType.LeftBrace, c);
-                else if (c == '}') add(TokenType.RightBrace, c);
-                else if (c == '[') add(TokenType.LeftBracket, c);
-                else if (c == ']') add(TokenType.RightBracket, c);
-                else if (c == '^') add(TokenType.Pow, c);
-                else if (c == '@') add(TokenType.At, c);
-                else if (c == '!') add(TokenType.Exclamation, c);
-                else if (c == '~') add(TokenType.Tilde, c);
-                else if (c == '`') add(TokenType.Apostrophe, c);
-                else if (c == '$') add(TokenType.Dollar, c);
-                else if (c == '%') add(TokenType.Percentage, c);
-                else if (c == '#') add(TokenType.Hash, c);
-                else if (c == '&') add(TokenType.And, c);
-                else if (c == '|') add(TokenType.Or, c);
-                else if (c == '_') add(TokenType.Underscore, c);
-                else if (c == '.') add(TokenType.Dot, c);
-                else if (c == ',') add(TokenType.Comma, c);
-                else if (c == ':') add(TokenType.Colon, c);
-                else if (c == ';') add(TokenType.SemiColon, c);
-                else if (c == '\'') add(TokenType.Quote, c);
-                else if (c == '\"') add(TokenType.DoubleQuote, c);
-                else if (c == ' ') add(TokenType.SPACE, c);
+                else if (c == '>') add(TokenKind.GreaterThen, c);
+                else if (c == '<') add(TokenKind.LessThen, c);
+                else if (c == '\\') add(TokenKind.Backslash, c);
+                else if (c == '/') add(TokenKind.Slash, c);
+                else if (c == '=') add(TokenKind.Equal, c);
+                else if (c == '*') add(TokenKind.Star, c);
+                else if (c == '-') add(TokenKind.Minus, c);
+                else if (c == '+') add(TokenKind.Plus, c);
+                else if (c == '!') add(TokenKind.Exclemation, c);
+                else if (c == '(') add(TokenKind.LeftParen, c);
+                else if (c == ')') add(TokenKind.RightParen, c);
+                else if (c == '{') add(TokenKind.LeftBrace, c);
+                else if (c == '}') add(TokenKind.RightBrace, c);
+                else if (c == '[') add(TokenKind.LeftBracket, c);
+                else if (c == ']') add(TokenKind.RightBracket, c);
+                else if (c == '^') add(TokenKind.Pow, c);
+                else if (c == '@') add(TokenKind.At, c);
+                else if (c == '!') add(TokenKind.Exclamation, c);
+                else if (c == '~') add(TokenKind.Tilde, c);
+                else if (c == '`') add(TokenKind.Apostrophe, c);
+                else if (c == '$') add(TokenKind.Dollar, c);
+                else if (c == '%') add(TokenKind.Percentage, c);
+                else if (c == '#') add(TokenKind.Hash, c);
+                else if (c == '&') add(TokenKind.And, c);
+                else if (c == '|') add(TokenKind.Or, c);
+                else if (c == '_') add(TokenKind.Underscore, c);
+                else if (c == '.') add(TokenKind.Dot, c);
+                else if (c == ',') add(TokenKind.Comma, c);
+                else if (c == ':') add(TokenKind.Colon, c);
+                else if (c == ';') add(TokenKind.SemiColon, c);
+                else if (c == '\'') add(TokenKind.Quote, c);
+                else if (c == '\"') add(TokenKind.DoubleQuote, c);
+                else if (c == ' ') add(TokenKind.SPACE, c);
 
                 // test for language things
                 else if (isLeadingCharacter(c))
@@ -155,7 +155,7 @@ namespace Compiler
                     {
                         if (token is null)
                         {
-                            token = new Token(TokenType.Word, c, line, column);
+                            token = new Token(TokenKind.Word, c, line, column);
                         }
                         else token.Add(c);
 
@@ -165,17 +165,10 @@ namespace Compiler
                             c = _code[index];
                     }
 
-                    if (tokens.Count == 0 || tokens.Last().Equals(TokenType.NEWLINE)) {
-                        if (token?.Value == "component") token.Type = TokenType.KWComponent;
-                        if (token?.Value == "system") token.Type = TokenType.KWSystem;
-                        if (token?.Value == "endpoint") token.Type = TokenType.KWEndpoint;
-                        if (token?.Value == "let") token.Type = TokenType.KWLet;
-                        if (token?.Value == "type") token.Type = TokenType.KWType;
-                        if (token?.Value == "record") token.Type = TokenType.KWRecord;
-                        if (token?.Value == "data") token.Type = TokenType.KWData;
-                        if (token?.Value == "choice") token.Type = TokenType.KWChoice;
-                        if (token?.Value == "flow") token.Type = TokenType.KWFlow;
-                        if (token?.Value == "open") token.Type = TokenType.KWOpen;
+                    if (tokens.Count == 0 || tokens.Last().Equals(TokenKind.NEWLINE) && token is not null)
+                    {
+                        var found = Mappings.Keywords.TryGetValue(token?.Value ?? "__not_implemented__", out var kind);
+                        if (found) token.Kind = kind;
                     }
                 }
                 else if (isNumber(c))
@@ -184,7 +177,7 @@ namespace Compiler
                     {
                         if (token is null)
                         {
-                            token = new Token(TokenType.Number, c, line, column);
+                            token = new Token(TokenKind.Number, c, line, column);
                         }
                         else token.Add(c);
 
@@ -198,7 +191,7 @@ namespace Compiler
                 {
                     if (token is null)
                     {
-                        token = new Token(TokenType.Word, c.ToString(), line, line, column, column);
+                        token = new Token(TokenKind.Word, c.ToString(), line, line, column, column);
                     }
                     token.Add(c);
                     index++;

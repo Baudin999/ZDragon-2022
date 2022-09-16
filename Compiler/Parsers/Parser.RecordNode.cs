@@ -4,20 +4,20 @@ public partial class Parser
 {
     private RecordNode? parseRecordDefinition()
     {
-        var kw = Take(TokenType.KWRecord);
-        var annotations = TakeWhile(TokenType.Annotation).ToList();
+        var kw = Take(TokenKind.KWRecord);
+        var annotations = TakeWhile(TokenKind.Annotation).ToList();
         var id = TakeArchitectureIdentifier("record");
         var fields = new List<RecordFieldNode>();
         if (id is null) return null;
 
-        If(TokenType.Equal, () =>
+        If(TokenKind.Equal, () =>
         {
-            _ = Take(TokenType.Equal);
-            while (Is(TokenType.START))
+            _ = Take(TokenKind.Equal);
+            while (Is(TokenKind.START))
             {
                 var field = parseRecordFieldNode();
                 if (field is not null) fields.Add(field);
-                Take(TokenType.END);
+                Take(TokenKind.END);
             }
         });
 
@@ -28,12 +28,12 @@ public partial class Parser
     private RecordFieldNode? parseRecordFieldNode()
     {
         //
-        _ = Take(TokenType.START);
-        var annotations = TakeWhile(TokenType.Annotation).ToList();
+        _ = Take(TokenKind.START);
+        var annotations = TakeWhile(TokenKind.Annotation).ToList();
         
-        var id = Take(TokenType.Word);
-        var colon = Take(TokenType.Colon);
-        var type = TakeWhile(TokenType.Word).ToList();
+        var id = Take(TokenKind.Word);
+        var colon = Take(TokenKind.Colon);
+        var type = TakeWhile(TokenKind.Word).ToList();
 
         return new RecordFieldNode(id, type, annotations);
     }

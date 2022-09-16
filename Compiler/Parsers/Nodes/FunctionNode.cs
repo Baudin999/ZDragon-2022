@@ -9,7 +9,7 @@ public class FunctionNode : AstNode
 
     public FunctionNode(Token idToken, List<Token> parameters, Expression body)
     {
-        if (parameters.Count == 1 && parameters[0] == TokenType.EmptyParamList)
+        if (parameters.Count == 1 && parameters[0] == TokenKind.EmptyParamList)
         {
             parameters = new List<Token>();
         }

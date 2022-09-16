@@ -37,15 +37,15 @@
             
             while (_index < _length)
             {
-                if (Current == TokenType.KWComponent ||
-                    Current == TokenType.KWSystem ||
-                    Current == TokenType.KWType ||
-                    Current == TokenType.KWEndpoint ||
-                    Current == TokenType.KWLet ||
-                    Current == TokenType.KWRecord ||
-                    Current == TokenType.KWData ||
-                    Current == TokenType.KWChoice ||
-                    Current == TokenType.KWFlow)
+                if (Current == TokenKind.KWComponent ||
+                    Current == TokenKind.KWSystem ||
+                    Current == TokenKind.KWType ||
+                    Current == TokenKind.KWEndpoint ||
+                    Current == TokenKind.KWLet ||
+                    Current == TokenKind.KWRecord ||
+                    Current == TokenKind.KWData ||
+                    Current == TokenKind.KWChoice ||
+                    Current == TokenKind.KWFlow)
                 {
                     _inContext = true;
                     tokens.Add(Token.START_CONTEXT);
@@ -56,16 +56,16 @@
                     annotations = new List<Token>();
                     _index++;
                 }
-                else if (Current == TokenType.KWOpen)
+                else if (Current == TokenKind.KWOpen)
                 {
                     _inContext = true;
                     tokens.Add(Token.START_CONTEXT);
                     tokens.Add(Take());
                     
                     string open = "";
-                    while (Current != TokenType.NEWLINE)
+                    while (Current != TokenKind.NEWLINE)
                     {
-                        if (Current == TokenType.Word || Current == TokenType.Dot)
+                        if (Current == TokenKind.Word || Current == TokenKind.Dot)
                         {
                             open += Current.Value;
                         }
@@ -76,26 +76,26 @@
                     _inContext = false;
                     _index++;
                 }
-                else if (!_inContext && Current == TokenType.NEWLINE && Next == TokenType.At)
+                else if (!_inContext && Current == TokenKind.NEWLINE && Next == TokenKind.At)
                 {
                     // parse annotation
                     var annotationToken = Current.Clone();
                     _index++;
-                    while (Current != TokenType.NEWLINE)
+                    while (Current != TokenKind.NEWLINE)
                     {
                         annotationToken.Append(Current);
                         _index++;
                     }
 
-                    annotationToken.Type = TokenType.Annotation;
+                    annotationToken.Kind = TokenKind.Annotation;
                     annotations.Add(annotationToken);
                 }
-                else if (_inContext && Current == TokenType.At)
+                else if (_inContext && Current == TokenKind.At)
                 {
                     // parse annotation
                     var annotationToken = Current.Clone();
                     _index++;
-                    while (Current != TokenType.NEWLINE)
+                    while (Current != TokenKind.NEWLINE)
                     {
                         annotationToken.Append(Current);
                         _index++;
@@ -104,38 +104,38 @@
                     // take the newline after the annotation
                     _index++;
 
-                    annotationToken.Type = TokenType.Annotation;
+                    annotationToken.Kind = TokenKind.Annotation;
                     tokens.Add(annotationToken);
                 }
-                else if (_inContext && Current == TokenType.Minus && Next == TokenType.GreaterThen)
+                else if (_inContext && Current == TokenKind.Minus && Next == TokenKind.GreaterThen)
                 {
                     var nextToken = Current.Clone();
                     _index++;
                     nextToken.Append(Current);
-                    nextToken.Type = TokenType.Next;
+                    nextToken.Kind = TokenKind.Next;
                     tokens.Add(nextToken);
                     _index++;
                 }
-                else if (_inContext && Current == TokenType.INDENT)
+                else if (_inContext && Current == TokenKind.INDENT)
                 {
                     tokens.Add(Token.START);
                     _indents.Push(Current);
                     _index++; // skip INDENT
                 }
-                else if (_inContext && Current == TokenType.SAMEDENT)
+                else if (_inContext && Current == TokenKind.SAMEDENT)
                 {
                     _index++; // skip SAMEDENT
 
-                    if (tokens.LastOrDefault() != TokenType.Annotation)
+                    if (tokens.LastOrDefault() != TokenKind.Annotation)
                     {
                         tokens.Add(Token.END);
                         tokens.Add(Token.START);
                     }
                 }
-                else if (_inContext && Current == TokenType.DEDENT)
+                else if (_inContext && Current == TokenKind.DEDENT)
                 {
                     tokens.Add(Token.END);
-                    while (Current == TokenType.DEDENT)
+                    while (Current == TokenKind.DEDENT)
                     {
                         tokens.Add(Token.END);
                         _indents.Pop();
@@ -145,45 +145,46 @@
                     if (_indents.Count == 0)
                     {
                         tokens.Add(Token.STOP_CONTEXT);
+                        _inContext = false;
                     }
                     else
                     {
                         tokens.Add(Token.START);
                     }
                 }
-                else if (_inContext && Current == TokenType.Word && Current.Value == "extends")
+                else if (_inContext && Current == TokenKind.Word && Current.Value == "extends")
                 {
-                    Current.Type = TokenType.KWExtends;
+                    Current.Kind = TokenKind.KWExtends;
                     tokens.Add(Current);
                     _index++;
                 }
-                else if (_inContext && Current == TokenType.Word && Current.Value == "if")
+                else if (_inContext && Current == TokenKind.Word && Current.Value == "if")
                 {
-                    Current.Type = TokenType.KWIf;
+                    Current.Kind = TokenKind.KWIf;
                     tokens.Add(Current);
                     _index++;
                 }
-                else if (_inContext && Current == TokenType.Word && Current.Value == "else")
+                else if (_inContext && Current == TokenKind.Word && Current.Value == "else")
                 {
-                    Current.Type = TokenType.KWElse;
+                    Current.Kind = TokenKind.KWElse;
                     tokens.Add(Current);
                     _index++;
                 }
-                else if (_inContext && Current == TokenType.DoubleQuote)
+                else if (_inContext && Current == TokenKind.DoubleQuote)
                 {
                     _index++; // skip the double quote symbol 
                     var stringToken = Current.Clone();
                     _index++;
-                    while (Current != TokenType.DoubleQuote)
+                    while (Current != TokenKind.DoubleQuote)
                     {
                         stringToken.Append(Current);
                         _index++;
                     }
                     _index++; // skip the closing double quote symbol
-                    stringToken.Type = TokenType.String;
+                    stringToken.Kind = TokenKind.String;
                     tokens.Add(stringToken);
                 }
-                else if (Current == TokenType.EOF)
+                else if (Current == TokenKind.EOF)
                 {
                     _index++;
                 }

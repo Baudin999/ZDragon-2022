@@ -4,8 +4,8 @@
     {
         private ComponentNode? parseComponent()
         {
-            var kw = Take(TokenType.KWComponent);
-            var annotations = TakeWhile(TokenType.Annotation).ToList();
+            var kw = Take(TokenKind.KWComponent);
+            var annotations = TakeWhile(TokenKind.Annotation).ToList();
             var id = TakeArchitectureIdentifier("component");
             if (id is null) return null;
 
@@ -13,10 +13,10 @@
             var extensions = new List<Token>();
 
             // parse the extensions
-            If(TokenType.KWExtends, () =>
+            If(TokenKind.KWExtends, () =>
             {
-                _ = Take(TokenType.KWExtends);
-                extensions.AddRange(TakeWhile(TokenType.Word).ToList());
+                _ = Take(TokenKind.KWExtends);
+                extensions.AddRange(TakeWhile(TokenKind.Word).ToList());
                 foreach (var ext in extensions)
                 {
                     References.Add(new NodeReference(id, ext, ReferenceType.ExtendedBy));
@@ -33,18 +33,18 @@
 
         private ComponentAttribute? parseArchitectureAttribute()
         {
-            Take(TokenType.START);
-            var annotations = TakeWhile(TokenType.Annotation).ToList();
-            var id = Take(TokenType.Word);
-            var colon = Take(TokenType.Colon);
+            Take(TokenKind.START);
+            var annotations = TakeWhile(TokenKind.Annotation).ToList();
+            var id = Take(TokenKind.Word);
+            var colon = Take(TokenKind.Colon);
 
             Token? value = null;
             List<Token> valueTokens = new List<Token>();
             var depth = new Stack<Token>();
-            while (!(Current == TokenType.END && depth.Count == 0))
+            while (!(Current == TokenKind.END && depth.Count == 0))
             {
                 
-                if (Current == TokenType.START)
+                if (Current == TokenKind.START)
                 {
                     //value?.Add(Environment.NewLine);
                     for (int i = 0; i < depth.Count * 4; ++i)
@@ -54,12 +54,12 @@
                     }
                     depth.Push(TakeNext());
                 }
-                else if (Current == TokenType.SAMEDENT)
+                else if (Current == TokenKind.SAMEDENT)
                 {
                     value?.Add(Environment.NewLine);
                     TakeNext();
                 }
-                else if (Current == TokenType.END)
+                else if (Current == TokenKind.END)
                 {
                     TakeNext();
                     depth.Pop();
@@ -67,7 +67,7 @@
                 else
                 {
                     var _current = TakeNext().Clone();
-                    if (_current == TokenType.Word)
+                    if (_current == TokenKind.Word)
                     {
                         valueTokens.Add(_current);
                     }
@@ -84,7 +84,7 @@
 
             // there could have been multiple indentations, these
             // result in multiple ends.
-            while (Current == TokenType.END)
+            while (Current == TokenKind.END)
                 Take();
 
             return new ComponentAttribute(id, value ?? Token.EMPTY, valueTokens, annotations);
@@ -92,13 +92,13 @@
 
         private Token? TakeArchitectureIdentifier(string name)
         {
-            var id = Take(TokenType.Word, $@"A {name} should have an Identifier to name the {name}, for example:
+            var id = Take(TokenKind.Word, $@"A {name} should have an Identifier to name the {name}, for example:
 
 {name} Foo
 
 Where 'Foo' is the identifier of the {name}.");
 
-            return id != TokenType.Word ? null : id;
+            return id != TokenKind.Word ? null : id;
         }
     }
 }

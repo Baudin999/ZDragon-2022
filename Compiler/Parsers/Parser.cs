@@ -20,7 +20,7 @@
                 target = this._tokens[_index - 1].Clone();
             
             _errorSink.Errors.Add(new Error(target, message));
-            _ = TakeWhile(() => !Is(TokenType.STOP_CONTEXT)).ToList();
+            _ = TakeWhile(() => !Is(TokenKind.STOP_CONTEXT)).ToList();
         }
         
         private Token TakeNext() {
@@ -32,49 +32,49 @@
         private Token Take()
         {
             // if you want a real token type, ignore spaces and newlines
-            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
+            while (Current == TokenKind.SPACE || Current == TokenKind.NEWLINE) TakeNext();
             return TakeNext();
         }
 
         
 
-        private Token Take(TokenType type, string message)
+        private Token Take(TokenKind kind, string message)
         {
             // if you want a real token type, ignore spaces and newlines
-            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
+            while (Current == TokenKind.SPACE || Current == TokenKind.NEWLINE) TakeNext();
 
-            if (Current != type)
+            if (Current != kind)
             {
                 Abort(message);
             }
             return TakeNext();
         }
 
-        private Token Take(TokenType type)
+        private Token Take(TokenKind kind)
         {
-            return Take(type, @$"Expected '{type}' but received a '{Current.Type}'.");
+            return Take(kind, @$"Expected '{kind}' but received a '{Current.Kind}'.");
         }
-        private IEnumerable<Token> TakeWhile(TokenType type)
+        private IEnumerable<Token> TakeWhile(TokenKind kind)
         {
             // Take the tokens if they are of the TokenType type, but
             // skip the NEWLINEs and SPACEs
-            while (Is(type) && Current != TokenType.EOF)
-                yield return Take(type);
+            while (Is(kind) && Current != TokenKind.EOF)
+                yield return Take(kind);
         }
         private IEnumerable<Token> TakeWhile(Func<bool> predicate)
         {
-            while(predicate() && Current != TokenType.EOF)
+            while(predicate() && Current != TokenKind.EOF)
             {
                 yield return TakeNext();
             }
         }
         
 
-        private bool Is(TokenType type)
+        private bool Is(TokenKind kind)
         {
             // if you want a real token type, ignore spaces and newlines
-            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE || Current == TokenType.EOF) TakeNext();
-            return Current == type;
+            while (Current == TokenKind.SPACE || Current == TokenKind.NEWLINE || Current == TokenKind.EOF) TakeNext();
+            return Current == kind;
         }
 
         private bool IsOperator() => IsOperator(Current);
@@ -83,18 +83,18 @@
         {
             
             // if you want a real token type, ignore spaces and newlines
-            while (Current == TokenType.SPACE || Current == TokenType.NEWLINE) TakeNext();
+            while (Current == TokenKind.SPACE || Current == TokenKind.NEWLINE) TakeNext();
             
             return 
-                test == TokenType.Minus ||
-                test == TokenType.Plus ||
-                test == TokenType.Star ||
-                test == TokenType.Backslash;
+                test == TokenKind.Minus ||
+                test == TokenKind.Plus ||
+                test == TokenKind.Star ||
+                test == TokenKind.Backslash;
         }
 
-        private void If(TokenType type, Action parse, Action? elseParse = null)
+        private void If(TokenKind kind, Action parse, Action? elseParse = null)
         {
-            if (Is(type))
+            if (Is(kind))
                 parse();
             else
             {
@@ -127,24 +127,24 @@
 
             while (_index < this._tokens.Count)
             {
-                if (Current == TokenType.KWComponent) AddNode(parseComponent(), @namespace);
-                else if (Current == TokenType.KWSystem) AddNode(parseSystem(), @namespace);
-                else if (Current == TokenType.KWEndpoint) AddNode(parseEndpoint(), @namespace);
-                else if (Current == TokenType.KWType) AddNode(parseTypeDefinition(), @namespace);
-                else if (Current == TokenType.KWLet) AddNode(parseAssignmentStatement(), @namespace);
-                else if (Current == TokenType.KWRecord) AddNode(parseRecordDefinition(), @namespace);
-                else if (Current == TokenType.NEWLINE) TakeNext();
-                else if (Current == TokenType.SPACE) TakeNext();
-                else if (Current == TokenType.STOP_CONTEXT) TakeNext();
-                else if (Current == TokenType.START_CONTEXT) TakeNext();
-                else if (Current == TokenType.KWOpen)
+                if (Current == TokenKind.KWComponent) AddNode(parseComponent(), @namespace);
+                else if (Current == TokenKind.KWSystem) AddNode(parseSystem(), @namespace);
+                else if (Current == TokenKind.KWEndpoint) AddNode(parseEndpoint(), @namespace);
+                else if (Current == TokenKind.KWType) AddNode(parseTypeDefinition(), @namespace);
+                else if (Current == TokenKind.KWLet) AddNode(parseAssignmentStatement(), @namespace);
+                else if (Current == TokenKind.KWRecord) AddNode(parseRecordDefinition(), @namespace);
+                else if (Current == TokenKind.NEWLINE) TakeNext();
+                else if (Current == TokenKind.SPACE) TakeNext();
+                else if (Current == TokenKind.STOP_CONTEXT) TakeNext();
+                else if (Current == TokenKind.START_CONTEXT) TakeNext();
+                else if (Current == TokenKind.KWOpen)
                 {
-                    _ = TakeWhile(() => Current != TokenType.STOP_CONTEXT).ToList();
+                    _ = TakeWhile(() => Current != TokenKind.STOP_CONTEXT).ToList();
                 }
-                else if (Current == TokenType.Hash)
+                else if (Current == TokenKind.Hash)
                 {
                     Token? chapterToken = null;
-                    while (Current != TokenType.NEWLINE && Current != TokenType.EOF)
+                    while (Current != TokenKind.NEWLINE && Current != TokenKind.EOF)
                     {
                         if (chapterToken is null) chapterToken = TakeNext().Clone();
                         else chapterToken.Append(TakeNext());
@@ -152,14 +152,14 @@
                     if (chapterToken is null) Abort("Invalid chapter");
                     else Nodes.Add(new MarkdownChapterNode(chapterToken));
                 }
-                else if (Current == TokenType.EOF)
+                else if (Current == TokenKind.EOF)
                 {
                     TakeNext();
                 }
                 else
                 {
                     Token? paragraphToken = null;
-                    while (! (Current == TokenType.EOF || (Current == TokenType.NEWLINE && Next == TokenType.NEWLINE)))
+                    while (! (Current == TokenKind.EOF || (Current == TokenKind.NEWLINE && Next == TokenKind.NEWLINE)))
                     {
                         if (paragraphToken is null) paragraphToken = TakeNext().Clone();
                         else paragraphToken.Append(TakeNext());

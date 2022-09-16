@@ -1,9 +1,9 @@
 ﻿
 namespace Compiler
 {
-    public class Token : IEquatable<TokenType>
+    public class Token : IEquatable<TokenKind>
     {
-        public TokenType Type { get; internal set; }
+        public TokenKind Kind { get; internal set; }
 
         private string _value = "";
         public string Value => _value;
@@ -12,32 +12,32 @@ namespace Compiler
         public int EndLine { get; private set; }
         public int StartColumn { get; }
         public int EndColumn { get; private set; }
-        public static Token EOF => new Token(TokenType.EOF);
+        public static Token EOF => new Token(TokenKind.EOF);
 
         [JsonConstructor]
-        public Token(TokenType type, string value, int startLine, int endLine, int startColumn, int endColumn)
+        public Token(TokenKind kind, string value, int startLine, int endLine, int startColumn, int endColumn)
         {
-            this.Type = type;
+            this.Kind = kind;
             this._value = value;
             StartLine = startLine;
             EndLine = endLine;
             StartColumn = startColumn;
             EndColumn = endColumn;
         }
-        public Token(TokenType type, char value, int line, int column) :
-            this(type, value.ToString(), line, line, column, column + 1)
+        public Token(TokenKind kind, char value, int line, int column) :
+            this(kind, value.ToString(), line, line, column, column + 1)
         {
             // empty
         }
-        public Token(TokenType type, string value, int line, int column) :
-            this(type, value, line, line, column, column + 1)
+        public Token(TokenKind kind, string value, int line, int column) :
+            this(kind, value, line, line, column, column + 1)
         {
             // empty
         }
         
-        public Token(TokenType type)
+        public Token(TokenKind kind)
         {
-            Type = type;
+            Kind = kind;
             _value = "";
             StartLine = -1;
             EndLine = -1;
@@ -64,24 +64,24 @@ namespace Compiler
             this._value += other.Value;
         }
 
-        public static Token INDENT => new Token(TokenType.INDENT);
-        public static Token DEDENT => new Token(TokenType.DEDENT);
-        public static Token SAMEDENT => new Token(TokenType.SAMEDENT);
-        public static Token START_CONTEXT => new Token(TokenType.START_CONTEXT);
-        public static Token STOP_CONTEXT => new Token(TokenType.STOP_CONTEXT);
-        public static Token START => new Token(TokenType.START);
-        public static Token END => new Token(TokenType.END);
-        public static Token EMPTY => new Token(TokenType.EMPTY);
+        public static Token INDENT => new Token(TokenKind.INDENT);
+        public static Token DEDENT => new Token(TokenKind.DEDENT);
+        public static Token SAMEDENT => new Token(TokenKind.SAMEDENT);
+        public static Token START_CONTEXT => new Token(TokenKind.START_CONTEXT);
+        public static Token STOP_CONTEXT => new Token(TokenKind.STOP_CONTEXT);
+        public static Token START => new Token(TokenKind.START);
+        public static Token END => new Token(TokenKind.END);
+        public static Token EMPTY => new Token(TokenKind.EMPTY);
         
-        public override string ToString() => $"{Type} - {_value}";
+        public override string ToString() => $"{Kind} - {_value}";
 
-        public bool Equals(TokenType other)
+        public bool Equals(TokenKind other)
         {
-            return this.Type == other;
+            return this.Kind == other;
         }
 
-        public static bool operator ==(Token? a, TokenType b) => a?.Equals(b) ?? false;
-        public static bool operator !=(Token? a, TokenType b) => !(a?.Equals(b) ?? true);
+        public static bool operator ==(Token? a, TokenKind b) => a?.Equals(b) ?? false;
+        public static bool operator !=(Token? a, TokenKind b) => !(a?.Equals(b) ?? true);
 
         public override bool Equals(object? obj)
         {
@@ -119,12 +119,12 @@ namespace Compiler
         public Token Clone()
         {
             // clone the current token
-            return new Token(Type, _value, StartLine, EndLine, StartColumn, EndColumn);
+            return new Token(Kind, _value, StartLine, EndLine, StartColumn, EndColumn);
         }
     }
 
     [Flags]
-    public enum TokenType: ulong
+    public enum TokenKind: ulong
     {
         None,
         INDENT,
@@ -134,13 +134,15 @@ namespace Compiler
         STOP_CONTEXT,
         END,
         START,
+        NEWLINE,
+        EMPTY,
+        SPACE,
         
         Word,
         GreaterThen,
         LessThen,
         Star,
         Pow,
-        SPACE,
         Hash,
         DoubleQuote,
         Quote,
@@ -167,7 +169,20 @@ namespace Compiler
         Colon,
         SemiColon,
         Number,
-        NEWLINE,
+        
+        Next,
+        String,
+        EmptyParamList,
+        Comma,
+        Annotation,
+        Apostrophe,
+        
+        Lambda,
+        TypeDef,
+        Pipe,
+        CommentLiteral,
+        CodeLiteral,
+        
         KWComponent,
         KWEndpoint,
         KWSystem,
@@ -175,21 +190,55 @@ namespace Compiler
         KWExtends,
         KWIf,
         KWElse,
-        EOF,
-        Exclemation,
         KWType,
-        Next,
-        String,
-        EmptyParamList,
-        Comma,
         KWRecord,
         KWData,
         KWChoice,
         KWFlow,
-        Annotation,
-        Apostrophe,
-        EMPTY,
-        KWOpen
+        KWOpen,
+        KWAggregate,
+        KWView,
+        KWGuideline,
+        KWRequirement,
+        KWInclude,
+        KWImage,
+        KWInteraction,
+        KWPerson,
+        KWBusiness,
+        KWRoadmap,
+        KWMilestone,
+        KWTask,
+        KWWhere,
+        KWWhile,
+        KWEnd,
+        KWHidden,
+        EOF,
+        Exclemation,
+       
+        Unknown,
+        
+        // indentations
+        ContextualIndent1,
+        ContextualIndent2,
+        ContextualIndent3,
+        ContextualIndent4,
+        ContextualIndent5,
+        ContextualIndent6,
+        ContextualIndent7,
+        ContextualIndent8,
+        ContextualIndent9,
+        ContextualIndent10,
+        ContextualIndent11,
+        ContextualIndent12,
+        ContextualIndent13,
+        ContextualIndent14,
+        ContextualIndent15,
+        ContextualIndent16,
+        ContextualIndent17,
+        ContextualIndent18,
+        ContextualIndent19,
+        ContextualIndent20,
+        ContextualIndent21,
     }
 
 

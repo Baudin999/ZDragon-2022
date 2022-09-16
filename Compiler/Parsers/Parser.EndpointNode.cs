@@ -4,8 +4,8 @@ public partial class Parser
 {
     private EndpointNode? parseEndpoint()
     {
-        var kw = Take(TokenType.KWEndpoint);
-        var annotations = TakeWhile(TokenType.Annotation).ToList();
+        var kw = Take(TokenKind.KWEndpoint);
+        var annotations = TakeWhile(TokenKind.Annotation).ToList();
         var id = TakeArchitectureIdentifier("endpoint");
         if (id is null) return null;
 
@@ -14,16 +14,16 @@ public partial class Parser
         AstNode? operation = null;
 
         // parse the extensions
-        If(TokenType.KWExtends, () =>
+        If(TokenKind.KWExtends, () =>
         {
-            _ = Take(TokenType.KWExtends);
-            extensions.AddRange(TakeWhile(TokenType.Word).ToList());
+            _ = Take(TokenKind.KWExtends);
+            extensions.AddRange(TakeWhile(TokenKind.Word).ToList());
         });
         
-        If(TokenType.Colon, () =>
+        If(TokenKind.Colon, () =>
         {
-            _ = Take(TokenType.Colon);
-            _ = Take(TokenType.Colon);
+            _ = Take(TokenKind.Colon);
+            _ = Take(TokenKind.Colon);
             
             operation = parseTypeDefinitionBody();
         });

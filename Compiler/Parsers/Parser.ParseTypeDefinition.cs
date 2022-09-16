@@ -4,11 +4,11 @@ public partial class Parser
 {
     private TypeDefinitionNode? parseTypeDefinition()
     {
-        _ = Take(TokenType.KWType);
-        var annotations = TakeWhile(TokenType.Annotation).ToList();
+        _ = Take(TokenKind.KWType);
+        var annotations = TakeWhile(TokenKind.Annotation).ToList();
         var id = TakeTypeDefinitionIdentifier();
         if (id == null) return null;
-        _ = Take(TokenType.Equal);
+        _ = Take(TokenKind.Equal);
         
         // parse the body of the type definition
         var body = parseTypeDefinitionBody();
@@ -20,11 +20,11 @@ public partial class Parser
     {
         var parameters = new List<AstNode>();
 
-        while (Current != TokenType.STOP_CONTEXT)
+        while (Current != TokenKind.STOP_CONTEXT)
         {
-            if (Is(TokenType.Word)) parameters.Add(parseTypeDefinitionBodyWithWord());
-            else if (Is(TokenType.LeftParen)) {parameters.Add(parseNestedDefinition());}
-            else if (Is(TokenType.Next))
+            if (Is(TokenKind.Word)) parameters.Add(parseTypeDefinitionBodyWithWord());
+            else if (Is(TokenKind.LeftParen)) {parameters.Add(parseNestedDefinition());}
+            else if (Is(TokenKind.Next))
             {
                 return parseFunctionApplication(parameters[0]);
             }
@@ -39,7 +39,7 @@ public partial class Parser
 
     private AstNode parseTypeDefinitionBodyWithWord()
     {
-        var parameters = TakeWhile(TokenType.Word).ToList();
+        var parameters = TakeWhile(TokenKind.Word).ToList();
         return parameters.Count switch
         {
             0 => throw new Exception("Expected at least one parameter"),
@@ -50,9 +50,9 @@ public partial class Parser
 
     private AstNode parseNestedDefinition()
     {
-        _ = Take(TokenType.LeftParen);
+        _ = Take(TokenKind.LeftParen);
         var body = parseTypeDefinitionBody();
-        _ = Take(TokenType.RightParen);
+        _ = Take(TokenKind.RightParen);
 
         return body;
     }
@@ -60,11 +60,11 @@ public partial class Parser
     private AstNode parseFunctionApplication(AstNode astNode)
     {
         var parameters = new List<AstNode> {astNode};
-        while (Is(TokenType.Next))
+        while (Is(TokenKind.Next))
         {
-            Take(TokenType.Next);
+            Take(TokenKind.Next);
             var nextParam = parseTypeDefinitionBody();
-            if(Is(TokenType.LeftParen)) parameters.Add(nextParam);
+            if(Is(TokenKind.LeftParen)) parameters.Add(nextParam);
             else
             {
                 if (nextParam is FunctionDefinitionNode fdn)
@@ -79,11 +79,11 @@ public partial class Parser
 
     private Token? TakeTypeDefinitionIdentifier()
     {
-        var id = Take(TokenType.Word, @"A type should always have an identifier:
+        var id = Take(TokenKind.Word, @"A type should always have an identifier:
 
 type Add = Int -> Int -> Int;
 ");
 
-        return id != TokenType.Word ? null : id;
+        return id != TokenKind.Word ? null : id;
     }
 }

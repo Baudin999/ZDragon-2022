@@ -95,7 +95,7 @@ system Container =
 component ProfileStore =
     Title: Profile Store
     Description: This is the description 
-        of the Profile Strore
+        of the Profile Store
 
 ";
 

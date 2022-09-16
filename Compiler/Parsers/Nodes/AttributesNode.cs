@@ -27,7 +27,7 @@ public class AttributesNode<T> : AstNode, IAttributesNode where T : IIdentifier
         AnnotationTokens = annotationTokens;
         
         Description = Helpers.DescriptionFromAnnotations(annotationTokens);
-        Extensions = ExtensionTokens.Where(e => e == TokenType.Word).Select(e => e.Value).ToList();
+        Extensions = ExtensionTokens.Where(e => e == TokenKind.Word).Select(e => e.Value).ToList();
     }
 
     public bool ContainsAttribute(string id)

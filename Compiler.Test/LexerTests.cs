@@ -94,7 +94,7 @@ component Bar
             var zdragon = await new ZDragon().Compile(code);
             foreach (var token in zdragon.Lexer?.Tokens ?? new List<Token>())
             {
-                if (token == TokenType.NEWLINE || token.StartLine == -1 ) continue;
+                if (token == TokenKind.NEWLINE || token.StartLine == -1 ) continue;
                 
                 var line = splits[token.StartLine];
                 var s = line.Substring(token.StartColumn, token.EndColumn - token.StartColumn);

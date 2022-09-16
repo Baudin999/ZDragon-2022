@@ -5,21 +5,21 @@ public partial class Parser
     private AstNode? parseAssignmentStatement()
     {
         //
-        var kw = Take(TokenType.KWLet);
+        var kw = Take(TokenKind.KWLet);
         var id = TakeAssignmentIdentifier();
         if (id is null) return null;
 
-        var variables = TakeWhile(TokenType.Word).ToList();
-        If(TokenType.LeftParen, () =>
+        var variables = TakeWhile(TokenKind.Word).ToList();
+        If(TokenKind.LeftParen, () =>
         {
             Take();
-            Take(TokenType.RightParen);
-            variables.Add(new Token(TokenType.EmptyParamList));
+            Take(TokenKind.RightParen);
+            variables.Add(new Token(TokenKind.EmptyParamList));
         });
         
-        _ = Take(TokenType.Equal);
+        _ = Take(TokenKind.Equal);
 
-        If(TokenType.START, () => Take());
+        If(TokenKind.START, () => Take());
         
         if (variables.Count > 0)
         {
@@ -55,13 +55,13 @@ public partial class Parser
 
     private Expression? parseExpression()
     {
-        if (Current == TokenType.LeftParen)
+        if (Current == TokenKind.LeftParen)
         {
-            _ = Take(TokenType.LeftParen);
+            _ = Take(TokenKind.LeftParen);
             var expression = parseExpression();
             if (expression is null)
                 expression = new EmptyParamListExpression();
-            _ = Take(TokenType.RightParen);
+            _ = Take(TokenKind.RightParen);
             return expression;
         }
         else
@@ -104,15 +104,15 @@ public partial class Parser
         {
             return new OperatorExpression(token);
         }
-        else if (token == TokenType.Word)
+        else if (token == TokenKind.Word)
         {
             return new IdentifierExpression(token);
         }
-        else if (token == TokenType.Number)
+        else if (token == TokenKind.Number)
         {
             return new NumberLiteralExpression(token);
         }
-        else if (token == TokenType.String)
+        else if (token == TokenKind.String)
         {
             return new StringLiteralExpression(token);
         }
@@ -124,12 +124,12 @@ public partial class Parser
 
     private Token? TakeAssignmentIdentifier()
     {
-        var id = Take(TokenType.Word, @"An assignment should have an Identifier to name the varaible, for example:
+        var id = Take(TokenKind.Word, @"An assignment should have an Identifier to name the varaible, for example:
 
 let n = 2
 let Add x y =
     x + y");
 
-        return id != TokenType.Word ? null : id;
+        return id != TokenKind.Word ? null : id;
     }
 }
