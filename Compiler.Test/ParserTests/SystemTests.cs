@@ -28,7 +28,7 @@ system Foo =
     Contains:
         - PersonComponent
         - ViewComponent
-        - OtherComponent
+        - OtherComponent; Waiting on the world to change
 ";
 
         var zdragon = await new ZDragon().Compile(code);
@@ -44,9 +44,9 @@ system Foo =
         Assert.Single(systemNode.Attributes);
         Assert.True(systemNode.Attributes[0].IsList);
         Assert.Equal(3, systemNode.Attributes[0].Items?.Count);
-        Assert.Equal("PersonComponent", systemNode.Attributes[0].Items?[0]);
-        Assert.Equal("ViewComponent", systemNode.Attributes[0].Items?[1]);
-        Assert.Equal("OtherComponent", systemNode.Attributes[0].Items?[2]);
+        Assert.Equal("PersonComponent", systemNode.Attributes[0].Items?[0].Id);
+        Assert.Equal("ViewComponent", systemNode.Attributes[0].Items?[1].Id);
+        Assert.Equal("OtherComponent", systemNode.Attributes[0].Items?[2].Id);
         
         // test of the zdragon object contains 3 References, one for each contains
         Assert.Equal(4, zdragon.References.Count);

@@ -22,6 +22,14 @@ public abstract class TranspilationVisitor
         if (result is null) return;
         else Visit(result);
     }
+    
+    protected void Visit(ComponentAttributeListItem componentAttributeListItem)
+    {
+        var id = componentAttributeListItem.Id;
+        var result = (AstNode?)_nodes.OfType<IIdentifier>().FirstOrDefault(n => n.Id == id);
+        if (result is null) return;
+        else Visit(result);
+    }
 
     // architecture nodes
     protected abstract void visitComponentNode(ComponentNode componentNode);

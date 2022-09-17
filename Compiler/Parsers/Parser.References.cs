@@ -39,27 +39,37 @@ public partial class Parser
 
     private void ExtractReferences(List<ComponentAttribute> attributes, Token id)
     {
+        void ParseAttributeContent(ComponentAttribute componentAttribute, ReferenceType referenceType)
+        {
+            if (componentAttribute.IsList && componentAttribute.Items is not null)
+            {
+                foreach (var item in componentAttribute.Items)
+                {
+                    References.Add(new NodeReference(id, item.Token ?? Token.EMPTY, referenceType));
+                }
+            }
+            else
+            {
+                var list = componentAttribute.ValueTokens;
+                for (var i = 0; i < list.Count; i++)
+                {
+                    References.Add(new NodeReference(id, list[i], referenceType));
+                }
+            }
+        }
+
         var interactions = attributes
             .FirstOrDefault(a => a.Id == "Interactions");
         if (interactions is not null && interactions.IsList)
         {
-            var list = interactions.ValueTokens;
-            for (var i = 0; i < list.Count; i++)
-            {
-                References.Add(new NodeReference(id, list[i], ReferenceType.InteractsWith));
-            }
+            ParseAttributeContent(interactions, ReferenceType.InteractsWith);
         }
             
         var contains = attributes
             .FirstOrDefault(a => a.Id == "Contains");
         if (contains is not null && contains.IsList)
         {
-            var list = contains.ValueTokens;
-            for (var i = 0; i < list.Count; i++)
-            {
-                var item = list[i];
-                References.Add(new NodeReference(id, list[i], ReferenceType.Contains));
-            }
+            ParseAttributeContent(contains, ReferenceType.Contains);
         }
 
         var model = attributes

@@ -166,9 +166,9 @@ component JusticeLeague =
             Assert.NotNull(members);
             Assert.True(members.IsList);
             Assert.Equal(3, members.Items?.Count);
-            Assert.Equal("Superman", members.Items?[0]);
-            Assert.Equal("Batman", members.Items?[1]);
-            Assert.Equal("Tech Man", members.Items?[2]);
+            Assert.Equal("Superman", members.Items?[0].Id);
+            Assert.Equal("Batman", members.Items?[1].Id);
+            Assert.Equal("Tech Man", members.Items?[2].Id);
         }
 
         [Fact(DisplayName = "Component with annotations")]
@@ -200,9 +200,9 @@ of America", justiceLeagueNode.Description);
             Assert.NotNull(members);
             Assert.True(members.IsList);
             Assert.Equal(3, members.Items?.Count);
-            Assert.Equal("Superman", members.Items?[0]);
-            Assert.Equal("Batman", members.Items?[1]);
-            Assert.Equal("Tech Man", members.Items?[2]);
+            Assert.Equal("Superman", members.Items?[0].Id);
+            Assert.Equal("Batman", members.Items?[1].Id);
+            Assert.Equal("Tech Man", members.Items?[2].Id);
         }
 
         [Fact]

@@ -6,6 +6,8 @@ namespace Compiler.Transpilers;
 public class ArchitectureTranspiler : TranspilationVisitor
 {
     private List<string> _renderedIds = new List<string>();
+
+    private List<string> _interactions = new();
     
     protected override void visitComponentNode(ComponentNode componentNode)
     {
@@ -19,6 +21,10 @@ public class ArchitectureTranspiler : TranspilationVisitor
         
         Append(@$"Container({id}, {title}, {technology}, ""{description}"")");
         
+        
+        var interactions  = componentNode.GetAttribute("Interactions")?.Items ?? new List<ComponentAttributeListItem>();
+        visitInteractions(id, interactions);
+        
         _renderedIds.Add(componentNode.Id);
     }
 
@@ -31,7 +37,7 @@ public class ArchitectureTranspiler : TranspilationVisitor
         string description = systemNode.GetAttribute("Description")?.Value ?? systemNode.Description;
         description = description.Replace(Environment.NewLine, " ").Trim();
         string technology = systemNode.GetAttribute("Technology")?.Value ?? "";
-        var contains  = systemNode.GetAttribute("Contains")?.Items ?? new List<string>();
+        var contains  = systemNode.GetAttribute("Contains")?.Items ?? new List<ComponentAttributeListItem>();
         
         Append($@"System_Boundary({id}, {title}) {{");
         foreach (var item in contains)
@@ -62,6 +68,14 @@ public class ArchitectureTranspiler : TranspilationVisitor
         //
     }
 
+    private void visitInteractions(string id, List<ComponentAttributeListItem> interactions)
+    {
+        foreach (var interaction in interactions)
+        {
+            _interactions.Add($"Rel({id}, {interaction.Id}, \"{interaction.Title ?? ""}\", \"{interaction.Technology ?? ""}\")");
+        }
+    }
+
     protected override void Start()
     {
         //
@@ -70,7 +84,8 @@ public class ArchitectureTranspiler : TranspilationVisitor
 
     protected override void Stop()
     {
-        //
+        foreach (var interaction in _interactions)
+            Append(interaction);
         Append("SHOW_LEGEND()");
     }
 }
