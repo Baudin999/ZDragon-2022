@@ -24,6 +24,13 @@ public static class FileHelpers
         var namespaceName = string.Join(".", namespaceParts);
         return namespaceName;    
     }
+
+    public static string GetFileFromNamespaceAndBasePath(string basePath, string @namespace, string fileName)
+    {
+        var directoryPath = @namespace.Replace(".", Path.DirectorySeparatorChar.ToString());
+        var path = Path.Combine(basePath, @namespace, fileName);
+        return path;
+    }
     
     public static string SystemBasePath(string basePath)
     {

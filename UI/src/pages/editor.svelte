@@ -5,6 +5,7 @@
 	
 	// import services
 	import { fileState } from "../services/file";
+	import eventbus from "../services/eventbus";
 	
 	// declaration
 	export let location;
@@ -14,6 +15,21 @@
 	
 	// the code
 	let text = "";
+	
+	let time = 1;
+
+	let dir, cPath;
+	fileState.subscribe(s => {
+		dir = encodeURIComponent(s.directory);
+		cPath = encodeURIComponent(s.currentPath);
+	});
+	
+	eventbus.subscribe(eventbus.EVENTS.SAVING, () => {
+		// update the time index by one to reload the page.
+		setTimeout(() => {
+			time = time + 1;
+		}, 500);
+	});
 		
 </script>
 
@@ -33,7 +49,9 @@
 		</div>
 	</div>
 	<div class="result">
-		Result
+		{#if cPath && dir}
+			<iframe title="result" src={`/project-file/${dir}/${cPath}/components.svg?${time}`} />
+		{/if}
 	</div>
 </div>
 
@@ -71,5 +89,12 @@
 	}
 	.result {
 		grid-area: result;
+		
+		iframe {
+			width: 100%;
+			height: 100%;
+			border: none;
+			box-shadow: none;
+		}
 	}
 </style>

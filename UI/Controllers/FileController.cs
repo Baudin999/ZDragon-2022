@@ -1,4 +1,5 @@
 using Compiler;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace UI.Controllers;
 
@@ -22,6 +23,27 @@ public class FileController : ControllerBase
         await zdragon.MainPage();
 
         return zdragon.Errors;
+    }
+    
+    
+    [HttpGet("/project-file/{basePath}/{currentPath}/{fileName}")]
+    public async Task<ActionResult> GetIndexPage(string basePath, string currentPath, string fileName)
+    {
+        var @namespace = FileHelpers.GenerateNamespaceFromFileName(basePath, currentPath);
+        var path = Path.Combine(basePath, ".out", @namespace, fileName);
+        var bytes = await FileHelpers.ReadBytesAsync(path);
+        new FileExtensionContentTypeProvider().TryGetContentType(fileName, out string? contentType);
+
+        
+        if (bytes is not null)
+        {
+            return File(bytes, contentType ?? "application/octet-stream");
+        }
+        else
+        {
+            return NotFound();
+        }
+
     }
 
     

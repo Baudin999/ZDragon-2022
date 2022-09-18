@@ -27,14 +27,20 @@ public class FileSystemService
         }
         foreach (var file in files)
         {
-            var fileSystemObject = new FileSystemObject
+            var extension = Path.GetExtension(file);
+            var isCarFile = extension == ".car";
+
+            if (isCarFile)
             {
-                Name = Path.GetFileName(file),
-                Type = "file",
-                Path = file,
-                Namespace = FileHelpers.GenerateNamespaceFromFileName(basePath, file)
-            };
-            fileSystemObjects.Add(fileSystemObject);
+                var fileSystemObject = new FileSystemObject
+                {
+                    Name = Path.GetFileName(file),
+                    Type = "file",
+                    Path = file,
+                    Namespace = FileHelpers.GenerateNamespaceFromFileName(basePath, file)
+                };
+                fileSystemObjects.Add(fileSystemObject);
+            }
         }
         return fileSystemObjects;
     }

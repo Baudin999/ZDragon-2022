@@ -14,7 +14,7 @@ export function setFilePath(path) {
     
     if (path === state.currentPath) return;
     state.currentPath = path;
-    console.log("File selected: " + path);
+    // console.log("File selected: " + path);
 
     fetch('/page', {
         method: 'PUT',
@@ -82,7 +82,7 @@ function saveText(text) {
         root: state.directory
     };
     
-    console.log(body)
+    // console.log(body)
     
     fetch('/file', {
         method: 'PUT',

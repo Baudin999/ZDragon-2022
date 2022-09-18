@@ -14,7 +14,7 @@ class eventbus {
         else this.handlers[event].push(handler);
     }
     broadcast(event, data) {
-        console.log("broadcasting: " + event);
+        // console.log("broadcasting: " + event);
         (this.handlers[event] || []).forEach(handler => {
             if (handler instanceof Function) {
                 handler(data);
