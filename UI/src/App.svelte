@@ -4,13 +4,9 @@
 	import About from "./pages/about.svelte";
 	import Editor from "./pages/editor.svelte";
 	import Lexicon from "./pages/lexicon.svelte";
-	
-	
-	
+	import {Modals} from "svelte-modals";
+		
 	export let url = "";
-	
-
-
 </script>
 
 <main>
@@ -41,6 +37,9 @@
 		<div class="root footer">
 			Footer
 		</div>
+		
+		<Modals />
+			
 	</div>
 	
 	

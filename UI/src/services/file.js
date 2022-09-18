@@ -2,11 +2,18 @@
 import { writable, get as _get } from "svelte/store";
 
 
-
+// initialize the fileState. This object is 
+// filled with the information of the current 
+// file, like:
+//  - namespace   :: The namespace of the module you are working on.
+//  - directory   :: The base file path of the project.
+//  - currentPath :: The full path name of the module you are working on.
+//  - text        :: The full text of the file.
 export const fileState = writable({
     directory: "",
     currentPath: "",
-    text: ""
+    text: "",
+    namespace: ""
 });
 
 export function setFilePath(path) {
