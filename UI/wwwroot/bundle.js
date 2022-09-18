@@ -1634,7 +1634,7 @@ var app = (function () {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block_1$2, create_else_block$2];
+    	const if_block_creators = [create_if_block_1$3, create_else_block$2];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -1767,7 +1767,7 @@ var app = (function () {
     }
 
     // (41:2) {#if component !== null}
-    function create_if_block_1$2(ctx) {
+    function create_if_block_1$3(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
     	let current;
@@ -1860,7 +1860,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$2.name,
+    		id: create_if_block_1$3.name,
     		type: "if",
     		source: "(41:2) {#if component !== null}",
     		ctx
@@ -2389,6 +2389,43 @@ var app = (function () {
 
     var eventbus$1 = new eventbus();
 
+    const httpGet = function(url) {
+        return new Promise(async (resolve, reject) => {
+                
+            try {
+                let result = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                let obj = await result.json();
+                resolve(obj);
+            }
+            catch (error) {
+                reject(error);
+            }
+        });
+    };
+
+
+    const httpPut = function(url, body) {
+        return new Promise(async (resolve, reject) => {
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+                .then(r => r.json())
+                .then(r => {
+                    resolve(r);
+                })
+                .catch(console.log);
+        });
+    };
+
     // initialize the fileState. This object is 
     // filled with the information of the current 
     // file, like:
@@ -2445,30 +2482,27 @@ var app = (function () {
     }
 
     async function setDirectory(directory) {
-        
-        localStorage.setItem("directory", directory);
+           
+        try {
+            // set the current project path
+            let result = await httpGet(`/project/files/${encodeURIComponent(directory)}`);
 
-        // set the current project path
-        let result = await fetch("/project", {
-            method: 'PUT',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify({path: directory})
-        });
-        let obj = await result.json();
-        
-        fileState.update(s => {
-            s.files = obj;
-            s.currentPath = "";
-            s.text = "";
-            s.directory = directory;
-            return s;
-        });
-        
+            fileState.update(s => {
+                s.files = result;
+                s.currentPath = "";
+                s.text = "";
+                s.directory = directory;
+                return s;
+            });
+
+            localStorage.setItem("directory", directory);
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
-    function saveText(text) {
+    async function saveText(text) {
         const state = get_store_value(fileState);
         let body = {
             path: state.currentPath,
@@ -2476,25 +2510,15 @@ var app = (function () {
             root: state.directory
         };
         
-        // console.log(body)
+        // put the data
+        var result = await httpPut('/file', body);
         
-        fetch('/file', {
-            method: 'PUT',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify(body)
-        })
-            .then(r => r.json())
-            .then(r => {
-                // r is a list of errors in the compilation            
-                setErrors(r);
-                eventbus$1.broadcast(eventbus$1.EVENTS.ERRORS_RECEIVED, r);
-                
-                // update the state?
-                setText(text);
-            })
-            .catch(console.log);
+        // result is a list of errors in the compilation            
+        setErrors(result);
+        eventbus$1.broadcast(eventbus$1.EVENTS.ERRORS_RECEIVED, result);
+
+        // update the state?
+        setText(text);
     }
 
     async function init$1() {
@@ -2510,6 +2534,29 @@ var app = (function () {
             setFilePath(localStorage.getItem("currentPath"));
         }
         
+    }
+
+
+    async function createNewModule(moduleName) {
+        // create a new file on the server, a new module
+        const state = get_store_value(fileState);
+        let body = {
+            namespace: moduleName,
+            basePath: state.directory
+        };
+
+        fetch('/sys/file', {
+            method: 'PUT',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+            .then(r => r.json())
+            .then(r => {
+                console.log(r);
+            })
+            .catch(console.log);
     }
 
     /* src\pages\home.svelte generated by Svelte v3.49.0 */
@@ -3167,7 +3214,7 @@ var app = (function () {
     			}
 
     			attr_dev(ul, "class", "svelte-vfff97");
-    			add_location(ul, file$6, 15, 4, 290);
+    			add_location(ul, file$6, 15, 4, 289);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, ul, anchor);
@@ -3295,7 +3342,7 @@ var app = (function () {
     }
 
     // (19:16) {#if file.children}
-    function create_if_block_1$1(ctx) {
+    function create_if_block_1$2(ctx) {
     	let folder;
     	let current;
 
@@ -3337,7 +3384,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$1.name,
+    		id: create_if_block_1$2.name,
     		type: "if",
     		source: "(19:16) {#if file.children}",
     		ctx
@@ -3353,7 +3400,7 @@ var app = (function () {
     	let if_block;
     	let t;
     	let current;
-    	const if_block_creators = [create_if_block_1$1, create_else_block$1];
+    	const if_block_creators = [create_if_block_1$2, create_else_block$1];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -3370,7 +3417,7 @@ var app = (function () {
     			if_block.c();
     			t = space();
     			attr_dev(li, "class", "svelte-vfff97");
-    			add_location(li, file$6, 17, 12, 339);
+    			add_location(li, file$6, 17, 12, 338);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -3452,7 +3499,7 @@ var app = (function () {
     			if_block_anchor = empty();
     			attr_dev(span, "class", "svelte-vfff97");
     			toggle_class(span, "expanded", /*expanded*/ ctx[0]);
-    			add_location(span, file$6, 12, 0, 214);
+    			add_location(span, file$6, 12, 0, 213);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3535,7 +3582,7 @@ var app = (function () {
     function instance$7($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Folder', slots, []);
-    	let { expanded = false } = $$props;
+    	let { expanded = true } = $$props;
     	let { name } = $$props;
     	let { files = [] } = $$props;
 
@@ -3700,7 +3747,7 @@ var app = (function () {
     const get_backdrop_slot_context = ctx => ({});
 
     // (13:0) {#if $modals.length > 0}
-    function create_if_block_1(ctx) {
+    function create_if_block_1$1(ctx) {
     	let current;
     	const backdrop_slot_template = /*#slots*/ ctx[4].backdrop;
     	const backdrop_slot = create_slot(backdrop_slot_template, ctx, /*$$scope*/ ctx[3], get_backdrop_slot_context);
@@ -3748,7 +3795,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1.name,
+    		id: create_if_block_1$1.name,
     		type: "if",
     		source: "(13:0) {#if $modals.length > 0}",
     		ctx
@@ -4304,7 +4351,7 @@ var app = (function () {
     function create_fragment$6(ctx) {
     	let t;
     	let current;
-    	let if_block = /*$modals*/ ctx[0].length > 0 && create_if_block_1(ctx);
+    	let if_block = /*$modals*/ ctx[0].length > 0 && create_if_block_1$1(ctx);
     	const default_slot_template = /*#slots*/ ctx[4].default;
     	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[3], null);
     	const default_slot_or_fallback = default_slot || fallback_block(ctx);
@@ -4337,7 +4384,7 @@ var app = (function () {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block_1(ctx);
+    					if_block = create_if_block_1$1(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t.parentNode, t);
@@ -4487,69 +4534,110 @@ var app = (function () {
     /* src\components\BaseModal.svelte generated by Svelte v3.49.0 */
     const file$5 = "src\\components\\BaseModal.svelte";
 
-    // (9:0) {#if isOpen}
+    // (27:0) {#if isOpen}
     function create_if_block$1(ctx) {
+    	let div3;
     	let div2;
-    	let div1;
+    	let h1;
     	let t0;
+    	let t1;
     	let div0;
-    	let button;
+    	let t2;
+    	let div1;
+    	let t3;
     	let current;
-    	let mounted;
-    	let dispose;
-    	const default_slot_template = /*#slots*/ ctx[2].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[1], null);
+    	const default_slot_template = /*#slots*/ ctx[7].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[6], null);
+    	let if_block0 = /*showOk*/ ctx[3] && create_if_block_2(ctx);
+    	let if_block1 = /*showCancel*/ ctx[2] && create_if_block_1(ctx);
 
     	const block = {
     		c: function create() {
+    			div3 = element("div");
     			div2 = element("div");
-    			div1 = element("div");
-    			if (default_slot) default_slot.c();
-    			t0 = space();
+    			h1 = element("h1");
+    			t0 = text(/*title*/ ctx[1]);
+    			t1 = space();
     			div0 = element("div");
-    			button = element("button");
-    			button.textContent = "OK";
-    			add_location(button, file$5, 13, 16, 293);
-    			attr_dev(div0, "class", "actions svelte-11anvlk");
-    			add_location(div0, file$5, 12, 12, 254);
-    			attr_dev(div1, "class", "contents svelte-11anvlk");
-    			add_location(div1, file$5, 10, 8, 191);
-    			attr_dev(div2, "role", "dialog");
-    			attr_dev(div2, "class", "modal svelte-11anvlk");
-    			add_location(div2, file$5, 9, 4, 148);
+    			if (default_slot) default_slot.c();
+    			t2 = space();
+    			div1 = element("div");
+    			if (if_block0) if_block0.c();
+    			t3 = space();
+    			if (if_block1) if_block1.c();
+    			attr_dev(h1, "class", "title svelte-rh7tva");
+    			add_location(h1, file$5, 29, 12, 624);
+    			attr_dev(div0, "class", "content svelte-rh7tva");
+    			add_location(div0, file$5, 30, 12, 668);
+    			attr_dev(div1, "class", "actions svelte-rh7tva");
+    			add_location(div1, file$5, 33, 12, 754);
+    			attr_dev(div2, "class", "contents svelte-rh7tva");
+    			add_location(div2, file$5, 28, 8, 588);
+    			attr_dev(div3, "role", "dialog");
+    			attr_dev(div3, "class", "modal svelte-rh7tva");
+    			add_location(div3, file$5, 27, 4, 545);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, div1);
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, div2);
+    			append_dev(div2, h1);
+    			append_dev(h1, t0);
+    			append_dev(div2, t1);
+    			append_dev(div2, div0);
 
     			if (default_slot) {
-    				default_slot.m(div1, null);
+    				default_slot.m(div0, null);
     			}
 
-    			append_dev(div1, t0);
-    			append_dev(div1, div0);
-    			append_dev(div0, button);
+    			append_dev(div2, t2);
+    			append_dev(div2, div1);
+    			if (if_block0) if_block0.m(div1, null);
+    			append_dev(div1, t3);
+    			if (if_block1) if_block1.m(div1, null);
     			current = true;
-
-    			if (!mounted) {
-    				dispose = listen_dev(button, "click", closeModal, false, false, false);
-    				mounted = true;
-    			}
     		},
     		p: function update(ctx, dirty) {
+    			if (!current || dirty & /*title*/ 2) set_data_dev(t0, /*title*/ ctx[1]);
+
     			if (default_slot) {
-    				if (default_slot.p && (!current || dirty & /*$$scope*/ 2)) {
+    				if (default_slot.p && (!current || dirty & /*$$scope*/ 64)) {
     					update_slot_base(
     						default_slot,
     						default_slot_template,
     						ctx,
-    						/*$$scope*/ ctx[1],
+    						/*$$scope*/ ctx[6],
     						!current
-    						? get_all_dirty_from_scope(/*$$scope*/ ctx[1])
-    						: get_slot_changes(default_slot_template, /*$$scope*/ ctx[1], dirty, null),
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[6])
+    						: get_slot_changes(default_slot_template, /*$$scope*/ ctx[6], dirty, null),
     						null
     					);
     				}
+    			}
+
+    			if (/*showOk*/ ctx[3]) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_2(ctx);
+    					if_block0.c();
+    					if_block0.m(div1, t3);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (/*showCancel*/ ctx[2]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_1(ctx);
+    					if_block1.c();
+    					if_block1.m(div1, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
     			}
     		},
     		i: function intro(local) {
@@ -4562,10 +4650,10 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div2);
+    			if (detaching) detach_dev(div3);
     			if (default_slot) default_slot.d(detaching);
-    			mounted = false;
-    			dispose();
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
     		}
     	};
 
@@ -4573,7 +4661,87 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(9:0) {#if isOpen}",
+    		source: "(27:0) {#if isOpen}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (35:16) {#if showOk}
+    function create_if_block_2(ctx) {
+    	let button;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			button = element("button");
+    			button.textContent = "OK";
+    			attr_dev(button, "class", "svelte-rh7tva");
+    			add_location(button, file$5, 35, 20, 827);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(button, "click", /*handleOk*/ ctx[4], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(button);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(35:16) {#if showOk}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (39:16) {#if showCancel}
+    function create_if_block_1(ctx) {
+    	let button;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			button = element("button");
+    			button.textContent = "Cancel";
+    			attr_dev(button, "class", "svelte-rh7tva");
+    			add_location(button, file$5, 39, 20, 947);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(button, "click", closeModal, false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(button);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1.name,
+    		type: "if",
+    		source: "(39:16) {#if showCancel}",
     		ctx
     	});
 
@@ -4656,7 +4824,24 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('BaseModal', slots, ['default']);
     	let { isOpen } = $$props;
-    	const writable_props = ['isOpen'];
+    	let { title } = $$props;
+    	let { showCancel = false } = $$props;
+    	let { showOk = true } = $$props;
+    	let { onOk } = $$props;
+
+    	async function handleOk() {
+    		if (onOk) {
+    			let canContinue = onOk();
+
+    			if (canContinue) {
+    				closeModal();
+    			}
+    		} else {
+    			closeModal();
+    		}
+    	}
+
+    	const writable_props = ['isOpen', 'title', 'showCancel', 'showOk', 'onOk'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<BaseModal> was created with unknown prop '${key}'`);
@@ -4664,26 +4849,49 @@ var app = (function () {
 
     	$$self.$$set = $$props => {
     		if ('isOpen' in $$props) $$invalidate(0, isOpen = $$props.isOpen);
-    		if ('$$scope' in $$props) $$invalidate(1, $$scope = $$props.$$scope);
+    		if ('title' in $$props) $$invalidate(1, title = $$props.title);
+    		if ('showCancel' in $$props) $$invalidate(2, showCancel = $$props.showCancel);
+    		if ('showOk' in $$props) $$invalidate(3, showOk = $$props.showOk);
+    		if ('onOk' in $$props) $$invalidate(5, onOk = $$props.onOk);
+    		if ('$$scope' in $$props) $$invalidate(6, $$scope = $$props.$$scope);
     	};
 
-    	$$self.$capture_state = () => ({ closeModal, isOpen });
+    	$$self.$capture_state = () => ({
+    		closeModal,
+    		isOpen,
+    		title,
+    		showCancel,
+    		showOk,
+    		onOk,
+    		handleOk
+    	});
 
     	$$self.$inject_state = $$props => {
     		if ('isOpen' in $$props) $$invalidate(0, isOpen = $$props.isOpen);
+    		if ('title' in $$props) $$invalidate(1, title = $$props.title);
+    		if ('showCancel' in $$props) $$invalidate(2, showCancel = $$props.showCancel);
+    		if ('showOk' in $$props) $$invalidate(3, showOk = $$props.showOk);
+    		if ('onOk' in $$props) $$invalidate(5, onOk = $$props.onOk);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [isOpen, $$scope, slots];
+    	return [isOpen, title, showCancel, showOk, handleOk, onOk, $$scope, slots];
     }
 
     class BaseModal extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$5, create_fragment$5, safe_not_equal, { isOpen: 0 });
+
+    		init$2(this, options, instance$5, create_fragment$5, safe_not_equal, {
+    			isOpen: 0,
+    			title: 1,
+    			showCancel: 2,
+    			showOk: 3,
+    			onOk: 5
+    		});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -4698,6 +4906,14 @@ var app = (function () {
     		if (/*isOpen*/ ctx[0] === undefined && !('isOpen' in props)) {
     			console.warn("<BaseModal> was created without expected prop 'isOpen'");
     		}
+
+    		if (/*title*/ ctx[1] === undefined && !('title' in props)) {
+    			console.warn("<BaseModal> was created without expected prop 'title'");
+    		}
+
+    		if (/*onOk*/ ctx[5] === undefined && !('onOk' in props)) {
+    			console.warn("<BaseModal> was created without expected prop 'onOk'");
+    		}
     	}
 
     	get isOpen() {
@@ -4707,37 +4923,83 @@ var app = (function () {
     	set isOpen(value) {
     		throw new Error("<BaseModal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
+
+    	get title() {
+    		throw new Error("<BaseModal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set title(value) {
+    		throw new Error("<BaseModal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get showCancel() {
+    		throw new Error("<BaseModal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set showCancel(value) {
+    		throw new Error("<BaseModal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get showOk() {
+    		throw new Error("<BaseModal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set showOk(value) {
+    		throw new Error("<BaseModal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get onOk() {
+    		throw new Error("<BaseModal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set onOk(value) {
+    		throw new Error("<BaseModal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
     }
 
     /* src\modals\CreateModule.svelte generated by Svelte v3.49.0 */
     const file$4 = "src\\modals\\CreateModule.svelte";
 
-    // (5:0) <BaseModal {...$$props}>
+    // (13:0) <BaseModal {...$$props} title="Create Module" showCancel={true} onOk={createFile}>
     function create_default_slot$1(ctx) {
-    	let h1;
+    	let div;
     	let t1;
-    	let p;
+    	let input;
+    	let mounted;
+    	let dispose;
 
     	const block = {
     		c: function create() {
-    			h1 = element("h1");
-    			h1.textContent = "Create Module";
+    			div = element("div");
+    			div.textContent = "You can create a module here.";
     			t1 = space();
-    			p = element("p");
-    			p.textContent = "You can create a module here.";
-    			add_location(h1, file$4, 5, 4, 115);
-    			add_location(p, file$4, 6, 4, 143);
+    			input = element("input");
+    			add_location(div, file$4, 13, 4, 390);
+    			attr_dev(input, "class", "svelte-122xswa");
+    			add_location(input, file$4, 14, 4, 436);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h1, anchor);
+    			insert_dev(target, div, anchor);
     			insert_dev(target, t1, anchor);
-    			insert_dev(target, p, anchor);
+    			insert_dev(target, input, anchor);
+    			set_input_value(input, /*namespace*/ ctx[0]);
+
+    			if (!mounted) {
+    				dispose = listen_dev(input, "input", /*input_input_handler*/ ctx[3]);
+    				mounted = true;
+    			}
     		},
-    		p: noop,
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*namespace*/ 1 && input.value !== /*namespace*/ ctx[0]) {
+    				set_input_value(input, /*namespace*/ ctx[0]);
+    			}
+    		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h1);
+    			if (detaching) detach_dev(div);
     			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(input);
+    			mounted = false;
+    			dispose();
     		}
     	};
 
@@ -4745,7 +5007,7 @@ var app = (function () {
     		block,
     		id: create_default_slot$1.name,
     		type: "slot",
-    		source: "(5:0) <BaseModal {...$$props}>",
+    		source: "(13:0) <BaseModal {...$$props} title=\\\"Create Module\\\" showCancel={true} onOk={createFile}>",
     		ctx
     	});
 
@@ -4756,7 +5018,13 @@ var app = (function () {
     	let t;
     	let basemodal;
     	let current;
-    	const basemodal_spread_levels = [/*$$props*/ ctx[0]];
+
+    	const basemodal_spread_levels = [
+    		/*$$props*/ ctx[2],
+    		{ title: "Create Module" },
+    		{ showCancel: true },
+    		{ onOk: /*createFile*/ ctx[1] }
+    	];
 
     	let basemodal_props = {
     		$$slots: { default: [create_default_slot$1] },
@@ -4783,11 +5051,16 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
-    			const basemodal_changes = (dirty & /*$$props*/ 1)
-    			? get_spread_update(basemodal_spread_levels, [get_spread_object(/*$$props*/ ctx[0])])
+    			const basemodal_changes = (dirty & /*$$props, createFile*/ 6)
+    			? get_spread_update(basemodal_spread_levels, [
+    					dirty & /*$$props*/ 4 && get_spread_object(/*$$props*/ ctx[2]),
+    					basemodal_spread_levels[1],
+    					basemodal_spread_levels[2],
+    					dirty & /*createFile*/ 2 && { onOk: /*createFile*/ ctx[1] }
+    				])
     			: {};
 
-    			if (dirty & /*$$scope*/ 2) {
+    			if (dirty & /*$$scope, namespace*/ 17) {
     				basemodal_changes.$$scope = { dirty, ctx };
     			}
 
@@ -4822,15 +5095,32 @@ var app = (function () {
     function instance$4($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('CreateModule', slots, []);
+    	let namespace = "";
 
-    	$$self.$$set = $$new_props => {
-    		$$invalidate(0, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+    	const createFile = async function () {
+    		await createNewModule(namespace);
+    		return false;
     	};
 
-    	$$self.$capture_state = () => ({ BaseModal });
+    	function input_input_handler() {
+    		namespace = this.value;
+    		$$invalidate(0, namespace);
+    	}
+
+    	$$self.$$set = $$new_props => {
+    		$$invalidate(2, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+    	};
+
+    	$$self.$capture_state = () => ({
+    		createNewModule,
+    		BaseModal,
+    		namespace,
+    		createFile
+    	});
 
     	$$self.$inject_state = $$new_props => {
-    		$$invalidate(0, $$props = assign(assign({}, $$props), $$new_props));
+    		$$invalidate(2, $$props = assign(assign({}, $$props), $$new_props));
+    		if ('namespace' in $$props) $$invalidate(0, namespace = $$new_props.namespace);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -4838,7 +5128,7 @@ var app = (function () {
     	}
 
     	$$props = exclude_internal_props($$props);
-    	return [$$props];
+    	return [namespace, createFile, $$props, input_input_handler];
     }
 
     class CreateModule extends SvelteComponentDev {

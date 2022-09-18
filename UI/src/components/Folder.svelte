@@ -1,7 +1,7 @@
 ﻿<script>
     import File from './File.svelte';
 
-    export let expanded = false;
+    export let expanded = true;
     export let name;
     export let files = [];
 

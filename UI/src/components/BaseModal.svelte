@@ -3,15 +3,42 @@
 
     // provided by <Modals />
     export let isOpen
+    
+    // provided by the child
+    export let title;
+    export let showCancel = false;
+    export let showOk = true;
+    export let onOk;
+    
+    async function handleOk() {
+        if (onOk) {
+            let canContinue = onOk();
+            if (canContinue) {
+                closeModal();
+            }
+        }
+        else {
+            closeModal();
+        }
+    }
 
 </script>
 
 {#if isOpen}
     <div role="dialog" class="modal">
         <div class="contents">
-            <slot></slot>
+            <h1 class="title">{title}</h1>
+            <div class="content">
+                <slot></slot>
+            </div>
             <div class="actions">
-                <button on:click={closeModal}>OK</button>
+                {#if showOk}
+                    <button on:click={handleOk}>OK</button>
+                {/if}
+
+                {#if showCancel}
+                    <button on:click={closeModal}>Cancel</button>
+                {/if}
             </div>
         </div>
     </div>
@@ -31,33 +58,38 @@
 
         /* allow click-through to backdrop */
         pointer-events: none;
+      
     }
 
     .contents {
-        min-width: 240px;
-        padding: 16px;
+        min-width: 526px;
+        padding: 0;
+        margin: 0;
         background: lighten(@primary-background, 10%);
         border-color: @primary-border;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         pointer-events: auto;
+      .title {
+        background: @sec-background;
+        width: 100%;
+        margin: 0;
+        font-size: 1rem;
+        text-transform: uppercase;
+        padding: 0.5rem;
+      }
+      .content {
+        padding: 1rem;        
+      }
     }
-
-    h2 {
-        text-align: center;
-        font-size: 24px;
-    }
-
-    p {
-        text-align: center;
-        margin-top: 16px;
-    }
-
-    .actions {
-        margin-top: 32px;
+      .actions {
         display: flex;
         justify-content: flex-end;
-    }
+        padding: 1rem;
+        button {
+          margin-left: 1rem;
+        }
+      }
 
 </style>

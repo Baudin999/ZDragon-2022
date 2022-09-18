@@ -1,5 +1,6 @@
 ﻿import eventbus from "./eventbus";
 import { writable, get as _get } from "svelte/store";
+import {httpGet, httpPut} from "./http";
 
 
 // initialize the fileState. This object is 
@@ -58,30 +59,27 @@ export function setErrors(errors) {
 }
 
 export async function setDirectory(directory) {
-    
-    localStorage.setItem("directory", directory);
+       
+    try {
+        // set the current project path
+        let result = await httpGet(`/project/files/${encodeURIComponent(directory)}`);
 
-    // set the current project path
-    let result = await fetch("/project", {
-        method: 'PUT',
-        headers:{
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify({path: directory})
-    });
-    let obj = await result.json();
-    
-    fileState.update(s => {
-        s.files = obj;
-        s.currentPath = "";
-        s.text = "";
-        s.directory = directory;
-        return s;
-    });
-    
+        fileState.update(s => {
+            s.files = result;
+            s.currentPath = "";
+            s.text = "";
+            s.directory = directory;
+            return s;
+        });
+
+        localStorage.setItem("directory", directory);
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
-function saveText(text) {
+async function saveText(text) {
     const state = _get(fileState);
     let body = {
         path: state.currentPath,
@@ -89,25 +87,15 @@ function saveText(text) {
         root: state.directory
     };
     
-    // console.log(body)
+    // put the data
+    var result = await httpPut('/file', body);
     
-    fetch('/file', {
-        method: 'PUT',
-        headers:{
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-        .then(r => r.json())
-        .then(r => {
-            // r is a list of errors in the compilation            
-            setErrors(r);
-            eventbus.broadcast(eventbus.EVENTS.ERRORS_RECEIVED, r);
-            
-            // update the state?
-            setText(text);
-        })
-        .catch(console.log);
+    // result is a list of errors in the compilation            
+    setErrors(result);
+    eventbus.broadcast(eventbus.EVENTS.ERRORS_RECEIVED, result);
+
+    // update the state?
+    setText(text);
 }
 
 export async function init() {
@@ -123,4 +111,27 @@ export async function init() {
         setFilePath(localStorage.getItem("currentPath"));
     }
     
+}
+
+
+export async function createNewModule(moduleName) {
+    // create a new file on the server, a new module
+    const state = _get(fileState);
+    let body = {
+        namespace: moduleName,
+        basePath: state.directory
+    };
+
+    fetch('/sys/file', {
+        method: 'PUT',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(body)
+    })
+        .then(r => r.json())
+        .then(r => {
+            console.log(r);
+        })
+        .catch(console.log);
 }

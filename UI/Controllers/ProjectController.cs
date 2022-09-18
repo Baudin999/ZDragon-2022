@@ -28,18 +28,18 @@ public class ProjectController : ControllerBase
         };
     }
 
-    [HttpPut("/project")]
-    public List<FileSystemService.FileSystemObject> SetThePathOfTheActiveProject([FromBody]ProjectSelector projectSelector)
-    {
-        if (!string.IsNullOrEmpty(projectSelector.Path))
-        {
-            _sessionParameters.ProjectDirectory = projectSelector.Path;
-            return new FileSystemService().GetFileSystemObjects(projectSelector.Path);
-        }
-
-        return new List<FileSystemService.FileSystemObject>();
-
-    }
+    // [HttpPut("/project")]
+    // public List<FileSystemService.FileSystemObject> SetThePathOfTheActiveProject([FromBody]ProjectSelector projectSelector)
+    // {
+    //     if (!string.IsNullOrEmpty(projectSelector.Path))
+    //     {
+    //         _sessionParameters.ProjectDirectory = projectSelector.Path;
+    //         return new FileSystemService().GetFileSystemObjects(projectSelector.Path);
+    //     }
+    //
+    //     return new List<FileSystemService.FileSystemObject>();
+    //
+    // }
     
     [HttpPut("/page")]
     public string GetCurrentPagePath(ProjectSelector path)
