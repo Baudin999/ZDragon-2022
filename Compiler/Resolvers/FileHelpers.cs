@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿
 
 namespace Compiler.Resolvers;
 
@@ -16,7 +16,7 @@ public static class FileHelpers
         }
     };
     
-    public static string GenerateNamespaceFromFileName(string basePath, string fileName)
+    public static string GetNamespaceFromFileName(string basePath, string fileName)
     {
         var relativePath = Path.GetRelativePath(basePath, fileName);
         var pathWithoutExtension = Path.ChangeExtension(relativePath, null);
@@ -29,6 +29,19 @@ public static class FileHelpers
     {
         var directoryPath = @namespace.Replace(".", Path.DirectorySeparatorChar.ToString());
         var path = Path.Combine(basePath, @namespace, fileName);
+        return path;
+    }
+    
+    public static string GetCarFileFromNamespaceAndBasePath(string basePath, string @namespace)
+    {
+        var parts = new LinkedList<string>(@namespace.Split("."));
+        var name = parts.Last();
+        parts.RemoveLast();
+        var ns = string.Join(".", parts);
+        var fileName = name + ".car";
+        
+        var directoryPath = ns.Replace(".", Path.DirectorySeparatorChar.ToString());
+        var path = Path.Combine(basePath, directoryPath, fileName);
         return path;
     }
     
@@ -128,4 +141,5 @@ public static class FileHelpers
             System.Console.WriteLine(ex.Message);
         }
     }
+
 }

@@ -24,11 +24,9 @@
 		cPath = encodeURIComponent(s.currentPath);
 	});
 	
-	eventbus.subscribe(eventbus.EVENTS.SAVING, () => {
+	eventbus.subscribe(eventbus.EVENTS.SAVE_COMPLETED, () => {
 		// update the time index by one to reload the page.
-		setTimeout(() => {
-			time = time + 1;
-		}, 500);
+		time = time + 1;
 	});
 		
 </script>

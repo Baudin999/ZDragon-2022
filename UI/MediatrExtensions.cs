@@ -18,9 +18,17 @@ public static class MediatrExtensions
         string template) where TRequest : IHttpRequest
     {
         app.MapPut(template,
-            async (IMediator mediator, [FromBody] TRequest request) => {
-                return await mediator.Send(request);
-            });
+            async (IMediator mediator, [FromBody] TRequest request) => await mediator.Send(request));
         return app;
     }
+    
+    public static WebApplication MediateDelete<TRequest>(
+        this WebApplication app,
+        string template) where TRequest : IHttpRequest
+    {
+        app.MapDelete(template,
+            async (IMediator mediator, [FromBody] TRequest request) => await mediator.Send(request));
+        return app;
+    }
+    
 }

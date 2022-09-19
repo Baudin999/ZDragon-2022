@@ -29,7 +29,8 @@ class eventbus {
         COMMENT: "comment",
         START_REFACTOR: "start_refactor",
         JSON_SCHEMA: "json_schema",
-        ERRORS_RECEIVED: "errors_received"
+        ERRORS_RECEIVED: "errors_received",
+        SAVE_COMPLETED: "save_completed"
     }
 
 }

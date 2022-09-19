@@ -1,7 +1,6 @@
 ﻿
 export const httpGet = function(url) {
     return new Promise(async (resolve, reject) => {
-            
         try {
             let result = await fetch(url, {
                 method: 'GET',
@@ -32,6 +31,23 @@ export const httpPut = function(url, body) {
             .then(r => {
                 resolve(r);
             })
-            .catch(console.log);
+            .catch(reject);
+    });
+}
+
+export const httpDelete = function(url, body) {
+    return new Promise(async (resolve, reject) => {
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+            .then(r => r.json())
+            .then(r => {
+                resolve(r);
+            })
+            .catch(reject);
     });
 }

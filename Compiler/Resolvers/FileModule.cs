@@ -20,7 +20,7 @@ public class FileModule : IModule
 
     public FileModule(string basePath, string filePath, string? text = null)
     {
-        Namespace = FileHelpers.GenerateNamespaceFromFileName(basePath, filePath);
+        Namespace = FileHelpers.GetNamespaceFromFileName(basePath, filePath);
         Text = text ?? "";
         _filePath = Path.Combine(basePath, filePath);
         _nodes = new List<AstNode>();

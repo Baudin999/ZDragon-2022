@@ -15,7 +15,7 @@ public class GetProjectFile
     {
         public async Task<IResult> Handle(GetProjectFileRequest request, CancellationToken cancellationToken)
         {
-            var @namespace = FileHelpers.GenerateNamespaceFromFileName(request.BasePath, request.CurrentPath);
+            var @namespace = FileHelpers.GetNamespaceFromFileName(request.BasePath, request.CurrentPath);
             var path = Path.Combine(request.BasePath, ".out", @namespace, request.FileName);
             var bytes = await FileHelpers.ReadBytesAsync(path);
             new FileExtensionContentTypeProvider().TryGetContentType(request.FileName, out string? contentType);

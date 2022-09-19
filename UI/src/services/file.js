@@ -1,6 +1,6 @@
 ﻿import eventbus from "./eventbus";
 import { writable, get as _get } from "svelte/store";
-import {httpGet, httpPut} from "./http";
+import {httpGet, httpPut, httpDelete} from "./http";
 
 
 // initialize the fileState. This object is 
@@ -96,6 +96,7 @@ async function saveText(text) {
     // result is a list of errors in the compilation            
     setErrors(result);
     eventbus.broadcast(eventbus.EVENTS.ERRORS_RECEIVED, result);
+    eventbus.broadcast(eventbus.EVENTS.SAVE_COMPLETED);
 
     // update the state?
     setText(text);
@@ -124,17 +125,47 @@ export async function createNewModule(moduleName) {
         namespace: moduleName,
         basePath: state.directory
     };
+    
+    try {
+        var result = await httpPut('/module', body);
+        fileState.update(state => {
+            state.namespace = result.ns;
+            state.currentPath = result.fullName;
+            state.text = "";
+            state.files = result.files;
+            state.errors = [];
 
-    fetch('/sys/file', {
-        method: 'PUT',
-        headers:{
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-        .then(r => r.json())
-        .then(r => {
-            console.log(r);
+            return state;
         })
-        .catch(console.log);
+    }
+    catch (error) {
+        console.log(error);        
+    }
+
+}
+
+export async function deleteModule(modulePath) {
+    // create a new file on the server, a new module
+    const state = _get(fileState);
+    let body = {
+        fileName: modulePath,
+        basePath: state.directory
+    };
+
+    try {
+        var result = await httpDelete('/module', body);
+        fileState.update(state => {
+            state.namespace = "";
+            state.currentPath = "";
+            state.text = "";
+            state.files = result.files;
+            state.errors = [];
+
+            return state;
+        })
+    }
+    catch (error) {
+        console.log(error);
+    }
+
 }

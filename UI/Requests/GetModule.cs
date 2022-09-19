@@ -8,8 +8,8 @@ public class GetModule
 {
     public class Request : IHttpRequest
     {
-        public string Path { get; set; }
-        public string BasePath { get; set; }
+        public string Path { get; set; } = default!;
+        public string BasePath { get; set; } = default!;
     }
 
     public class Handler : IHttpHandler<GetModule.Request>
@@ -19,7 +19,7 @@ public class GetModule
             // return content of the file if it exists
             if (System.IO.File.Exists(request.Path))
             {
-                var @namespace = FileHelpers.GenerateNamespaceFromFileName(request.BasePath, request.Path);
+                var @namespace = FileHelpers.GetNamespaceFromFileName(request.BasePath, request.Path);
                 var text = await System.IO.File.ReadAllTextAsync(request.Path);
                 return Results.Ok(new
                 {

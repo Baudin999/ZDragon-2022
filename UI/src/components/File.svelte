@@ -1,5 +1,5 @@
 ﻿<script>
-    import {fileState, setFilePath} from "../services/file";
+    import {fileState, setFilePath, deleteModule} from "../services/file";
     export let name;
     export let path;
     
@@ -9,9 +9,15 @@
     const selectFile = () => {
         setFilePath(path);
     }
+    const delModule = () => {
+        deleteModule(path);
+    }
 </script>
 
-<span class:selected on:click={selectFile}>{name}</span>
+<div>
+    <span class:selected on:click={selectFile}>{name}</span>
+    <span on:click={delModule}>DEL</span>
+</div>
 
 <style lang="less">
     @import "./../styles/colors";

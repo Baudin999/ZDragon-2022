@@ -37,7 +37,7 @@ public class FileSystemService
                     Name = Path.GetFileName(file),
                     Type = "file",
                     Path = file,
-                    Namespace = FileHelpers.GenerateNamespaceFromFileName(basePath, file)
+                    Namespace = FileHelpers.GetNamespaceFromFileName(basePath, file)
                 };
                 fileSystemObjects.Add(fileSystemObject);
             }

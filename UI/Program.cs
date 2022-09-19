@@ -38,10 +38,12 @@ app.Use(async (context, next) => {
 // register endpoints
 
 app
-    .MediatePut<CreateFile.Request>("/sys/file")
     .MediateGet<GetFiles.Request>("/project/files/{baseDir}")
     .MediateGet<GetRelations.Request>("/relations/{baseDir}/{type}")
     .MediatePut<SaveFile.SaveFileRequest>("/file")
+    // module endpoints 
+    .MediatePut<CreateFile.Request>("/module")
+    .MediateDelete<DeleteModule.Request>("/module")
     .MediatePut<GetModule.Request>("/page")
     .MediateGet<GetProjectFile.GetProjectFileRequest>("/project-file/{basePath}/{currentPath}/{fileName}");
 
