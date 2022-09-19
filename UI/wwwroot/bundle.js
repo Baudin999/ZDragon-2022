@@ -2449,15 +2449,18 @@ var app = (function () {
 
         fetch('/page', {
             method: 'PUT',
-            body: JSON.stringify({ Path: path }),
+            body: JSON.stringify({ 
+                Path: path,
+                BasePath: state.directory
+            }),
             headers:{
                 'Content-Type':'application/json'
             },
         })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
                 localStorage.setItem("currentPath", path);
-                setText(data);
+                updateState(data);
             })
             .catch(error => {
                 state.currentPath = "";
@@ -2466,7 +2469,14 @@ var app = (function () {
                 localStorage.removeItem("currentPath");
             });
     }
-
+    function updateState(data) {
+        fileState.update(state => {
+            Object.keys(data).forEach(key => {
+                state[key] = data[key];
+            });
+            return state;
+        });
+    }
     function setText(text) {
         fileState.update(state => {
             state.text = text;

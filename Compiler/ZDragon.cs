@@ -9,6 +9,7 @@ namespace Compiler
     {
         private readonly string _basePath;
         private readonly string _outputPath;
+        private readonly string _binPath;
         
         public Lexer? Lexer { get; private set; }
         private Grouper? Grouper { get; set; }
@@ -63,6 +64,7 @@ namespace Compiler
         {
             _basePath = basePath;
             _outputPath = Path.Combine(basePath, ".out");
+            _binPath = Path.Combine(basePath, ".bin");
 
             if (!Directory.Exists(_basePath))
                 Directory.CreateDirectory(_basePath);
@@ -78,6 +80,7 @@ namespace Compiler
             // empty constructor for testing
             _basePath = "";
             _outputPath = "";
+            _binPath = "";
             Module = new TextModule("", "");
             _resolver = new ManualResolver(new Dictionary<string, string>());
         }
@@ -87,6 +90,7 @@ namespace Compiler
             // empty constructor for testing
             _basePath = "";
             _outputPath = "";
+            _binPath = "";
             Module = new TextModule("", "");
             _resolver = resolver;
         }
@@ -149,6 +153,18 @@ namespace Compiler
             var path = Path.Combine(_outputPath, Module.Namespace, "components.svg");
             await FileHelpers.SaveFileAsync(path, bytes);
         }
+        
+        public async Task SaveNodes()
+        {
+            var path = Path.Join(_binPath, Module.Namespace + ".nodes.json");
+            await FileHelpers.SaveObjectAsync(path, this.AllNodes);
+        }
+        
+        public async Task SaveReferences()
+        {
+            var path = Path.Join(_binPath, Module.Namespace + ".refs.json");
+            await FileHelpers.SaveObjectAsync(path, this.References);
+        }
 
         private void MergeExtensions(IModule module)
         {
@@ -179,5 +195,7 @@ namespace Compiler
             Module.Dispose();
             _resolver?.Dispose();
         }
+
+        
     }
 }

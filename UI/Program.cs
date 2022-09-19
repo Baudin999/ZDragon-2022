@@ -39,7 +39,11 @@ app.Use(async (context, next) => {
 
 app
     .MediatePut<CreateFile.Request>("/sys/file")
-    .MediateGet<GetFiles.Request>("/project/files/{baseDir}");
+    .MediateGet<GetFiles.Request>("/project/files/{baseDir}")
+    .MediateGet<GetRelations.Request>("/relations/{baseDir}/{type}")
+    .MediatePut<SaveFile.SaveFileRequest>("/file")
+    .MediatePut<GetModule.Request>("/page")
+    .MediateGet<GetProjectFile.GetProjectFileRequest>("/project-file/{basePath}/{currentPath}/{fileName}");
 
 
 // Configure the HTTP request pipeline.
@@ -54,15 +58,6 @@ app.UseAuthorization();
 app.MapControllers();
 app.UseDefaultFiles();
 app.UseStaticFiles();
-
-
-
-
-// app.MapPut("/sys/file", ([FromBody] CreateFile.Request request) =>
-// {
-//     return Results.Ok("well done!");
-// });
-
 
 app.Run();
 

@@ -20,5 +20,9 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Compiler\Compiler.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Controllers" />
+	</ItemGroup>
 
 </Project>

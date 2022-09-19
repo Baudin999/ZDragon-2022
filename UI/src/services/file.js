@@ -26,15 +26,18 @@ export function setFilePath(path) {
 
     fetch('/page', {
         method: 'PUT',
-        body: JSON.stringify({ Path: path }),
+        body: JSON.stringify({ 
+            Path: path,
+            BasePath: state.directory
+        }),
         headers:{
             'Content-Type':'application/json'
         },
     })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
             localStorage.setItem("currentPath", path);
-            setText(data);
+            updateState(data);
         })
         .catch(error => {
             state.currentPath = "";
@@ -43,7 +46,14 @@ export function setFilePath(path) {
             localStorage.removeItem("currentPath");
         });
 }
-
+export function updateState(data) {
+    fileState.update(state => {
+        Object.keys(data).forEach(key => {
+            state[key] = data[key];
+        });
+        return state;
+    });
+}
 export function setText(text) {
     fileState.update(state => {
         state.text = text;
