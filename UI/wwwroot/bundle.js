@@ -2440,34 +2440,27 @@ var app = (function () {
         namespace: ""
     });
 
-    function setFilePath(path) {
+    async function setFilePath(path) {
         const state = get_store_value(fileState);
         
         if (path === state.currentPath) return;
         state.currentPath = path;
-        // console.log("File selected: " + path);
-
-        fetch('/page', {
-            method: 'PUT',
-            body: JSON.stringify({ 
-                Path: path,
-                BasePath: state.directory
-            }),
-            headers:{
-                'Content-Type':'application/json'
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                localStorage.setItem("currentPath", path);
-                updateState(data);
-            })
-            .catch(error => {
-                state.currentPath = "";
-                state.text = "";
-                console.error('Error fetching data:', error);
-                localStorage.removeItem("currentPath");
-            });
+        
+        let body = {
+            Path: path,
+            BasePath: state.directory
+        };
+        try {
+            var data = await httpPut('/page', body);
+            localStorage.setItem("currentPath", path);
+            updateState(data);
+        }
+        catch(error) {
+            state.currentPath = "";
+            state.text = "";
+            console.error('Error fetching data:', error);
+            localStorage.removeItem("currentPath");
+        }
     }
     function updateState(data) {
         fileState.update(state => {

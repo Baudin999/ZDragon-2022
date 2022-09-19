@@ -1,7 +1,4 @@
-﻿import eventbus from "./eventbus";
-import {setErrors, setText} from "./file";
-
-
+﻿
 export const httpGet = function(url) {
     return new Promise(async (resolve, reject) => {
             

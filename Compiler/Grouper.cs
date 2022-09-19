@@ -65,13 +65,13 @@
                     string open = "";
                     while (Current != TokenKind.NEWLINE)
                     {
-                        if (Current == TokenKind.Word || Current == TokenKind.Dot)
+                        if (Current == TokenKind.Word || Current == TokenKind.SPACE || Current == TokenKind.Dot)
                         {
                             open += Current.Value;
                         }
                         tokens.Add(Take());
                     }
-                    OpenNamespaces.Add(open);
+                    OpenNamespaces.Add(open.Trim());
                     tokens.Add(Token.STOP_CONTEXT);
                     _inContext = false;
                     _index++;

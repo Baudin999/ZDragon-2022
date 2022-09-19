@@ -44,7 +44,7 @@ public class FileModule : IModule
         var jsonPath = Path.Combine(
             _basePath,
             ".bin",
-            $"{Namespace}.json"
+            $"{Namespace}.nodes.json"
         );
         if (File.Exists(jsonPath))
         {
