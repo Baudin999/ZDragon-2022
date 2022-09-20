@@ -68,6 +68,13 @@
                 yield return TakeNext();
             }
         }
+        private IEnumerable<Token> TakeWhile(Func<Token, bool> predicate)
+        {
+            while(Current != TokenKind.EOF && predicate(Current))
+            {
+                yield return TakeNext();
+            }
+        }
         
 
         private bool Is(TokenKind kind)
@@ -133,6 +140,7 @@
                 else if (Current == TokenKind.KWType) AddNode(parseTypeDefinition(), @namespace);
                 else if (Current == TokenKind.KWLet) AddNode(parseAssignmentStatement(), @namespace);
                 else if (Current == TokenKind.KWRecord) AddNode(parseRecordDefinition(), @namespace);
+                else if (Current == TokenKind.KWView) AddNode(parseViewNode(), @namespace);
                 else if (Current == TokenKind.NEWLINE) TakeNext();
                 else if (Current == TokenKind.SPACE) TakeNext();
                 else if (Current == TokenKind.STOP_CONTEXT) TakeNext();
