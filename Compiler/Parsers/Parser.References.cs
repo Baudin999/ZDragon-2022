@@ -29,9 +29,17 @@ public partial class Parser
                 {
                     if (!Helpers.BaseTypes.Contains(value.Value))
                     {
-                        References.Add(new NodeReference(recordNode.IdToken, value, ReferenceType.UsedInrecord));
+                        References.Add(new NodeReference(recordNode.IdToken, value, ReferenceType.UsedInRecord));
                     }
                 }
+            }
+        }
+        else if (node is ViewNode viewNode)
+        {
+            References.Add(new NodeReference(viewNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn));
+            foreach (var child in viewNode.Children)
+            {
+                References.Add(new NodeReference(viewNode.IdToken, child.IdToken, ReferenceType.ViewedIn));
             }
         }
     }

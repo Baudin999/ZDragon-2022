@@ -22,5 +22,7 @@ view Marketing =
         Assert.Equal("Marketing", marketingNode.Id);
         Assert.Equal(2, marketingNode.Children.Count);
 
+        Assert.Equal(2, zdragon.Errors.Count);
+        
     }
 }

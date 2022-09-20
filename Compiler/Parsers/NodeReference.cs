@@ -31,5 +31,6 @@ public enum ReferenceType
     UsedInFunction,
     DefinedIn,
     Aggregate,
-    UsedInrecord
+    UsedInRecord,
+    ViewedIn
 }
