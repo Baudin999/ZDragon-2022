@@ -168,7 +168,7 @@ namespace Compiler
                     if (tokens.Count == 0 || tokens.Last().Equals(TokenKind.NEWLINE) && token is not null)
                     {
                         var found = Mappings.Keywords.TryGetValue(token?.Value ?? "__not_implemented__", out var kind);
-                        if (found) token.Kind = kind;
+                        if (found && token is not null) token.Kind = kind;
                     }
                 }
                 else if (isNumber(c))

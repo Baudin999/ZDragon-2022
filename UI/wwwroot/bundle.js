@@ -2527,7 +2527,7 @@ var app = (function () {
         let body = {
             path: state.currentPath,
             text,
-            root: state.directory
+            basePath: state.directory
         };
         
         // put the data

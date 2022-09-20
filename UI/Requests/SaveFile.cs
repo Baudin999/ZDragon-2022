@@ -8,7 +8,13 @@ public static class SaveFile
     {
         public string Text { get; set; } = default!;
         public string Path { get; set; } = default!;
-        public string Root { get; set; } = default!;
+        
+        private string _basePath = default!;
+        public string BasePath
+        {
+            get { return _basePath; }
+            set { _basePath = FileHelpers.SystemBasePath(value); }
+        }
     }
 
 
@@ -16,16 +22,16 @@ public static class SaveFile
     {
         public async Task<IResult> Handle(SaveFileRequest saveFileRequest, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(saveFileRequest.Root))
+            if (string.IsNullOrWhiteSpace(saveFileRequest.BasePath))
             {
                 throw new Exception("Invalid message");
             }
         
         
-            var module = new FileModule(saveFileRequest.Root, saveFileRequest.Path, saveFileRequest.Text);
+            var module = new FileModule(saveFileRequest.BasePath, saveFileRequest.Path, saveFileRequest.Text);
             await module.SaveText();
-            var resolver = new FileResolver(saveFileRequest.Root);
-            var zdragon = await new ZDragon(saveFileRequest.Root, resolver).Compile(module);
+            var resolver = new FileResolver(saveFileRequest.BasePath);
+            var zdragon = await new ZDragon(saveFileRequest.BasePath, resolver).Compile(module);
 
             await zdragon.SaveNodes();
             await zdragon.SaveReferences();

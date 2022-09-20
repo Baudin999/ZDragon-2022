@@ -9,7 +9,12 @@ public class GetModule
     public class Request : IHttpRequest
     {
         public string Path { get; set; } = default!;
-        public string BasePath { get; set; } = default!;
+        private string _basePath = default!;
+        public string BasePath
+        {
+            get { return _basePath; }
+            set { _basePath = FileHelpers.SystemBasePath(value); }
+        }
     }
 
     public class Handler : IHttpHandler<GetModule.Request>

@@ -39,8 +39,9 @@
             {
                 if (Current == TokenKind.KWComponent ||
                     Current == TokenKind.KWSystem ||
-                    Current == TokenKind.KWType ||
                     Current == TokenKind.KWEndpoint ||
+                    Current == TokenKind.KWView ||
+                    Current == TokenKind.KWType ||
                     Current == TokenKind.KWLet ||
                     Current == TokenKind.KWRecord ||
                     Current == TokenKind.KWData ||

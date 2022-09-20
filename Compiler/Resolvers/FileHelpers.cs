@@ -50,7 +50,7 @@ public static class FileHelpers
         if (!Environment.OSVersion.ToString().ToLower().Contains("win") && basePath.StartsWith("~"))
         {
             var userProfileFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            basePath = Path.Combine(userProfileFolder, basePath.Replace("~", "").Substring(1));
+            return Path.Combine(userProfileFolder, basePath.Replace("~", "").Substring(1));
         }
 
         return basePath;

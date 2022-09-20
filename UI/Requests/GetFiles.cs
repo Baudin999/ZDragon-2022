@@ -13,14 +13,11 @@ public class GetFiles
 {
     public class Request : IHttpRequest
     {
-        private string _baseDir = default!;
-        public string BaseDir
+        private string _basePath = default!;
+        public string BasePath
         {
-            get { return _baseDir; }
-            set
-            {
-                _baseDir = HttpUtility.UrlDecode(value);
-            }
+            get { return _basePath; }
+            set { _basePath = FileHelpers.SystemBasePath(value); }
         }
     }
 
@@ -29,7 +26,7 @@ public class GetFiles
     {
         public Task<IResult> Handle(Request request, CancellationToken cancellationToken)
         {
-            var result = new FileSystemService().GetFileSystemObjects(request.BaseDir);
+            var result = new FileSystemService().GetFileSystemObjects(request.BasePath);
             return Task.FromResult<IResult>(Results.Ok(result));
         }
     }

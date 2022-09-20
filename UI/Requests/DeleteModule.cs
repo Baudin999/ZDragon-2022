@@ -6,7 +6,12 @@ public class DeleteModule
 {
     public class Request : IHttpRequest
     {
-        public string BasePath { get; set; } = default!;
+        private string _basePath = default!;
+        public string BasePath
+        {
+            get { return _basePath; }
+            set { _basePath = FileHelpers.SystemBasePath(value); }
+        }
         public string FileName { get; set; } = default!;
     }
 
@@ -42,6 +47,8 @@ public class DeleteModule
             
             // recursively delete empty directories
             recursivelyDeleteEmptyDirectories(request.BasePath);
+
+            await Task.Delay(1);
 
             // return the result of deleting the file            
             return Results.Ok(new

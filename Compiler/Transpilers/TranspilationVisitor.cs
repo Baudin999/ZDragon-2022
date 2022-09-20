@@ -3,8 +3,8 @@ namespace Compiler.Transpilers;
 
 public abstract class TranspilationVisitor
 {
-    private StringBuilder _stringBuilder = new StringBuilder();
-    private List<AstNode> _nodes;
+    private StringBuilder _stringBuilder = new();
+    private List<AstNode> _nodes = new();
 
     protected void Visit(AstNode node)
     {

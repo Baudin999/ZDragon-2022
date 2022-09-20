@@ -4,7 +4,12 @@ public static class GetRelations
 {
     public class Request : IHttpRequest
     {
-        public string BaseDir { get; set; } = default!;
+        private string _basePath = default!;
+        public string BasePath
+        {
+            get { return _basePath; }
+            set { _basePath = FileHelpers.SystemBasePath(value); }
+        }
         public string Type { get; set; } = default!;
     }
 

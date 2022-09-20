@@ -6,7 +6,13 @@ public static class CreateFile
     public class Request : IHttpRequest
     {
         public string Namespace { get; set; } = default!;
-        public string BasePath { get; set; } = default!;
+
+        private string _basePath = default!;
+        public string BasePath
+        {
+            get { return _basePath; }
+            set { _basePath = FileHelpers.SystemBasePath(value); }
+        }
     }
 
     public class Handler : IRequestHandler<Request, IResult>

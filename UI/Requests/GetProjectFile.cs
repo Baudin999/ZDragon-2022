@@ -6,7 +6,12 @@ public class GetProjectFile
 {
     public class GetProjectFileRequest : IHttpRequest
     {
-        public string BasePath { get; set; } = default!;
+        private string _basePath = default!;
+        public string BasePath
+        {
+            get { return _basePath; }
+            set { _basePath = FileHelpers.SystemBasePath(value); }
+        }
         public string CurrentPath { get; set; } = default!;
         public string FileName { get; set; } = default!;
     }
