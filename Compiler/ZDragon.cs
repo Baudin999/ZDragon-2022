@@ -62,7 +62,7 @@ namespace Compiler
 
         public ZDragon(string basePath, IResolver resolver)
         {
-            _basePath = basePath;
+            _basePath = FileHelpers.SystemBasePath(basePath);
             _outputPath = Path.Combine(basePath, ".out");
             _binPath = Path.Combine(basePath, ".bin");
 
