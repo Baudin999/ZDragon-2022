@@ -36,9 +36,9 @@ endpoint Bar
         Assert.Equal(2, zdragon.Nodes.Count);
         Assert.IsType<EndpointNode>(zdragon.Nodes[0]);
 
-        var systemNode = (EndpointNode)zdragon.Nodes[0];
-        Assert.Equal("Foo",systemNode.Id);
-        Assert.Single(systemNode.ExtensionTokens);
+        var endpointNode = (EndpointNode)zdragon.Nodes[0];
+        Assert.Equal("Foo",endpointNode.Id);
+        Assert.Single(endpointNode.ExtensionTokens);
     }
     
     [Fact]

@@ -1,6 +1,6 @@
 ﻿namespace Compiler.Parsers.Nodes;
 
-public class ViewNode : AstNode
+public class ViewNode : AstNode, IIdentifier
 {
     public Token IdToken { get; }
     public string Id => IdToken.Value;
@@ -20,8 +20,11 @@ public class ViewChildNode
     public Token IdToken { get; }
     public string Id => IdToken.Value;
     
-    public ViewChildNode(Token idToken)
+    public List<ComponentAttribute> Attributes { get; }
+    
+    public ViewChildNode(Token idToken, List<ComponentAttribute> attributes)
     {
         this.IdToken = idToken;
+        this.Attributes = attributes;
     }
 }

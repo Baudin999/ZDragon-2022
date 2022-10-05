@@ -26,10 +26,10 @@ namespace Compiler
         public IModule Module { get; set; }
         public List<IModule> ResolvedModules { get; set; } = new List<IModule>();
 
-        public IAttributesNode? Get(string id)
+        public IIdentifier? Get(string id)
         {
             var result = (Nodes.Concat(Imports))
-                .OfType<IAttributesNode>()
+                .OfType<IIdentifier>()
                 .FirstOrDefault(n => n.Id == id);
             
             if (result is null)
@@ -37,7 +37,7 @@ namespace Compiler
                 foreach (var module in ResolvedModules)
                 {
                     result = module.Nodes
-                        .OfType<IAttributesNode>()
+                        .OfType<IIdentifier>()
                         .FirstOrDefault(n => n.Id == id);
                     if (result is not null)
                     {
@@ -55,7 +55,7 @@ namespace Compiler
             return result;
         }
 
-        public T? Get<T>(string id) where T: IAttributesNode
+        public T? Get<T>(string id) where T: IIdentifier
         { var result = Get(id);
             return result is not null ? (T)result : default(T);
         }

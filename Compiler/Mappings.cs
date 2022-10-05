@@ -8,6 +8,48 @@ namespace Compiler
 {
     internal static class Mappings
     {
+
+        public static Token? Merge(this IEnumerable<Token> tokens, TokenKind kind)
+        {
+            Token? result = null;
+            foreach (Token token in tokens)
+            {
+                if (result is null) result = token;
+                else result.Append(token);
+            }
+
+            if (result is not null)
+                result.Kind = kind;
+            return result;
+        }
+
+        public static void ContinueWith(this bool decision, Action next, Action? failure = null)
+        {
+            if (decision)
+            {
+                next();
+            }
+            else
+            {
+                if (failure is not null) failure?.Invoke();
+            }
+        }
+        
+        public static void ContinueWith(this IEnumerable<bool> decisions, Action next, Action? failure = null)
+        {
+            foreach (var decision in decisions)
+            {
+                if (decision)
+                {
+                    next();
+                }
+                else
+                {
+                    if (failure is not null) failure?.Invoke();
+                }
+            }
+        }
+        
         public static List<int> Operators = new List<int> {
             0x26,               // &
             0x2A,               // *

@@ -114,6 +114,13 @@ namespace Compiler
                     line++;
                     column = 0;
                 }
+                else if (c == '-' && index + 1 < _length && _code[index + 1] == '>')
+                {
+                    token = new Token(TokenKind.Next, c, line, column);
+                    index++;
+                    token.Add(_code[index + 1]);
+                    index++;
+                }
                 else if (c == '>') add(TokenKind.GreaterThen, c);
                 else if (c == '<') add(TokenKind.LessThen, c);
                 else if (c == '\\') add(TokenKind.Backslash, c);

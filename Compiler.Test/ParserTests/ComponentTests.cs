@@ -180,9 +180,14 @@ component JusticeLeague =
 component JusticeLeague =
     @ The current members of the JL
     Members:
+        @ Clark Kent
         - Superman
+        
+        @ Bruce Wayne
         - Batman
-        - Tech Man
+        
+        @ Diana Prince
+        - Wonder Woman
 ";
 
             var zdragon = await new ZDragon().Compile(code);
@@ -202,7 +207,7 @@ of America", justiceLeagueNode.Description);
             Assert.Equal(3, members.Items?.Count);
             Assert.Equal("Superman", members.Items?[0].Id);
             Assert.Equal("Batman", members.Items?[1].Id);
-            Assert.Equal("Tech Man", members.Items?[2].Id);
+            Assert.Equal("Wonder Woman", members.Items?[2].Id);
         }
 
         [Fact]

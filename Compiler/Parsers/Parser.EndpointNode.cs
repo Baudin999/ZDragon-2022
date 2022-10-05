@@ -17,7 +17,7 @@ public partial class Parser
         If(TokenKind.KWExtends, () =>
         {
             _ = Take(TokenKind.KWExtends);
-            extensions.AddRange(TakeWhile(TokenKind.Word).ToList());
+            extensions.AddRange(TakeWhile(TokenKind.Identifier).ToList());
         });
         
         If(TokenKind.Colon, () =>

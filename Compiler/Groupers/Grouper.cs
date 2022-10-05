@@ -1,54 +1,68 @@
-﻿namespace Compiler
+﻿namespace Compiler.Groupers
 {
-    public class Grouper
+    public partial class Grouper : TokenIterator
     {
-        private List<Token> _tokens;
-        private int _length;
         private bool _inContext;
-        private int _index;
-        private ErrorSink _errorSink;
-        private Stack<Token> _indents = new Stack<Token>();
-        private Token Current => this._tokens[this._index];
-        private Token? Next => this._tokens.ElementAtOrDefault(this._index + 1);
-        private Token? Peek (int offSet) => this._tokens.ElementAtOrDefault(this._index + offSet);
-        public List<Token> Tokens = new();
+        private int _indentDepth;
+
+        public List<Token> Tokens { get; private set; } = new List<Token>();
         public List<string> OpenNamespaces = new List<string>();
-        
-        private Token Take()
+        private List<Token> tokens = new List<Token>();
+        private List<Token> annotations = new List<Token>();
+
+        public Grouper(List<Token> tokens, ErrorSink errorSink) : base(tokens, errorSink)
         {
-            var token = this.Current;
-            this._index++;
-            return token;
+            this._inContext = false;
+            this._indentDepth = 2;
+            this._index = 0;
         }
 
-        public Grouper(List<Token> tokens, ErrorSink errorSink)
+        private Token Append(TokenKind kind)
         {
-            this._tokens = tokens;
-            this._length = tokens.Count;
-            this._inContext = false;
-            this._index = 0;
-            this._errorSink = errorSink;
+            var token = Take(kind);
+            tokens.Add(token);
+            return token;
         }
+        
 
         public List<Token> Group()
         {
-            var tokens = new List<Token>();
-            var annotations = new List<Token>();
+            if (_tokens.Count == 1 && _tokens[0] == TokenKind.EOF) return new List<Token>();
             
-            while (_index < _length)
+            tokens = new List<Token>();
+            annotations = new List<Token>();
+
+            Stack<Token> _indents = new();
+            
+            while (_index < _max)
             {
-                if (Current == TokenKind.KWComponent ||
-                    Current == TokenKind.KWSystem ||
-                    Current == TokenKind.KWEndpoint ||
-                    Current == TokenKind.KWView ||
-                    Current == TokenKind.KWType ||
-                    Current == TokenKind.KWLet ||
-                    Current == TokenKind.KWRecord ||
-                    Current == TokenKind.KWData ||
-                    Current == TokenKind.KWChoice ||
-                    Current == TokenKind.KWFlow)
+                if (Current == TokenKind.KWComponent || 
+                    Current == TokenKind.KWSystem)
+                {
+                    GroupComponent();
+                }
+                else if (Current == TokenKind.KWEndpoint)
+                {
+                    GroupEndpoint();
+                }
+                else if (Current == TokenKind.KWView)
+                {
+                    GroupView();
+                }
+                else if (Current == TokenKind.KWType ||
+                         Current == TokenKind.KWLet ||
+                         Current == TokenKind.KWRecord ||
+                         Current == TokenKind.KWData ||
+                         Current == TokenKind.KWChoice ||
+                         Current == TokenKind.KWFlow)
                 {
                     _inContext = true;
+                    
+                    // indent depth is when we stop wrapping "SAMEDENT" tokens
+                    // with a START and END tag.
+                    _indentDepth = 2;
+                    if (Current == TokenKind.KWView) _indentDepth = 3;
+                    if (Current == TokenKind.KWFlow) _indentDepth = 30;
                     tokens.Add(Token.START_CONTEXT);
                     tokens.Add(Current);
                     // the annotations come after the keyword because the parser
@@ -70,7 +84,7 @@
                         {
                             open += Current.Value;
                         }
-                        tokens.Add(Take());
+                        tokens.Add(TakeCurrent());
                     }
                     OpenNamespaces.Add(open.Trim());
                     tokens.Add(Token.STOP_CONTEXT);
@@ -102,9 +116,6 @@
                         _index++;
                     }
                     
-                    // take the newline after the annotation
-                    _index++;
-
                     annotationToken.Kind = TokenKind.Annotation;
                     tokens.Add(annotationToken);
                 }
@@ -119,15 +130,17 @@
                 }
                 else if (_inContext && Current == TokenKind.INDENT)
                 {
-                    tokens.Add(Token.START);
                     _indents.Push(Current);
+                    if (_indents.Count < _indentDepth) tokens.Add(Token.START);
                     _index++; // skip INDENT
                 }
                 else if (_inContext && Current == TokenKind.SAMEDENT)
                 {
                     _index++; // skip SAMEDENT
-
-                    if (tokens.LastOrDefault() != TokenKind.Annotation)
+                    
+                    if (!(tokens[^1] == TokenKind.Annotation || 
+                        (tokens[^1] == TokenKind.NEWLINE && tokens[^2] == TokenKind.Annotation)) && 
+                        _indents.Count < _indentDepth)
                     {
                         tokens.Add(Token.END);
                         tokens.Add(Token.START);
@@ -135,11 +148,11 @@
                 }
                 else if (_inContext && Current == TokenKind.DEDENT)
                 {
-                    tokens.Add(Token.END);
                     while (Current == TokenKind.DEDENT)
                     {
-                        tokens.Add(Token.END);
+                        
                         _indents.Pop();
+                        if (_indents.Count > 0) tokens.Add(Token.END);
                         _index++;
                     }
 
@@ -171,6 +184,28 @@
                     tokens.Add(Current);
                     _index++;
                 }
+                // LIST ITEMS
+                else if (
+                    _inContext && 
+                    Current == TokenKind.NEWLINE && 
+                    (Next == TokenKind.INDENT || Next == TokenKind.SAMEDENT) && 
+                    Peek(2) == TokenKind.Minus)
+                {
+                    var _annotations = new List<Token>();
+                    while (tokens.Last() == TokenKind.Annotation)
+                    {
+                        _annotations.Add(tokens.Last());
+                        tokens.RemoveAt(tokens.Count - 1);
+                    }
+                    
+                    tokens.Add(Token.START_LIST_ITEM);
+                    tokens.AddRange(_annotations);
+                    
+                    Take();
+                    if (Current == TokenKind.INDENT) _indents.Push(Current);
+                    Take();
+                    Take();
+                }
                 else if (_inContext && Current == TokenKind.DoubleQuote)
                 {
                     _index++; // skip the double quote symbol 
@@ -187,7 +222,7 @@
                 }
                 else if (Current == TokenKind.EOF)
                 {
-                    _index++;
+                    break;
                 }
                 else
                 {
@@ -200,7 +235,8 @@
 
             while (_indents.Count > 0)
             {
-                tokens.Add(Token.END);
+                if (_indents.Count < _indentDepth)
+                    tokens.Add(Token.END);
                 _indents.Pop();
             }
             if (_inContext) tokens.Add(Token.STOP_CONTEXT);

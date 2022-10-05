@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Compiler.Resolvers;
 
 namespace Compiler.Test
@@ -38,7 +39,7 @@ component Foo =
     Description: This is the 
         Foo component. With
         another line to check
-    Verion: 0
+    Version: 0
 
 component Bar
 ";
@@ -90,7 +91,7 @@ component Foo =
 component Bar
 ";
 
-            var splits = code.Split('\n');
+            var splits = code.Split("\r\n").Select(r => r + "\r\n").ToList();
             var zdragon = await new ZDragon().Compile(code);
             foreach (var token in zdragon.Lexer?.Tokens ?? new List<Token>())
             {
@@ -98,6 +99,7 @@ component Bar
                 
                 var line = splits[token.StartLine];
                 var s = line.Substring(token.StartColumn, token.EndColumn - token.StartColumn);
+
                 Assert.Equal(token.Value, s);
             }
             
@@ -163,5 +165,114 @@ component Bar =
             Assert.Empty(zdragon.Errors);
 
         }
+
+
+        [Fact]
+        public void TestIndentation()
+        {
+            const string code = @"
+component
+    two
+        three
+            four 
+            fourSame
+            fourSame2
+    five
+six
+";
+            var tokens = new Lexer(code, new ErrorSink()).Lex();
+            var groupedTokens = new Grouper(tokens, new ErrorSink()).Group();
+        }
+        
+        
+        [Fact]
+        public void TestIndentation2()
+        {
+            const string code = @"
+@ This is a large amount
+@ of documentation
+@ on the Foo component!
+component Foo extends Bar Something Other =
+
+    @ The description
+    @ of the Foo component
+    Description: Multiline
+        description
+        for Foo
+
+    @ The title of the Foo component
+    Title: Foo
+
+    @ Version 2 of the Foo component
+    Version: 2
+";
+            var tokens = new Lexer(code, new ErrorSink()).Lex();
+            var groupedTokens = new Grouper(tokens, new ErrorSink()).Group();
+            Assert.NotNull(groupedTokens);
+        }
+        
+        
+        
+        [Fact]
+        public void TestListItem1()
+        {
+            const string code = @"
+component Foo =    
+    Interactions:
+        - Bar
+
+        @ The person interaction
+        - Person; get the person; HTTP(s); left
+        - Animal
+";
+            var tokens = new Lexer(code, new ErrorSink()).Lex();
+            var groupedTokens = new Grouper(tokens, new ErrorSink()).Group();
+            var nodes = new Parser(groupedTokens, new ErrorSink(), new List<NodeReference>()).Parse();
+           
+        }
+        
+        [Fact]
+        public void TestListItem()
+        {
+            const string code = @"
+@ The component Foo
+component Foo =
+    @ The description
+    @ field
+    Description: This is a description
+        on multiple
+        lines
+        
+    Interactions:
+
+        @ The Bar item
+        - Bar
+
+        - Person; get the person; HTTP(s); left
+        - Animal
+
+component Bar
+component Person
+component Animal
+";
+            var tokens = new Lexer(code, new ErrorSink()).Lex();
+            var groupedTokens = new Grouper(tokens, new ErrorSink()).Group();
+            var nodes = new Parser(groupedTokens, new ErrorSink(), new List<NodeReference>()).Parse();
+            
+            
+            Assert.Equal(4, nodes.Count);
+            Assert.IsType<ComponentNode>(nodes.First());
+            var fooNode = (ComponentNode)nodes.First();
+            Assert.Equal("The component Foo", fooNode.Description);
+            Assert.Equal(2, fooNode.Attributes.Count);
+
+            var descriptionAttribute = fooNode.GetAttribute("Description");
+            Assert.NotNull(descriptionAttribute);
+            Assert.Equal(@"The description
+field", descriptionAttribute?.Description);
+        }
+        
+        
+
     }
 }

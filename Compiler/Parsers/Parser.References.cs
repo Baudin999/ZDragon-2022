@@ -53,15 +53,16 @@ public partial class Parser
             {
                 foreach (var item in componentAttribute.Items)
                 {
-                    References.Add(new NodeReference(id, item.Token ?? Token.EMPTY, referenceType));
+                    var itemToken = item.IdTokens.Where(r => r == TokenKind.Word)?.Last() ?? Token.EMPTY;
+                    References.Add(new NodeReference(id, itemToken, referenceType));
                 }
             }
             else
             {
-                var list = componentAttribute.ValueTokens;
-                for (var i = 0; i < list.Count; i++)
+                var list = componentAttribute.ValueTokens ?? new List<Token>();
+                foreach (var t in list)
                 {
-                    References.Add(new NodeReference(id, list[i], referenceType));
+                    References.Add(new NodeReference(id, t, referenceType));
                 }
             }
         }
@@ -84,7 +85,7 @@ public partial class Parser
             .FirstOrDefault(a => a.Id == "Model");
         if (model is not null && !model.IsList)
         {
-            References.Add(new NodeReference(id, model.ValueToken, ReferenceType.Aggregate));
+            References.Add(new NodeReference(id, model.ValueTokens?.Last() ?? Token.EMPTY, ReferenceType.Aggregate));
         }
     }
 

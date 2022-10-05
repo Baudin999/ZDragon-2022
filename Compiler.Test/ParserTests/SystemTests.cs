@@ -73,14 +73,11 @@ system Foo
 
         Assert.NotNull(zdragon);
         Assert.NotNull(zdragon.Nodes);
-        Assert.Single(zdragon.Nodes);
+        Assert.Equal(2, zdragon.Nodes.Count);
         Assert.IsType<SystemNode>(zdragon.Nodes[0]);
 
         var systemNode = (SystemNode)zdragon.Nodes[0];
         Assert.Equal("Foo",systemNode.Id);
-
-        Assert.Single(zdragon.Errors);
-        Assert.Equal("Expected '=' after 'system'", zdragon.Errors[0].Message);
     }
     
     [Fact]

@@ -6,6 +6,8 @@ namespace Compiler
         public TokenKind Kind { get; internal set; }
 
         private string _value = "";
+        
+
         public string Value => _value;
 
         public int StartLine { get; }
@@ -35,10 +37,10 @@ namespace Compiler
             // empty
         }
         
-        public Token(TokenKind kind)
+        public Token(TokenKind kind, string value = "")
         {
             Kind = kind;
-            _value = "";
+            _value = value;
             StartLine = -1;
             EndLine = -1;
             StartColumn = -1;
@@ -64,7 +66,14 @@ namespace Compiler
             this._value += other.Value;
         }
 
-        public static Token INDENT => new Token(TokenKind.INDENT);
+        public Token Transform(TokenKind kind)
+        {
+            var temp = this.Clone();
+            temp.Kind = kind;
+            return temp;
+        }
+
+        public static Token INDENT => new Token(TokenKind.INDENT, "    ");
         public static Token DEDENT => new Token(TokenKind.DEDENT);
         public static Token SAMEDENT => new Token(TokenKind.SAMEDENT);
         public static Token START_CONTEXT => new Token(TokenKind.START_CONTEXT);
@@ -72,6 +81,10 @@ namespace Compiler
         public static Token START => new Token(TokenKind.START);
         public static Token END => new Token(TokenKind.END);
         public static Token EMPTY => new Token(TokenKind.EMPTY);
+        public static Token START_LIST_ITEM => new Token(TokenKind.START_LIST_ITEM);
+        public static Token STOP_LIST_ITEM => new Token(TokenKind.STOP_LIST_ITEM);
+        public static Token START_VIEW_FIELD => new Token(TokenKind.START_VIEW_FIELD);
+        public static Token STOP_VIEW_FIELD => new Token(TokenKind.STOP_VIEW_FIELD);
         
         public override string ToString() => $"{Kind} - {_value}";
 
@@ -172,6 +185,7 @@ namespace Compiler
         
         Next,
         String,
+        Identifier,
         EmptyParamList,
         Comma,
         Annotation,
@@ -239,6 +253,11 @@ namespace Compiler
         ContextualIndent19,
         ContextualIndent20,
         ContextualIndent21,
+        
+        START_LIST_ITEM,
+        STOP_LIST_ITEM,
+        START_VIEW_FIELD,
+        STOP_VIEW_FIELD
     }
 
 
