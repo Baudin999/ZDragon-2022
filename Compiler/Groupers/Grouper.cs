@@ -73,37 +73,16 @@
                 }
                 else if (Current == TokenKind.KWOpen)
                 {
-                    _inContext = true;
-                    tokens.Add(Token.START_CONTEXT);
-                    tokens.Add(Take());
-                    
-                    string open = "";
-                    while (Current != TokenKind.NEWLINE)
-                    {
-                        if (Current == TokenKind.Word || Current == TokenKind.SPACE || Current == TokenKind.Dot)
-                        {
-                            open += Current.Value;
-                        }
-                        tokens.Add(TakeCurrent());
-                    }
-                    OpenNamespaces.Add(open.Trim());
-                    tokens.Add(Token.STOP_CONTEXT);
-                    _inContext = false;
-                    _index++;
+                    GroupOpen();
                 }
                 else if (!_inContext && Current == TokenKind.NEWLINE && Next == TokenKind.At)
                 {
-                    // parse annotation
-                    var annotationToken = Current.Clone();
-                    _index++;
-                    while (Current != TokenKind.NEWLINE)
-                    {
-                        annotationToken.Append(Current);
-                        _index++;
-                    }
-
-                    annotationToken.Kind = TokenKind.Annotation;
-                    annotations.Add(annotationToken);
+                    // GROUP THE ANNOTATION
+                    
+                    TakeCurrent(); // take the newline
+                    var annotation = TakeWhileNot(TokenKind.NEWLINE).Merge(TokenKind.Annotation);
+                    if (annotation is not null)
+                        annotations.Add(annotation);
                 }
                 else if (_inContext && Current == TokenKind.At)
                 {

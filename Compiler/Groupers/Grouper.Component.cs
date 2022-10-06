@@ -149,8 +149,16 @@ public partial class Grouper
                     annotations = new List<Token>();
                     
                     TakeCurrent(); // skip the minus token
-                    while (Current != TokenKind.NEWLINE)
+                    while (Current != TokenKind.NEWLINE && Current != TokenKind.DEDENT)
+                    {
+                        // if (Current != TokenKind.DEDENT)
+                        //     tokens.Add(TakeCurrent());
+                        // else
                         tokens.Add(TakeCurrent());
+                    }
+
+                    if (Current == TokenKind.NEWLINE) TakeCurrent();
+
                     tokens.Add(Token.STOP_LIST_ITEM);
                 }
                 else

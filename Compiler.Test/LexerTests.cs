@@ -19,7 +19,7 @@ component Foo =
     Title: Foo
     Description: This is the 
         Foo component.
-    Verion: 0
+    Version: 0
 
 component Bar
 ";
@@ -27,6 +27,8 @@ component Bar
             var result = new Lexer(code, errorSink).Lex();
             Assert.NotNull(result);
             Assert.NotEmpty(result);
+            Assert.Empty(errorSink.Errors);
+            
         }
         
         
@@ -211,7 +213,20 @@ component Foo extends Bar Something Other =
             Assert.NotNull(groupedTokens);
         }
         
-        
+        [Fact]
+        public async void TestStickyComponents()
+        {
+            const string code = @"
+component Foo =    
+    Title: 
+        - Foo
+component Bar
+";
+            var zdragon = await new ZDragon().Compile(code);
+            Assert.Equal(2, zdragon.Nodes.Count);
+            Assert.IsType<ComponentNode>(zdragon.Nodes[0]);
+            Assert.IsType<ComponentNode>(zdragon.Nodes[1]);
+        }
         
         [Fact]
         public void TestListItem1()
