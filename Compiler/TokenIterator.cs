@@ -223,9 +223,17 @@ public class TokenIterator
     
     protected IEnumerable<bool> While(params TokenKind[] tokens)
     {
-        while (Or(tokens))
+        while (Or(tokens) && Current != TokenKind.EOF)
         {
             yield return Or(tokens);
+        }
+    }
+    
+    protected IEnumerable<bool> WhileNot(params TokenKind[] tokens)
+    {
+        while (!Or(tokens) && Current != TokenKind.EOF)
+        {
+            yield return !Or(tokens);
         }
     }
     

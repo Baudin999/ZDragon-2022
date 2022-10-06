@@ -218,8 +218,8 @@ component Foo extends Bar Something Other =
         {
             const string code = @"
 component Foo =    
-    Title: 
-        - Foo
+    Interactions: 
+        - Bar
 component Bar
 ";
             var zdragon = await new ZDragon().Compile(code);

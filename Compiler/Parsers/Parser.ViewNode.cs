@@ -35,6 +35,6 @@ public partial class Parser
         
         _ = TakeWhile(t => t != TokenKind.STOP_CONTEXT).ToList();
         
-        return new ViewNode(id, children);
+        return new ViewNode(id, children, extensions);
     }
 }

@@ -73,25 +73,79 @@ view Marketing extends Other =
 view Other =
     Baseline
     Gateway
+
+component Baseline
+component Gateway
+component OfferStore
+component IdentificationService
 ";
         
         var zdragon = await new ZDragon().Compile(code);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);
-        Assert.Equal(2, zdragon.Nodes.Count);
+        Assert.Equal(6, zdragon.Nodes.Count);
 
         Assert.IsType<ViewNode>(zdragon.Nodes[0]);
         var marketingNode = (ViewNode)zdragon.Nodes[0];
         Assert.Equal("Marketing", marketingNode.Id);
-        Assert.Equal(2, marketingNode.Children.Count);
+        
+        // Marketing has two children and 2 by extension from Other
+        Assert.Equal(4, marketingNode.Children.Count);
 
         Assert.IsType<ViewNode>(zdragon.Nodes[1]);
         var otherNode = (ViewNode)zdragon.Nodes[1];
         Assert.Equal("Other", otherNode.Id);
         Assert.Equal(2, otherNode.Children.Count);
         
-        Assert.Equal(4, zdragon.Errors.Count);
+        Assert.Empty(zdragon.Errors);
+        
+    }
+    
+    
+    
+    [Fact(DisplayName = "Extend component in View - 2")]
+    public async void ExtendAView_OverlappingChild()
+    {
+        const string code = @"
+view Marketing extends Other =
+    OfferStore =
+        Title: OfferStore Title
+        Interactions:
+            - Baseline
+    IdentificationService
+    Baseline =
+        Title: Base-line
+
+view Other =
+    Baseline
+    Gateway
+
+component Baseline
+component Gateway
+component OfferStore
+component IdentificationService
+";
+        
+        var zdragon = await new ZDragon().Compile(code);
+
+        Assert.NotNull(zdragon.Nodes);
+        Assert.NotEmpty(zdragon.Nodes);
+        Assert.Equal(6, zdragon.Nodes.Count);
+
+        Assert.IsType<ViewNode>(zdragon.Nodes[0]);
+        var marketingNode = (ViewNode)zdragon.Nodes[0];
+        Assert.Equal("Marketing", marketingNode.Id);
+        
+        // Marketing has two children and 2 by extension from Other
+        Assert.Equal(4, marketingNode.Children.Count);
+
+        Assert.IsType<ViewNode>(zdragon.Nodes[1]);
+        var otherNode = (ViewNode)zdragon.Nodes[1];
+        Assert.Equal("Other", otherNode.Id);
+        Assert.Equal(2, otherNode.Children.Count);
+        
+        Assert.Empty(zdragon.Errors);
         
     }
 }

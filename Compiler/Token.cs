@@ -6,7 +6,7 @@ namespace Compiler
         public TokenKind Kind { get; internal set; }
 
         private string _value = "";
-        
+
 
         public string Value => _value;
 
@@ -85,6 +85,7 @@ namespace Compiler
         public static Token STOP_LIST_ITEM => new Token(TokenKind.STOP_LIST_ITEM);
         public static Token START_VIEW_FIELD => new Token(TokenKind.START_VIEW_FIELD);
         public static Token STOP_VIEW_FIELD => new Token(TokenKind.STOP_VIEW_FIELD);
+        public static Token ROOT => new Token(TokenKind.ROOT);
         
         public override string ToString() => $"{Kind} - {_value}";
 
@@ -257,7 +258,8 @@ namespace Compiler
         START_LIST_ITEM,
         STOP_LIST_ITEM,
         START_VIEW_FIELD,
-        STOP_VIEW_FIELD
+        STOP_VIEW_FIELD,
+        ROOT
     }
 
 

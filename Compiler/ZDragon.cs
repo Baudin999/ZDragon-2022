@@ -183,6 +183,21 @@ namespace Compiler
                     }
                 }
             }
+
+            foreach (var node in module.Nodes.OfType<ViewNode>())
+            {
+                foreach (var extends in node.Extensions)
+                {
+                    var extensionNode = Get(extends);
+                    if (extensionNode is not null && extensionNode is ViewNode vn)
+                    {
+                        foreach (var childNode in vn.Children)
+                        {
+                            node.AddChild(childNode);
+                        }
+                    }
+                }
+            }
         }
 
         public void Dispose()
