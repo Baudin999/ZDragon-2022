@@ -17,7 +17,7 @@ public partial class Grouper
             tokens.Add(TakeCurrent());
         }
         OpenNamespaces.Add(open.Trim());
-        tokens.Add(Token.STOP_CONTEXT);
+        tokens.Add(Token.END_CONTEXT);
         _index++;
     }
 }

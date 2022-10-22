@@ -19,10 +19,11 @@
 			<Router {url}>
 				<div class="navigation">
 					<nav>
-						<NavItem icon="home" title="home" route="/" />
-						<Link to="about">About</Link>
-						<Link to="editor">Editor</Link>
-						<Link to="lexicon">Lexicon</Link>
+						<NavItem icon="home" title="Home" route="/" />
+						<NavItem icon="pencil" title="Editor" route="/editor" />
+						<NavItem icon="book" title="Book" route="/lexicon" />
+						
+						<NavItem icon="question" title="About" route="/about" />
 					</nav>
 				</div>
 				<div class="main-content">
@@ -70,7 +71,6 @@
 			
 			.navigation {
 				flex: 0;
-				min-width: 50px;
 			}
 			.main-content {
 				flex: 1;

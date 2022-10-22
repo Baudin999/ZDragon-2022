@@ -69,12 +69,12 @@ public partial class Grouper
                         });
 
                     });
-                    tokens.Add(Token.STOP_VIEW_FIELD);
+                    tokens.Add(Token.END_VIEW_FIELD);
                 });
             
         });
         
         
-        tokens.Add(Token.STOP_CONTEXT);
+        tokens.Add(Token.END_CONTEXT);
     }
 }

@@ -2,6 +2,7 @@
 {
     public class ComponentTests
     {
+        
         [Fact]
         public async void SimpleComponent()
         {

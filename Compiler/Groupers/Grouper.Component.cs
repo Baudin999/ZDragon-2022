@@ -37,7 +37,7 @@ public partial class Grouper
         });
         
         
-        tokens.Add(Token.STOP_CONTEXT);
+        tokens.Add(Token.END_CONTEXT);
     }
 
     private void groupAttributes()
@@ -159,7 +159,7 @@ public partial class Grouper
 
                     if (Current == TokenKind.NEWLINE) TakeCurrent();
 
-                    tokens.Add(Token.STOP_LIST_ITEM);
+                    tokens.Add(Token.END_LIST_ITEM);
                 }
                 else
                 {

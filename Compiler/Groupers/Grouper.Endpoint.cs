@@ -69,6 +69,6 @@ public partial class Grouper
         });
         
         
-        tokens.Add(Token.STOP_CONTEXT);
+        tokens.Add(Token.END_CONTEXT);
     }
 }

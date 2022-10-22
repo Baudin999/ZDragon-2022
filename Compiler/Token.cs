@@ -77,16 +77,15 @@ namespace Compiler
         public static Token DEDENT => new Token(TokenKind.DEDENT);
         public static Token SAMEDENT => new Token(TokenKind.SAMEDENT);
         public static Token START_CONTEXT => new Token(TokenKind.START_CONTEXT);
-        public static Token STOP_CONTEXT => new Token(TokenKind.STOP_CONTEXT);
+        public static Token END_CONTEXT => new Token(TokenKind.END_CONTEXT);
         public static Token START => new Token(TokenKind.START);
         public static Token END => new Token(TokenKind.END);
         public static Token EMPTY => new Token(TokenKind.EMPTY);
         public static Token START_LIST_ITEM => new Token(TokenKind.START_LIST_ITEM);
-        public static Token STOP_LIST_ITEM => new Token(TokenKind.STOP_LIST_ITEM);
+        public static Token END_LIST_ITEM => new Token(TokenKind.END_LIST_ITEM);
         public static Token START_VIEW_FIELD => new Token(TokenKind.START_VIEW_FIELD);
-        public static Token STOP_VIEW_FIELD => new Token(TokenKind.STOP_VIEW_FIELD);
+        public static Token END_VIEW_FIELD => new Token(TokenKind.END_VIEW_FIELD);
         public static Token ROOT => new Token(TokenKind.ROOT);
-        
         public static Token EOF => new Token(TokenKind.EOF);
         
         public override string ToString() => $"{Kind} - {_value}";
@@ -138,131 +137,4 @@ namespace Compiler
             return new Token(Kind, _value, StartLine, EndLine, StartColumn, EndColumn);
         }
     }
-
-    [Flags]
-    public enum TokenKind: ulong
-    {
-        None,
-        INDENT,
-        DEDENT,
-        SAMEDENT,
-        START_CONTEXT,
-        STOP_CONTEXT,
-        END,
-        START,
-        NEWLINE,
-        EMPTY,
-        SPACE,
-        
-        Word,
-        GreaterThen,
-        LessThen,
-        Star,
-        Pow,
-        Hash,
-        DoubleQuote,
-        Quote,
-        LeftParen,
-        RightParen,
-        LeftBrace,
-        RightBrace,
-        Backslash,
-        Slash,
-        Equal,
-        Minus,
-        Plus,
-        LeftBracket,
-        RightBracket,
-        At,
-        Exclamation,
-        Tilde,
-        Dollar,
-        Percentage,
-        And,
-        Or,
-        Underscore,
-        Dot,
-        Colon,
-        SemiColon,
-        Number,
-        
-        Next,
-        String,
-        Identifier,
-        EmptyParamList,
-        Comma,
-        Annotation,
-        Apostrophe,
-        
-        Lambda,
-        TypeDef,
-        Pipe,
-        CommentLiteral,
-        CodeLiteral,
-        
-        KWComponent,
-        KWEndpoint,
-        KWSystem,
-        KWLet,
-        KWExtends,
-        KWIf,
-        KWElse,
-        KWType,
-        KWRecord,
-        KWData,
-        KWChoice,
-        KWFlow,
-        KWOpen,
-        KWAggregate,
-        KWView,
-        KWGuideline,
-        KWRequirement,
-        KWInclude,
-        KWImage,
-        KWInteraction,
-        KWPerson,
-        KWBusiness,
-        KWRoadmap,
-        KWMilestone,
-        KWTask,
-        KWWhere,
-        KWWhile,
-        KWEnd,
-        KWHidden,
-        EOF,
-        Exclemation,
-       
-        Unknown,
-        
-        // indentations
-        ContextualIndent1,
-        ContextualIndent2,
-        ContextualIndent3,
-        ContextualIndent4,
-        ContextualIndent5,
-        ContextualIndent6,
-        ContextualIndent7,
-        ContextualIndent8,
-        ContextualIndent9,
-        ContextualIndent10,
-        ContextualIndent11,
-        ContextualIndent12,
-        ContextualIndent13,
-        ContextualIndent14,
-        ContextualIndent15,
-        ContextualIndent16,
-        ContextualIndent17,
-        ContextualIndent18,
-        ContextualIndent19,
-        ContextualIndent20,
-        ContextualIndent21,
-        
-        START_LIST_ITEM,
-        STOP_LIST_ITEM,
-        START_VIEW_FIELD,
-        STOP_VIEW_FIELD,
-        ROOT
-    }
-
-
 }

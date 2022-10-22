@@ -115,7 +115,7 @@ component Bar
             var lexer = new Lexer(code, new ErrorSink());
             lexer.Lex();
             
-            Assert.Equal(33, lexer.Tokens.Count);
+            Assert.Equal(34, lexer.Tokens.Count);
 
         }
         

@@ -41,16 +41,17 @@
                 else if (Current == TokenKind.KWLet) AddNode(parseAssignmentStatement(), @namespace);
                 else if (Current == TokenKind.KWRecord) AddNode(parseRecordDefinition(), @namespace);
                 else if (Current == TokenKind.KWView) AddNode(parseViewNode(), @namespace);
+                else if (Current == TokenKind.KWChapter) AddNode(parseChapterNode(), @namespace);
                 else if (Current == TokenKind.NEWLINE) TakeCurrent();
                 else if (Current == TokenKind.SPACE) TakeCurrent();
-                else if (Current == TokenKind.STOP_CONTEXT) TakeCurrent();
+                else if (Current == TokenKind.END_CONTEXT) TakeCurrent();
                 else if (Current == TokenKind.START_CONTEXT) TakeCurrent();
                 else if (Current == TokenKind.DEDENT) TakeCurrent();
                 else if (Current == TokenKind.INDENT) TakeCurrent();
                 else if (Current == TokenKind.KWOpen)
                 {
-                    var openTokens = TakeWhile(() => Current != TokenKind.STOP_CONTEXT).ToList();
-                    Take(TokenKind.STOP_CONTEXT);
+                    var openTokens = TakeWhile(() => Current != TokenKind.END_CONTEXT).ToList();
+                    Take(TokenKind.END_CONTEXT);
                     Nodes.Add(new OpenNode(openTokens));
                 }
                 else if (Current == TokenKind.Hash)

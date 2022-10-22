@@ -20,7 +20,7 @@ public partial class Parser
     {
         var parameters = new List<AstNode>();
 
-        while (Current != TokenKind.STOP_CONTEXT)
+        while (Current != TokenKind.END_CONTEXT)
         {
             if (Is(TokenKind.Word)) parameters.Add(parseTypeDefinitionBodyWithWord());
             else if (Is(TokenKind.LeftParen)) {parameters.Add(parseNestedDefinition());}

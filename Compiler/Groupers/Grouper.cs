@@ -23,6 +23,24 @@
             tokens.Add(token);
             return token;
         }
+
+        /// <summary>
+        /// Remove all unnecessary tokens from the stream:
+        ///  - SPACE
+        ///  - NEWLINE
+        ///  - INDENT
+        ///  - DEDENT
+        ///  - SAMEDENT
+        /// </summary>
+        private void Reduce()
+        {
+            while (Current == TokenKind.SPACE || Current == TokenKind.NEWLINE || Current == TokenKind.INDENT ||
+                   Current == TokenKind.DEDENT || Current == TokenKind.SAMEDENT)
+            {
+                if (Current == TokenKind.EOF) break;
+                _index++;
+            }
+        }
         
 
         public List<Token> Group()
@@ -70,6 +88,10 @@
                     tokens.AddRange(annotations);
                     annotations = new List<Token>();
                     _index++;
+                }
+                else if (Current == TokenKind.KWChapter)
+                {
+                    GroupChapter();
                 }
                 else if (Current == TokenKind.KWOpen)
                 {
@@ -137,7 +159,7 @@
 
                     if (_indents.Count == 0)
                     {
-                        tokens.Add(Token.STOP_CONTEXT);
+                        tokens.Add(Token.END_CONTEXT);
                         _inContext = false;
                     }
                     else
@@ -219,7 +241,7 @@
                     tokens.Add(Token.END);
                 _indents.Pop();
             }
-            if (_inContext) tokens.Add(Token.STOP_CONTEXT);
+            if (_inContext) tokens.Add(Token.END_CONTEXT);
             tokens.Add(Token.EOF);
             this.Tokens = tokens;
             return tokens;

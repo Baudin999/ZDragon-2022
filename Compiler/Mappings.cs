@@ -226,7 +226,12 @@ namespace Compiler
                 { "end", TokenKind.KWEnd },
 
                 // rendering
-                { "hidden", TokenKind.KWHidden }
+                { "hidden", TokenKind.KWHidden },
+                
+                // document rendering
+                {"chapter", TokenKind.KWChapter },
+                {"paragraph", TokenKind.KWParagraph},
+                {"p", TokenKind.KWParagraph},
             };
     }
 }

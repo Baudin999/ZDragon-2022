@@ -87,7 +87,7 @@
                 {
                     // parse the node as a single textual value
                     _ = TakeWhile(t => t == TokenKind.NEWLINE || t == TokenKind.SPACE).ToList();
-                    valueTokens = TakeWhile(t => t != TokenKind.END && t != TokenKind.STOP_CONTEXT).ToList();
+                    valueTokens = TakeWhile(t => t != TokenKind.END && t != TokenKind.END_CONTEXT).ToList();
                     if (Current == TokenKind.END)
                         Take(TokenKind.END);
                 }
@@ -112,7 +112,7 @@
                 var listItemAnnotations = TakeWhile(TokenKind.Annotation).ToList();
                 var i = 0;
                 List<List<Token>> parts = new List<List<Token>>();
-                while (Current != TokenKind.STOP_LIST_ITEM && Current != TokenKind.END)
+                while (Current != TokenKind.END_LIST_ITEM && Current != TokenKind.END)
                 {
                     if (Current == TokenKind.SemiColon)
                     {
@@ -129,7 +129,7 @@
                     }
                 }
 
-                if (Current == TokenKind.STOP_LIST_ITEM) TakeCurrent();
+                if (Current == TokenKind.END_LIST_ITEM) TakeCurrent();
 
                 var length = parts.Count;
                 var idTokens = parts[0];

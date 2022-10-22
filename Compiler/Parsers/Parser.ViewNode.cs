@@ -27,13 +27,13 @@ public partial class Parser
                 parseAchitectureBody(attributes);
             });
             
-            _ = TakeWhile(t => t != TokenKind.STOP_VIEW_FIELD).ToList();
-            Take(TokenKind.STOP_VIEW_FIELD);
+            _ = TakeWhile(t => t != TokenKind.END_VIEW_FIELD).ToList();
+            Take(TokenKind.END_VIEW_FIELD);
             
             children.Add(new ViewChildNode(childId, attributes));
         }
         
-        _ = TakeWhile(t => t != TokenKind.STOP_CONTEXT).ToList();
+        _ = TakeWhile(t => t != TokenKind.END_CONTEXT).ToList();
         
         return new ViewNode(id, children, extensions);
     }

@@ -21,7 +21,7 @@ public class TokenIterator
             target = this._tokens[_index - 1].Clone();
         
         _errorSink.Errors.Add(new Error(target, message));
-        _ = TakeWhile(() => !Is(TokenKind.STOP_CONTEXT)).ToList();
+        _ = TakeWhile(() => !Is(TokenKind.END_CONTEXT)).ToList();
     }
     
     protected void MoveNext()
