@@ -37,7 +37,9 @@ view Marketing =
     IdentificationService
 
 component OfferStore
-component IdentificationService
+component IdentificationService =
+    Title: Identification Services
+    Something: Yes it is
 ";
         
         var zdragon = await new ZDragon().Compile(code);
@@ -52,10 +54,13 @@ component IdentificationService
         Assert.Equal(2, marketingNode.Children.Count);
         Assert.Equal("OfferStore", marketingNode.Children[0].Id);
         Assert.Single(marketingNode.Children[0].Attributes);
+        Assert.False(marketingNode.Children[0].Attributes[0].IsList);
+        Assert.Equal("OfferStore Title", marketingNode.Children[0].Attributes[0].Value);
         Assert.Equal("IdentificationService", marketingNode.Children[1].Id);
+        Assert.Equal(2, marketingNode.Children[1].Attributes.Count);
+        
 
         Assert.Empty(zdragon.Errors);
-        
     }
     
     

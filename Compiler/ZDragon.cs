@@ -197,6 +197,21 @@ namespace Compiler
                         }
                     }
                 }
+
+                foreach (var child in node.Children)
+                {
+                    var reference = Get(child.Id);
+                    if (reference is not null && reference is AttributesNode<ComponentAttribute> _ref)
+                    {
+                        foreach (var attribute in _ref.Attributes)
+                        {
+                            if (!child.HasAttribute(attribute.Id))
+                            {
+                                child.Attributes.Add(attribute.Clone());
+                            }
+                        }
+                    }
+                }
             }
         }
 

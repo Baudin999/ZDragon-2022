@@ -46,4 +46,9 @@ public class ViewChildNode
         this.IdToken = idToken;
         this.Attributes = attributes;
     }
+
+    public bool HasAttribute(string attributeId)
+    {
+        return Attributes.Find(a => a.Id == attributeId) is not null;
+    }
 }
