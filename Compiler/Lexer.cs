@@ -20,6 +20,7 @@ namespace Compiler
         // clean trailing spaces from each line in the text
         private string CleanTrailingSpaces(string code)
         {
+            code += Environment.NewLine;
             var code2 = 
                 code
                     .Replace("\t", "    ")
