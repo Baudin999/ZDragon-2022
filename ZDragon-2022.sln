@@ -22,6 +22,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{9EDBC11B-7
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "language", "language", "{07E585AB-F963-4E9E-9A67-ACC8D7CA2E90}"
+	ProjectSection(SolutionItems) = preProject
+		language\component.md = language\component.md
+		language\introduction.md = language\introduction.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +60,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2C6F1508-554F-4DF2-AB91-683EDAC3D419}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{07E585AB-F963-4E9E-9A67-ACC8D7CA2E90} = {9EDBC11B-70A5-43F1-B543-5940283D5C0C}
 	EndGlobalSection
 EndGlobal
