@@ -59,7 +59,7 @@ public partial class Grouper
 
                     If(TokenKind.DEDENT, () =>
                     {
-                        if (Next != TokenKind.DEDENT)
+                        if (Next != TokenKind.DEDENT && Next != TokenKind.ROOT)
                             Current.Kind = TokenKind.SAMEDENT;
                     });
 

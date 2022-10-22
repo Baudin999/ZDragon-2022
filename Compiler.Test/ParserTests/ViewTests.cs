@@ -59,7 +59,7 @@ component IdentificationService
     }
     
     
-    [Fact(DisplayName = "Extend component in View")]
+    [Fact(DisplayName = "Extend component in View with interactions")]
     public async void ExtendAView()
     {
         const string code = @"

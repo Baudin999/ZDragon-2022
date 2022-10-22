@@ -203,6 +203,7 @@
                 {
                     break;
                 }
+                else if (Current == TokenKind.ROOT) _index++;
                 else
                 {
                     tokens.Add(Current);

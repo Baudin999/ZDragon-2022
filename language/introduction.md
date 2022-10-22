@@ -15,3 +15,25 @@ component Foo =
         of the foo component.
 ```
 
+Another example:
+
+```zdragon
+component Foo =
+    Title: Foo
+    Interactions:
+        - Bar
+        - Bas
+        
+    @ Some annotations
+    @ spread over multiple lines
+    Notes:
+        # Chapter
+        
+        A paragraph with some extra stuff
+        
+        Bullets:
+        * One
+        * Two
+            *Sub-Two
+        * Three
+```

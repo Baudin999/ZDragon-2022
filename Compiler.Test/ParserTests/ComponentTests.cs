@@ -235,7 +235,7 @@ component Foo =
             var foo = (ComponentNode)zdragon.Nodes[0];
             Assert.Single(foo.Attributes);
             var attribute = foo.Attributes[0];
-            
+            Assert.Equal("Notes", attribute.Id);
             Assert.Equal(@"# These are the notes
 
 And with these notes we can

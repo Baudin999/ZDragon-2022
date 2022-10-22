@@ -91,7 +91,13 @@ namespace Compiler
                         for (var i = depth; i < indentDepth; i++)
                             tokens.Add(Token.DEDENT);
                     }
-                    else tokens.Add(Token.SAMEDENT);
+                    else
+                    {
+                        // if the depth is equal to the indentDepth, previously recorded
+                        // we emit a "SAMEDENT" token.
+                        if (depth > 0)
+                            tokens.Add(Token.SAMEDENT);
+                    }
 
                     indentDepth = depth;
                 }
@@ -104,6 +110,8 @@ namespace Compiler
                         {
                             tokens.Add(Token.DEDENT);
                         }
+                        
+                        tokens.Add(Token.ROOT);
 
                         indentDepth = 0;
                     }

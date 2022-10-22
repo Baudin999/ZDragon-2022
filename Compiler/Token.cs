@@ -14,7 +14,7 @@ namespace Compiler
         public int EndLine { get; private set; }
         public int StartColumn { get; }
         public int EndColumn { get; private set; }
-        public static Token EOF => new Token(TokenKind.EOF);
+        
 
         [JsonConstructor]
         public Token(TokenKind kind, string value, int startLine, int endLine, int startColumn, int endColumn)
@@ -86,6 +86,8 @@ namespace Compiler
         public static Token START_VIEW_FIELD => new Token(TokenKind.START_VIEW_FIELD);
         public static Token STOP_VIEW_FIELD => new Token(TokenKind.STOP_VIEW_FIELD);
         public static Token ROOT => new Token(TokenKind.ROOT);
+        
+        public static Token EOF => new Token(TokenKind.EOF);
         
         public override string ToString() => $"{Kind} - {_value}";
 
