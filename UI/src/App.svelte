@@ -5,6 +5,7 @@
 	import Editor from "./pages/editor.svelte";
 	import Lexicon from "./pages/lexicon.svelte";
 	import {Modals} from "svelte-modals";
+	import NavItem from "./components/NavItem.svelte";
 		
 	export let url = "";
 </script>
@@ -18,7 +19,7 @@
 			<Router {url}>
 				<div class="navigation">
 					<nav>
-						<Link to="/">Home</Link>
+						<NavItem icon="home" title="home" route="/" />
 						<Link to="about">About</Link>
 						<Link to="editor">Editor</Link>
 						<Link to="lexicon">Lexicon</Link>
@@ -43,14 +44,6 @@
 	</div>
 	
 	
-	
-
-<!--	<span class="material-symbols-outlined">search</span>-->
-<!--	<span class="material-symbols-outlined">home</span>-->
-<!--	<span class="material-symbols-outlined">settings</span>-->
-<!--	<span class="material-symbols-outlined">favorite</span>-->
-<!--	-->
-<!--	-->
 </main>
 
 <style lang="less" global>
