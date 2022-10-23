@@ -2,6 +2,7 @@
 	// import components
 	import Editor from "../components/Editor.svelte";
 	import FileExplorer from "../components/FileExplorer.svelte";
+	import { Tabs, Tab, TabList, TabPanel } from './../components/tabs';
 	
 	// import services
 	import { fileState } from "../services/file";
@@ -47,9 +48,34 @@
 		</div>
 	</div>
 	<div class="result">
-		{#if cPath && dir}
-			<iframe title="result" src={`/project-file/${dir}/${cPath}/components.svg?${time}`} />
-		{/if}
+		
+		<Tabs class="tabs">
+			<TabList>
+				<Tab>Page</Tab>
+				<Tab>Component Diagram</Tab>
+				<Tab>Views</Tab>
+			</TabList>
+			
+			<TabPanel>
+				{#if cPath && dir}
+					<iframe title="index" src={`/project-file/${dir}/${cPath}/index.html?${time}`} />
+				{:else}
+					<div>Nothing to see</div>
+				{/if}
+			</TabPanel>
+			<TabPanel>
+				{#if cPath && dir}
+					<iframe title="result" src={`/project-file/${dir}/${cPath}/components.svg?${time}`} />
+				{:else}
+					<div>Nothing to see</div>	
+				{/if}		
+			</TabPanel>
+			<TabPanel>
+				<div>Views</div>
+			</TabPanel>
+		</Tabs>
+		
+		
 	</div>
 </div>
 
@@ -86,13 +112,22 @@
 		
 	}
 	.result {
+		background: white;
 		grid-area: result;
-		
+				
 		iframe {
 			width: 100%;
 			height: 100%;
 			border: none;
 			box-shadow: none;
 		}
+	}
+
+	:global(.tabs) {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
 	}
 </style>

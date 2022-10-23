@@ -49,7 +49,7 @@ public abstract class TranspilationVisitor
     protected void Append(string s)
     {
         // escape the newline characters in the string
-        s = s.Replace("\r", "\\r").Replace("\n", "\\n");
+        //s = s.Replace("\r", "\\r").Replace("\n", "\\n");
         
         _stringBuilder.Append(s);
         _stringBuilder.Append(Environment.NewLine);

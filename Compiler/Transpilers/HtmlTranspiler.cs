@@ -24,21 +24,36 @@ public class HtmlTranspiler : TranspilationVisitor
 
     protected override void visitChapterNode(MarkdownChapterNode chapterNode)
     {
-        Append($@"<h1>{chapterNode.Value}</h1>");
+        Append($@"<h1>{chapterNode.Content}</h1>");
     }
 
     protected override void visitParagraphNode(MarkdownParagraphNode paragraphNode)
     {
-        Append($@"<p>{paragraphNode.Value}</p>");
+        Append($@"<p>{paragraphNode.Content}</p>");
     }
 
     protected override void Start()
     {
-        //
+        Append(@"
+<html>
+<head>
+<style>
+    html, body {
+        background: white;
+        color: black;
+    }
+</style>
+</head>
+<body>
+
+");
     }
 
     protected override void Stop()
     {
-        //
+        Append(@"
+</body>
+</html>
+");
     }
 }
