@@ -1,5 +1,6 @@
 ﻿<script>
     import { Link } from "svelte-routing";
+    import {pathStore} from "../services/locationService";
 
     export let title;
     export let route;
@@ -7,14 +8,19 @@
     
     let selected = window.location.pathname === route;
     
-    
+    pathStore.subscribe(r => {
+       selected =  r === route;
+    });
+        
 </script>
 
 <div class="nav-item" class:selected={selected}>
-    <div class="nav-item--inner">
-        <i class="fa fa-{icon}"></i>
-        <Link class="label" to="{route}">{title}</Link>
-    </div>
+    <Link to="{route}">
+        <div class="nav-item--inner">
+            <i class="fa fa-{icon}"></i>
+            <span>{title}</span>
+        </div>
+    </Link>
 </div>
 
 

@@ -611,7 +611,7 @@ var app = (function () {
         }
         component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
     }
-    function init$2(component, options, instance, create_fragment, not_equal, props, append_styles, dirty = [-1]) {
+    function init$3(component, options, instance, create_fragment, not_equal, props, append_styles, dirty = [-1]) {
         const parent_component = current_component;
         set_current_component(component);
         const $$ = component.$$ = {
@@ -1589,7 +1589,7 @@ var app = (function () {
     class Router extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$f, create_fragment$f, safe_not_equal, { basepath: 3, url: 4 });
+    		init$3(this, options, instance$f, create_fragment$f, safe_not_equal, { basepath: 3, url: 4 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -2040,7 +2040,7 @@ var app = (function () {
     class Route extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$e, create_fragment$e, safe_not_equal, { path: 8, component: 0 });
+    		init$3(this, options, instance$e, create_fragment$e, safe_not_equal, { path: 8, component: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -2305,7 +2305,7 @@ var app = (function () {
     	constructor(options) {
     		super(options);
 
-    		init$2(this, options, instance$d, create_fragment$d, safe_not_equal, {
+    		init$3(this, options, instance$d, create_fragment$d, safe_not_equal, {
     			to: 7,
     			replace: 8,
     			state: 9,
@@ -2542,7 +2542,7 @@ var app = (function () {
         setText(text);
     }
 
-    async function init$1() {
+    async function init$2() {
         eventbus$1.subscribe(eventbus$1.EVENTS.SAVING, (data) => {
             // console.log("Saving", data);
             saveText(data);
@@ -2731,7 +2731,7 @@ var app = (function () {
     class Home extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$c, create_fragment$c, safe_not_equal, {});
+    		init$3(this, options, instance$c, create_fragment$c, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -2799,7 +2799,7 @@ var app = (function () {
     class About extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$b, create_fragment$b, safe_not_equal, {});
+    		init$3(this, options, instance$b, create_fragment$b, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -3012,7 +3012,7 @@ var app = (function () {
     	constructor(options) {
     		super(options);
 
-    		init$2(this, options, instance$a, create_fragment$a, safe_not_equal, {
+    		init$3(this, options, instance$a, create_fragment$a, safe_not_equal, {
     			text: 2,
     			language: 3,
     			theme: 4,
@@ -3216,7 +3216,7 @@ var app = (function () {
     class File extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$9, create_fragment$9, safe_not_equal, { name: 0, path: 4 });
+    		init$3(this, options, instance$9, create_fragment$9, safe_not_equal, { name: 0, path: 4 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -3694,7 +3694,7 @@ var app = (function () {
     class Folder extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$8, create_fragment$8, safe_not_equal, { expanded: 0, name: 1, files: 2 });
+    		init$3(this, options, instance$8, create_fragment$8, safe_not_equal, { expanded: 0, name: 1, files: 2 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -4594,7 +4594,7 @@ var app = (function () {
     class Modals extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$7, create_fragment$7, safe_not_equal, {});
+    		init$3(this, options, instance$7, create_fragment$7, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -4959,7 +4959,7 @@ var app = (function () {
     	constructor(options) {
     		super(options);
 
-    		init$2(this, options, instance$6, create_fragment$6, safe_not_equal, {
+    		init$3(this, options, instance$6, create_fragment$6, safe_not_equal, {
     			isOpen: 0,
     			title: 1,
     			showCancel: 2,
@@ -5208,7 +5208,7 @@ var app = (function () {
     class CreateModule extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$5, create_fragment$5, safe_not_equal, {});
+    		init$3(this, options, instance$5, create_fragment$5, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -5341,7 +5341,7 @@ var app = (function () {
     class FileExplorer extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$4, create_fragment$4, safe_not_equal, {});
+    		init$3(this, options, instance$4, create_fragment$4, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -5601,7 +5601,7 @@ var app = (function () {
     class Editor_1 extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$3, create_fragment$3, safe_not_equal, { location: 4 });
+    		init$3(this, options, instance$3, create_fragment$3, safe_not_equal, { location: 4 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -5684,7 +5684,7 @@ var app = (function () {
     class Lexicon extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$2, create_fragment$2, safe_not_equal, {});
+    		init$3(this, options, instance$2, create_fragment$2, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -5695,25 +5695,66 @@ var app = (function () {
     	}
     }
 
+    const pathStore = writable(window.location.pathname); 
+
+    const init$1 = () => {
+        let previousUrl = "";
+
+        const observer = new MutationObserver(() => {
+            if (window.location.href !== previousUrl) {
+                previousUrl = window.location.href;
+                // do your thing
+                
+                pathStore.update(() => window.location.pathname);
+            }
+        });
+        const config = { subtree: true, childList: true };
+
+        // start observing change
+        observer.observe(document, config);
+    };
+
     /* src\components\NavItem.svelte generated by Svelte v3.49.0 */
     const file$1 = "src\\components\\NavItem.svelte";
 
-    // (16:8) <Link class="label" to="{route}">
+    // (18:4) <Link to="{route}">
     function create_default_slot$1(ctx) {
-    	let t;
+    	let div;
+    	let i;
+    	let i_class_value;
+    	let t0;
+    	let span;
+    	let t1;
 
     	const block = {
     		c: function create() {
-    			t = text(/*title*/ ctx[0]);
+    			div = element("div");
+    			i = element("i");
+    			t0 = space();
+    			span = element("span");
+    			t1 = text(/*title*/ ctx[0]);
+    			attr_dev(i, "class", i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-x90vkd");
+    			add_location(i, file$1, 19, 12, 498);
+    			add_location(span, file$1, 20, 12, 540);
+    			attr_dev(div, "class", "nav-item--inner svelte-x90vkd");
+    			add_location(div, file$1, 18, 8, 455);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, t, anchor);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, i);
+    			append_dev(div, t0);
+    			append_dev(div, span);
+    			append_dev(span, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*title*/ 1) set_data_dev(t, /*title*/ ctx[0]);
+    			if (dirty & /*icon*/ 4 && i_class_value !== (i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-x90vkd")) {
+    				attr_dev(i, "class", i_class_value);
+    			}
+
+    			if (dirty & /*title*/ 1) set_data_dev(t1, /*title*/ ctx[0]);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(t);
+    			if (detaching) detach_dev(div);
     		}
     	};
 
@@ -5721,7 +5762,7 @@ var app = (function () {
     		block,
     		id: create_default_slot$1.name,
     		type: "slot",
-    		source: "(16:8) <Link class=\\\"label\\\" to=\\\"{route}\\\">",
+    		source: "(18:4) <Link to=\\\"{route}\\\">",
     		ctx
     	});
 
@@ -5729,18 +5770,13 @@ var app = (function () {
     }
 
     function create_fragment$1(ctx) {
-    	let t0;
-    	let div1;
-    	let div0;
-    	let i;
-    	let i_class_value;
-    	let t1;
+    	let t;
+    	let div;
     	let link;
     	let current;
 
     	link = new Link({
     			props: {
-    				class: "label",
     				to: /*route*/ ctx[1],
     				$$slots: { default: [create_default_slot$1] },
     				$$scope: { ctx }
@@ -5750,45 +5786,35 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			t0 = space();
-    			div1 = element("div");
-    			div0 = element("div");
-    			i = element("i");
-    			t1 = space();
+    			t = space();
+    			div = element("div");
     			create_component(link.$$.fragment);
-    			attr_dev(i, "class", i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-x90vkd");
-    			add_location(i, file$1, 14, 8, 327);
-    			attr_dev(div0, "class", "nav-item--inner svelte-x90vkd");
-    			add_location(div0, file$1, 13, 4, 288);
-    			attr_dev(div1, "class", "nav-item svelte-x90vkd");
-    			toggle_class(div1, "selected", /*selected*/ ctx[3]);
-    			add_location(div1, file$1, 12, 0, 234);
+    			attr_dev(div, "class", "nav-item svelte-x90vkd");
+    			toggle_class(div, "selected", /*selected*/ ctx[3]);
+    			add_location(div, file$1, 16, 0, 372);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, div1, anchor);
-    			append_dev(div1, div0);
-    			append_dev(div0, i);
-    			append_dev(div0, t1);
-    			mount_component(link, div0, null);
+    			insert_dev(target, t, anchor);
+    			insert_dev(target, div, anchor);
+    			mount_component(link, div, null);
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
-    			if (!current || dirty & /*icon*/ 4 && i_class_value !== (i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-x90vkd")) {
-    				attr_dev(i, "class", i_class_value);
-    			}
-
     			const link_changes = {};
     			if (dirty & /*route*/ 2) link_changes.to = /*route*/ ctx[1];
 
-    			if (dirty & /*$$scope, title*/ 17) {
+    			if (dirty & /*$$scope, title, icon*/ 21) {
     				link_changes.$$scope = { dirty, ctx };
     			}
 
     			link.$set(link_changes);
+
+    			if (dirty & /*selected*/ 8) {
+    				toggle_class(div, "selected", /*selected*/ ctx[3]);
+    			}
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -5800,8 +5826,8 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(div1);
+    			if (detaching) detach_dev(t);
+    			if (detaching) detach_dev(div);
     			destroy_component(link);
     		}
     	};
@@ -5824,6 +5850,11 @@ var app = (function () {
     	let { route } = $$props;
     	let { icon = title.toLowerCase() } = $$props;
     	let selected = window.location.pathname === route;
+
+    	pathStore.subscribe(r => {
+    		$$invalidate(3, selected = r === route);
+    	});
+
     	const writable_props = ['title', 'route', 'icon'];
 
     	Object.keys($$props).forEach(key => {
@@ -5836,7 +5867,14 @@ var app = (function () {
     		if ('icon' in $$props) $$invalidate(2, icon = $$props.icon);
     	};
 
-    	$$self.$capture_state = () => ({ Link, title, route, icon, selected });
+    	$$self.$capture_state = () => ({
+    		Link,
+    		pathStore,
+    		title,
+    		route,
+    		icon,
+    		selected
+    	});
 
     	$$self.$inject_state = $$props => {
     		if ('title' in $$props) $$invalidate(0, title = $$props.title);
@@ -5855,7 +5893,7 @@ var app = (function () {
     class NavItem extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance$1, create_fragment$1, safe_not_equal, { title: 0, route: 1, icon: 2 });
+    		init$3(this, options, instance$1, create_fragment$1, safe_not_equal, { title: 0, route: 1, icon: 2 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -5904,7 +5942,7 @@ var app = (function () {
     /* src\App.svelte generated by Svelte v3.49.0 */
     const file = "src\\App.svelte";
 
-    // (34:7) <Route path="/">
+    // (36:24) <Route path="/">
     function create_default_slot_1(ctx) {
     	let home;
     	let current;
@@ -5936,14 +5974,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(34:7) <Route path=\\\"/\\\">",
+    		source: "(36:24) <Route path=\\\"/\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (19:3) <Router {url}>
+    // (21:12) <Router {url}>
     function create_default_slot(ctx) {
     	let div0;
     	let nav;
@@ -6043,13 +6081,13 @@ var app = (function () {
     			create_component(route2.$$.fragment);
     			t6 = space();
     			create_component(route3.$$.fragment);
-    			add_location(nav, file, 20, 5, 546);
+    			add_location(nav, file, 22, 20, 727);
     			attr_dev(div0, "class", "navigation");
-    			add_location(div0, file, 19, 4, 515);
+    			add_location(div0, file, 21, 16, 681);
     			attr_dev(div1, "class", "main-container");
-    			add_location(div1, file, 29, 6, 867);
+    			add_location(div1, file, 31, 20, 1163);
     			attr_dev(div2, "class", "main-content");
-    			add_location(div2, file, 28, 4, 833);
+    			add_location(div2, file, 30, 16, 1115);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -6124,7 +6162,7 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(19:3) <Router {url}>",
+    		source: "(21:12) <Router {url}>",
     		ctx
     	});
 
@@ -6170,14 +6208,14 @@ var app = (function () {
     			t4 = space();
     			create_component(modals.$$.fragment);
     			attr_dev(div0, "class", "root header");
-    			add_location(div0, file, 14, 2, 415);
+    			add_location(div0, file, 16, 8, 539);
     			attr_dev(div1, "class", "root middle");
-    			add_location(div1, file, 17, 2, 465);
+    			add_location(div1, file, 19, 8, 610);
     			attr_dev(div2, "class", "root footer");
-    			add_location(div2, file, 38, 2, 1143);
+    			add_location(div2, file, 42, 8, 1606);
     			attr_dev(div3, "class", "container");
-    			add_location(div3, file, 13, 1, 388);
-    			add_location(main, file, 12, 0, 379);
+    			add_location(div3, file, 15, 4, 506);
+    			add_location(main, file, 14, 0, 494);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6238,6 +6276,7 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
     	let { url = "" } = $$props;
+    	init$1();
     	const writable_props = ['url'];
 
     	Object.keys($$props).forEach(key => {
@@ -6258,6 +6297,7 @@ var app = (function () {
     		Lexicon,
     		Modals,
     		NavItem,
+    		initLocationService: init$1,
     		url
     	});
 
@@ -6275,7 +6315,7 @@ var app = (function () {
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$2(this, options, instance, create_fragment, safe_not_equal, { url: 0 });
+    		init$3(this, options, instance, create_fragment, safe_not_equal, { url: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -7642,7 +7682,7 @@ var app = (function () {
     monaco.languages.setMonarchTokensProvider("carlang", tokenizer);
     monaco.editor.defineTheme("carlangTheme", theme);
     init();
-    init$1();
+    init$2();
 
     const app = new App({
     	target: document.body,
