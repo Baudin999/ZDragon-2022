@@ -28,6 +28,9 @@
   @import "./../styles/colors";
 
   .nav-item {
+    * {
+      transition: all 0.2s ease-in-out;
+    }
     text-align: center;
 
     &--inner {
@@ -53,7 +56,9 @@
     
     &.selected {
       background: @accent-background;
-      color: @accent-color;
+      * {
+        color: darken(@accent-background, 30%);
+      }
     }
   }
 </style>

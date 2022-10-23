@@ -10,7 +10,7 @@
     }
 </script>
 
-<div>
+<div class="folder-container">
     {#if expanded}
         <i class="fa fa-folder-open-o"></i>
     {:else}
@@ -35,6 +35,9 @@
 {/if}
 
 <style>
+    .folder-container {
+        white-space: nowrap;
+    }
     span {
         /*padding: 0 0 0 1.5em;*/
         background-size: 1em 1em;
