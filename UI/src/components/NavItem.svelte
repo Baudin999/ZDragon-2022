@@ -40,7 +40,7 @@
       }
 
       .label {
-        color: white!important;
+        color: white;
         text-decoration: none;
       }
     }
@@ -48,10 +48,12 @@
     &:hover {
       background: @sec-background;
       cursor: pointer;
+      text-decoration: none;
     }
     
     &.selected {
-      background: green;
+      background: @accent-background;
+      color: @accent-color;
     }
   }
 </style>

@@ -34,7 +34,7 @@
 
 <div class="container">
 	<div class="treeview">
-		<FileExplorer files={$fileState.files} />
+		<FileExplorer />
 	</div>
 	<div class="editor">
 		<div class="editor-container">

@@ -3,6 +3,7 @@
     import {fileState} from "../services/file";
     import { openModal } from 'svelte-modals'
     import CreateModule from './../modals/CreateModule.svelte';
+    
 
     let root = [];
     fileState.subscribe(s => {
@@ -15,6 +16,22 @@
     }
 </script>
 
+<div class="button-row">
+    <button class="small no-border" on:click={handleCreateModule}><i class="fa fa-plus"></i></button>
+</div>
 
-<button on:click={handleCreateModule}>Create module</button>
+<div class="file-explorer">
 <Folder name="Files" files={root} expanded={true}/>
+</div>
+
+
+<style>
+    .button-row {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .file-explorer {
+        font-family: monospace;
+    }
+</style>

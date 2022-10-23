@@ -23,8 +23,7 @@
                     <nav>
                         <NavItem icon="home" title="Home" route="/"/>
                         <NavItem icon="pencil" title="Editor" route="/editor"/>
-                        <NavItem icon="book" title="Book" route="/lexicon"/>
-
+                        <NavItem icon="book" title="Lexicon" route="/lexicon"/>
                         <NavItem icon="question" title="About" route="/about"/>
                     </nav>
                 </div>
@@ -82,9 +81,13 @@
       .main-content {
         flex: 1;
         height: 100%;
+        overflow: hidden;
 
         .main-container {
           height: 100%;
+          margin-left: 1rem;
+          margin-right: 1rem;
+          overflow: hidden;
         }
       }
     }

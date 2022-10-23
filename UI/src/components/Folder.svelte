@@ -10,7 +10,15 @@
     }
 </script>
 
-<span class:expanded on:click={toggle}>{name}</span>
+<div>
+    {#if expanded}
+        <i class="fa fa-folder-open-o"></i>
+    {:else}
+        <i class="fa fa-folder-o"></i>
+    {/if}
+    
+    <span on:click={toggle}>{name}</span>
+</div>
 
 {#if expanded}
     <ul>
@@ -28,13 +36,10 @@
 
 <style>
     span {
-        padding: 0 0 0 1.5em;
+        /*padding: 0 0 0 1.5em;*/
         background-size: 1em 1em;
         font-weight: bold;
         cursor: pointer;
-    }
-
-    .expanded {
     }
 
     ul {
@@ -44,6 +49,6 @@
     }
 
     li {
-        padding: 0.2em 0;
+        /*padding: 0.2em 0;*/
     }
 </style>
