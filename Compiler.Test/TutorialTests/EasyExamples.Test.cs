@@ -115,7 +115,7 @@ paragraph
     [
         color:orange;
         font-size: 12px;
-        border-color: black;
+        border-color: 1px solid black;
     ] {
     This is a paragraph. The paragraph ends when we
     have two consecutive newlines after each other.
@@ -141,7 +141,12 @@ So this looks like at least an empty line.", paragraphNode?.Value);
 have two consecutive newlines after each other.
 So this looks like at least an empty line.", paragraphNode?.Content);
         Assert.Equal(3, paragraphNode?.Styles.Count);
-        
+        Assert.Equal("color", paragraphNode?.Styles[0].Key);
+        Assert.Equal("orange", paragraphNode?.Styles[0].Value);
+        Assert.Equal("font-size", paragraphNode?.Styles[1].Key);
+        Assert.Equal("12px", paragraphNode?.Styles[1].Value);
+        Assert.Equal("border-color", paragraphNode?.Styles[2].Key);
+        Assert.Equal("1px solid black", paragraphNode?.Styles[2].Value);
 
         Assert.IsType<MarkdownParagraphNode>(zdragon.Nodes[1]);
     }

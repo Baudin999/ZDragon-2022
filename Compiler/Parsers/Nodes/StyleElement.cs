@@ -3,10 +3,10 @@
 public class StyleElement
 {
     public Token KeyToken { get; }
-    public string Key => KeyToken.Value;
+    public string Key => KeyToken.Value.Trim();
     
     public Token ValueToken { get;  }
-    public string Value => ValueToken.Value;
+    public string Value => ValueToken.Value.Trim();
     
     public StyleElement(Token keyToken, Token valueToken)
     {

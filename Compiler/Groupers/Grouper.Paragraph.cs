@@ -20,8 +20,15 @@ public partial class Grouper
 
             while (!Is(TokenKind.RightBracket))
             {
-                tokens.Add(TakeCurrent());
-                Reduce(true);
+                if (Current == TokenKind.NEWLINE || Current == TokenKind.INDENT ||
+                    Current == TokenKind.DEDENT || Current == TokenKind.SAMEDENT || Current == TokenKind.ROOT)
+                {
+                    TakeCurrent();
+                }
+                else
+                {
+                    tokens.Add(TakeCurrent());
+                }
             }
             
             If(TokenKind.RightBracket, () =>
