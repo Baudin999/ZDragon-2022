@@ -21,8 +21,7 @@
     "svelte": "^3.0.0",
     "svelte-modals": "^1.2.0",
     "svelte-preprocess": "^4.10.7",
-    "svelte-routing": "^1.6.0",
-    "svelte-tabs": "^1.1.0"
+    "svelte-routing": "^1.6.0"
   },
   "dependencies": {
     "sirv-cli": "^2.0.0"
