@@ -149,5 +149,9 @@ So this looks like at least an empty line.", paragraphNode?.Content);
         Assert.Equal("1px solid black", paragraphNode?.Styles[2].Value);
 
         Assert.IsType<MarkdownParagraphNode>(zdragon.Nodes[1]);
+        var secondParagraphNode = (MarkdownParagraphNode)zdragon.Nodes[1];
+        Assert.Empty(secondParagraphNode.Styles);
+        Assert.Equal("This is paragraph two!", secondParagraphNode.Value);
+        Assert.Equal("This is paragraph two!", secondParagraphNode.Content);
     }
 }
