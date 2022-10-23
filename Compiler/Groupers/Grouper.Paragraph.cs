@@ -2,10 +2,10 @@
 
 public partial class Grouper 
 {
-    private void GroupChapter()
+    private void GroupParagraph()
     {
         tokens.Add(Token.START_CONTEXT);
-        tokens.Add(Take(TokenKind.KWChapter));
+        tokens.Add(Take(TokenKind.KWParagraph));
 
         Reduce();
         
@@ -18,14 +18,11 @@ public partial class Grouper
             
             Reduce();
 
-            WhileNot(TokenKind.RightBracket)
-                .ContinueWith(() =>
-                {
-                    Reduce();
-                    tokens.Add(Take());
-                });
-            
-            Reduce();
+            while (!Is(TokenKind.RightBracket))
+            {
+                tokens.Add(TakeCurrent());
+                Reduce(true);
+            }
             
             If(TokenKind.RightBracket, () =>
             {
@@ -48,8 +45,7 @@ public partial class Grouper
                 .ContinueWith(() =>
                 {
                     // ignore silliness
-                    if (Current == TokenKind.DEDENT || Current == TokenKind.INDENT || Current == TokenKind.SAMEDENT ||
-                        Current == TokenKind.NEWLINE || Current == TokenKind.ROOT)
+                    if (Current == TokenKind.DEDENT || Current == TokenKind.INDENT || Current == TokenKind.SAMEDENT || Current == TokenKind.ROOT)
                     {
                         Take();
                     }

@@ -42,6 +42,7 @@
                 else if (Current == TokenKind.KWRecord) AddNode(parseRecordDefinition(), @namespace);
                 else if (Current == TokenKind.KWView) AddNode(parseViewNode(), @namespace);
                 else if (Current == TokenKind.KWChapter) AddNode(parseChapterNode(), @namespace);
+                else if (Current == TokenKind.KWParagraph) AddNode(parseParagraphNode(), @namespace);
                 else if (Current == TokenKind.NEWLINE) TakeCurrent();
                 else if (Current == TokenKind.SPACE) TakeCurrent();
                 else if (Current == TokenKind.END_CONTEXT) TakeCurrent();

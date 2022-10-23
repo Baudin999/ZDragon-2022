@@ -29,10 +29,12 @@ public partial class Parser
             elements.Add(parseStyleElement());
         }
 
-        while (Current == TokenKind.SemiColon)
+        while (Is(TokenKind.SemiColon))
         {
             Take(TokenKind.SemiColon);
-            elements.Add(parseStyleElement());
+            
+            if (!Is(TokenKind.CloseStyles))
+                elements.Add(parseStyleElement());
         }
         
         Take(TokenKind.CloseStyles);

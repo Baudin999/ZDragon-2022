@@ -186,7 +186,7 @@ namespace Compiler
             };
 
 
-        public static Dictionary<string, TokenKind> Keywords = new Dictionary<string, TokenKind> {
+        public static readonly Dictionary<string, TokenKind> Keywords = new Dictionary<string, TokenKind> {
                 // type system 
                 { "record", TokenKind.KWRecord },
                 { "type", TokenKind.KWType },

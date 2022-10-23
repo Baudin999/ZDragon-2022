@@ -32,13 +32,25 @@
         ///  - DEDENT
         ///  - SAMEDENT
         /// </summary>
-        private void Reduce()
+        private void Reduce(bool allowSpaces = false)
         {
-            while (Current == TokenKind.SPACE || Current == TokenKind.NEWLINE || Current == TokenKind.INDENT ||
-                   Current == TokenKind.DEDENT || Current == TokenKind.SAMEDENT)
+            if (allowSpaces)
             {
-                if (Current == TokenKind.EOF) break;
-                _index++;
+                while (Current == TokenKind.SPACE || Current == TokenKind.NEWLINE || Current == TokenKind.INDENT ||
+                       Current == TokenKind.DEDENT || Current == TokenKind.SAMEDENT || Current == TokenKind.ROOT)
+                {
+                    if (Current == TokenKind.EOF) break;
+                    _index++;
+                }
+            }
+            else
+            {
+                while (Current == TokenKind.NEWLINE || Current == TokenKind.INDENT ||
+                       Current == TokenKind.DEDENT || Current == TokenKind.SAMEDENT || Current == TokenKind.ROOT)
+                {
+                    if (Current == TokenKind.EOF) break;
+                    _index++;
+                }
             }
         }
         
@@ -92,6 +104,10 @@
                 else if (Current == TokenKind.KWChapter)
                 {
                     GroupChapter();
+                }
+                else if (Current == TokenKind.KWParagraph)
+                {
+                    GroupParagraph();
                 }
                 else if (Current == TokenKind.KWOpen)
                 {
