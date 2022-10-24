@@ -162,12 +162,38 @@ namespace Compiler
             return formatted ?? html;
         }
 
-        public async Task ComponentDiagram()
+        public async Task RenderComponentDiagram()
         {
             var plantuml = new ArchitectureTranspiler().Run(this.AllNodes);
             var bytes = await TranspilationService.ToSvg(plantuml);
             var path = Path.Combine(_outputPath, Module.Namespace, "components.svg");
             await FileHelpers.SaveFileAsync(path, bytes);
+        }
+
+        public async Task RenderViewNodes()
+        {
+            foreach (var view in this.AllNodes.OfType<ViewNode>())
+            {
+                // render a view node
+                var childNodes = view.Children.Select<ViewChildNode, AstNode?>(n =>
+                {
+                    var source = Get(n.Id);
+                    if (source is ComponentNode cn)
+                    {
+                        return cn.Clone(n.Attributes);
+                    }
+                    else if (source is SystemNode sn)
+                    {
+                        return sn.Clone(n.Attributes);
+                    }
+
+                    return null;
+                }).OfType<AstNode>().ToList();
+                var plantuml = new ArchitectureTranspiler().Run(childNodes);
+                var bytes = await TranspilationService.ToSvg(plantuml);
+                var path = Path.Combine(_outputPath, Module.Namespace, view.Id + ".svg");
+                await FileHelpers.SaveFileAsync(path, bytes);
+            }
         }
         
         public async Task SaveNodes()

@@ -33,9 +33,8 @@ public class ViewNode : AstNode, IIdentifier
     }
 }
 
-public class ViewChildNode
+public class ViewChildNode : AstNode
 {
-
     public Token IdToken { get; }
     public string Id => IdToken.Value;
     

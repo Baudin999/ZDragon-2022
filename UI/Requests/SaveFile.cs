@@ -35,7 +35,8 @@ public static class SaveFile
 
             await zdragon.SaveNodes();
             await zdragon.SaveReferences();
-            await zdragon.ComponentDiagram();
+            await zdragon.RenderComponentDiagram();
+            await zdragon.RenderViewNodes();
             await zdragon.MainPage();
 
             return Results.Ok(zdragon.Errors);

@@ -14,6 +14,7 @@ public abstract class TranspilationVisitor
         else if (node is RecordNode recordNode) visitRecordNode(recordNode);
         else if (node is MarkdownChapterNode chapterNode) visitChapterNode(chapterNode);
         else if (node is MarkdownParagraphNode paragraphNode) visitParagraphNode(paragraphNode);
+        else if (node is ViewNode viewNode) visitViewNode(viewNode);
     }
 
     protected void Visit(string id)
@@ -42,6 +43,7 @@ public abstract class TranspilationVisitor
     // document nodes
     protected abstract void visitChapterNode(MarkdownChapterNode chapterNode);
     protected abstract void visitParagraphNode(MarkdownParagraphNode paragraphNode);
+    protected abstract void visitViewNode(ViewNode viewNode);
 
     protected abstract void Start();
     protected abstract void Stop();
@@ -68,5 +70,10 @@ public abstract class TranspilationVisitor
         Stop();
 
         return _stringBuilder.ToString();
+    }
+
+    internal bool Has(string id)
+    {
+        return _nodes.OfType<IIdentifier>().FirstOrDefault(n => n.Id == id) is not null;
     }
 }

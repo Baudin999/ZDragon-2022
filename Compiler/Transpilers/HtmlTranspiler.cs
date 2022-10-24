@@ -48,6 +48,11 @@ public class HtmlTranspiler : TranspilationVisitor
         
     }
 
+    protected override void visitViewNode(ViewNode viewNode)
+    {
+        Append(@$"<img src=""{viewNode.Id}.svg"" als=""{viewNode.Id}"" />");
+    }
+
     private void visitListNode(MarkdownParagraphNode listNode)
     {
         Append(Markdown.ToHtml(listNode.Content, pipeline));
@@ -89,6 +94,9 @@ public class HtmlTranspiler : TranspilationVisitor
 
             background: white;
         }
+        .page img {
+            max-width: 100%;
+        }
     </style>
 
     <link rel=""stylesheet"" 
@@ -124,6 +132,10 @@ public class HtmlTranspiler : TranspilationVisitor
     protected override void Stop()
     {
         Append(@"
+    <h1>Component Diagram</h1>
+    <div>
+        <img src=""components.svg"" alt=""components.svg""/>
+    </div>
 </div>
     <script>
         hljs.highlightAll();

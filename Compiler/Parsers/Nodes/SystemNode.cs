@@ -14,4 +14,14 @@ public class SystemNode : AttributesNode<ComponentAttribute>
         // Attributes = attributes;
         // Extends = extensions;
     }
+    
+    public SystemNode Clone(List<ComponentAttribute>? newAttributes = null)
+    {
+        return new SystemNode(
+            this.IdToken.Clone(),
+            newAttributes ?? this.Attributes.Select(a => a.Clone()).ToList(),
+            this.ExtensionTokens.Select(a => a.Clone()).ToList(),
+            this.AnnotationTokens.Select(a => a.Clone()).ToList()
+        );
+    }
 }

@@ -42,7 +42,8 @@ public class ArchitectureTranspiler : TranspilationVisitor
         Append($@"System_Boundary({id}, {title}) {{");
         foreach (var item in contains)
         {
-            Visit(item);
+            if (Has(item.Id))
+                Visit(item);
         }
         Append("}");
         _renderedIds.Add(systemNode.Id);
@@ -68,11 +69,17 @@ public class ArchitectureTranspiler : TranspilationVisitor
         //
     }
 
+    protected override void visitViewNode(ViewNode viewNode)
+    {
+        //
+    }
+
     private void visitInteractions(string id, List<ComponentAttributeListItem> interactions)
     {
         foreach (var interaction in interactions)
         {
-            _interactions.Add($"Rel({id}, {interaction.Id}, \"{interaction.Title ?? ""}\", \"{interaction.Technology ?? ""}\")");
+            if (Has(interaction.Id))
+                _interactions.Add($"Rel({id}, {interaction.Id}, \"{interaction.Title ?? ""}\", \"{interaction.Technology ?? ""}\")");
         }
     }
 
