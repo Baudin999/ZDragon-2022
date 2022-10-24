@@ -139,11 +139,27 @@ namespace Compiler
             return this;
         }
 
-        public async Task MainPage()
+        public async Task<string> MainPage(bool save = true)
         {
             var html = new HtmlTranspiler().Run(this.AllNodes);
-            var path = Path.Combine(_outputPath, Module.Namespace, "index.html");
-            await FileHelpers.SaveFileAsync(path, html);
+            string? formatted = null;
+            try
+            {
+                formatted = System.Xml.Linq.XElement.Parse(html).ToString();
+                
+            }
+            catch (Exception ex)
+            {
+                //
+            }
+            finally
+            {
+                var path = Path.Combine(_outputPath, Module.Namespace, "index.html");
+                if (save)
+                    await FileHelpers.SaveFileAsync(path, formatted ?? html);
+
+            }
+            return formatted ?? html;
         }
 
         public async Task ComponentDiagram()

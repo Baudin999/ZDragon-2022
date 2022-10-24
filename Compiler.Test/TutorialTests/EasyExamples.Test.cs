@@ -154,4 +154,41 @@ So this looks like at least an empty line.", paragraphNode?.Content);
         Assert.Equal("This is paragraph two!", secondParagraphNode.Value);
         Assert.Equal("This is paragraph two!", secondParagraphNode.Content);
     }
+    
+    /*
+       Inside of our documents we would also like to add simple lists, for the 
+       most part, default markdown will suffice. Later in this documentation 
+       we will go over other ways of creating lists.
+     */
+    
+    [Fact(DisplayName = "05 - Create a markdown list")]
+    public async void CreateAMarkdownList()
+    {
+        const string code = @"
+# Checking out lists!
+
+Lists are conform the markdown spec:
+
+* First Item
+* Second Item
+    * Second - First sub-item
+    * Second - Second sub-item
+* Third Item
+
+A numbered list:
+
+1) First
+2) Second
+3) Third
+
+It is important to end with an empty line...
+";
+
+        var zdragon = await new ZDragon().Compile(code);
+        Assert.Equal(6, zdragon.Nodes.Count);
+
+        var html = await zdragon.MainPage(false);
+        
+
+    }
 }
