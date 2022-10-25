@@ -6,12 +6,15 @@ namespace Compiler.Transpilers;
 public class ArchitectureTranspiler : TranspilationVisitor
 {
     private List<string> _renderedIds = new List<string>();
-
     private List<string> _interactions = new();
-    
+
+    private Dictionary<string, string> elements = new Dictionary<string, string>();
+
     protected override void visitComponentNode(ComponentNode componentNode)
     {
         if (_renderedIds.Contains(componentNode.Id)) return;
+        
+        _renderedIds.Add(componentNode.Id);
         
         string id = componentNode.Id;
         string title = componentNode.GetAttribute("Title")?.Value ?? componentNode.Id;
@@ -22,39 +25,59 @@ public class ArchitectureTranspiler : TranspilationVisitor
         string? version = componentNode.GetAttribute("Version")?.Value;
         string? technology = componentNode.GetAttribute("Technology")?.Value;
         
-        
-        Append(formatPlantUmlElement("rectangle", id, title, description, version, technology));
-        
-        // Append(@$"Container({id}, {title}, {technology}, ""{description}"")");
-        //
-        //
-        // var interactions  = componentNode.GetAttribute("Interactions")?.Items ?? new List<ComponentAttributeListItem>();
-        // visitInteractions(id, interactions);
-        
-        _renderedIds.Add(componentNode.Id);
+        elements.Add(id, formatPlantUmlElement("rectangle", "component_default", id, title, description, version, technology));
+
+        var interactions = componentNode.GetAttribute("Interactions");
+        if (interactions is not null && interactions.IsList)
+            visitInteractions(id, interactions.Items!);
     }
 
     protected override void visitSystemNode(SystemNode systemNode)
     {
         if (_renderedIds.Contains(systemNode.Id)) return;
-        //
+        
+        // add to list in order to capture recursive elements
+        _renderedIds.Add(systemNode.Id);
+        
         string id = systemNode.Id;
         string title = systemNode.GetAttribute("Title")?.Value ?? systemNode.Id;
-        string description = systemNode.GetAttribute("Description")?.Value ?? systemNode.Description;
+        string? description = systemNode.GetAttribute("Description")?.Value ?? systemNode.Description;
         description = description.Replace(Environment.NewLine, " ").Trim();
-        string technology = systemNode.GetAttribute("Technology")?.Value ?? "";
+        if (description.Length == 0) description = null;
+
+        string? version = systemNode.GetAttribute("Version")?.Value;
+        string? technology = systemNode.GetAttribute("Technology")?.Value;
         var contains  = systemNode.GetAttribute("Contains")?.Items ?? new List<ComponentAttributeListItem>();
+
+        var appendBracket = "";
+        if (contains.Count > 0) appendBracket = "{";
+
+        StringBuilder systemBuilder = new StringBuilder();
         
-        Append($@"System_Boundary({id}, {title}) {{");
-        foreach (var item in contains)
+        systemBuilder.AppendLine(formatPlantUmlElement("rectangle", "system_default", id, title, description, version, technology) + appendBracket);
+        if (contains.Count > 0)
         {
-            if (Has(item.Id))
+            foreach (var item in contains)
             {
-                Visit(Get(item.Id)!);
-            }
+                if (Has(item.Id))
+                {
+                    
+                    var refItem = Get(item.Id);
+                    Visit(refItem!);
+
+                    if (elements.ContainsKey(item.Id))
+                    {
+                        systemBuilder.AppendLine(elements[item.Id]);
+                        elements.Remove(item.Id);
+                    }
+                }
+            }    
+            systemBuilder.AppendLine("}");
         }
-        Append("}");
-        _renderedIds.Add(systemNode.Id);
+        
+        elements.Add(id, systemBuilder.ToString());
+        
+        
     }
 
     protected override void visitEndpointNode(EndpointNode endpointNode)
@@ -86,8 +109,19 @@ public class ArchitectureTranspiler : TranspilationVisitor
     {
         foreach (var interaction in interactions)
         {
+            var title = "";
+            if (interaction.Title is not null && interaction.Technology is not null)
+            {
+                title = $" : \" {interaction.Title!}\\n<size 8>//[{interaction.Technology}]// \"";
+            }
+            else if (interaction.Title is not null)
+            {
+                title = $" : \" {interaction.Title!} \"";
+            }
+            
             if (Has(interaction.Id))
-                _interactions.Add($"Rel({id}, {interaction.Id}, \"{interaction.Title ?? ""}\", \"{interaction.Technology ?? ""}\")");
+                _interactions.Add($"{id} --> {interaction.Id}{title}");
+                //_interactions.Add($"Rel({id}, {interaction.Id}, \"{interaction.Title ?? ""}\", \"{interaction.Technology ?? ""}\")");
         }
     }
 
@@ -116,21 +150,37 @@ hide stereotype
 
 <style>
 rectangle {
-   HorizontalAlignment center
+    HorizontalAlignment center
 }
 </style>
+skinparam rectangle {
+
+    ' <<component_default>>
+    BackgroundColor<<component_default>> #508dd0
+    FontColor<<component_default>> white
+    BorderColor<<component_default>> #508dd0
+
+    ' <<system_default>>
+    BackgroundColor<<system_default>> transparent
+    FontColor<<system_default>> black
+    BorderColor<<system_default>> black
+    BorderStyle<<system_default>> dashed
+}
 ");
     }
 
     protected override void Stop()
     {
+        foreach (var kvPair in elements)
+            Append(kvPair.Value);
+        
         foreach (var interaction in _interactions)
             Append(interaction);
         //Append("SHOW_LEGEND()");
     }
     
     
-    private string formatPlantUmlElement(string type, string id, string title, string? description, string? version, string? technology)
+    private string formatPlantUmlElement(string geometry, string stereotype, string id, string title, string? description, string? version, string? technology)
     {
         string sub = "";
         if (version is not null && technology is not null)
@@ -142,9 +192,9 @@ rectangle {
 
         string wrappedDescription = "";
         if(description is not null) 
-            wrappedDescription = "\\n\\n" + wrap(description, "<size 9>");
+            wrappedDescription = "<size 9>\\n\\n" + wrap(description, "<size 9>");
 
-        return $"{type} \"<b>{title}</b>{sub}{wrappedDescription}\" <<Component>> as {id}";
+        return $"{geometry} \"<b>{title}</b>{sub}{wrappedDescription}\" <<{stereotype}>> as {id}";
     }
 
     private string wrap(string text, string prefix = "", int width = 20)

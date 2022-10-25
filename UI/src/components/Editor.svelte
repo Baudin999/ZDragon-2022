@@ -57,7 +57,24 @@
     });
     
     $: if (text !== undefined && text !== null && editor) {
-        editor.setValue(text);
+        // editor.setValue(text);
+
+        const model = editor.getModel();
+        const position = editor.getPosition();
+        if (text != null && text !== model.getValue()) {
+            editor.pushUndoStop();
+            model.pushEditOperations(
+                [],
+                [
+                    {
+                        range: model.getFullModelRange(),
+                        text: text,
+                    },
+                ]
+            );
+            editor.pushUndoStop();
+            editor.setPosition(position);
+        }
     }
 
     eventbus.subscribe(eventbus.EVENTS.SAVE, () => {

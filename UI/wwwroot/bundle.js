@@ -2853,7 +2853,7 @@ var app = (function () {
     			div = element("div");
     			attr_dev(div, "class", "editor svelte-b3bzf");
     			attr_dev(div, "id", /*id*/ ctx[1]);
-    			add_location(div, file$d, 89, 0, 2567);
+    			add_location(div, file$d, 106, 0, 3103);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3020,7 +3020,17 @@ var app = (function () {
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*text, editor*/ 132) {
     			if (text !== undefined && text !== null && editor) {
-    				editor.setValue(text);
+    				// editor.setValue(text);
+    				const model = editor.getModel();
+
+    				const position = editor.getPosition();
+
+    				if (text != null && text !== model.getValue()) {
+    					editor.pushUndoStop();
+    					model.pushEditOperations([], [{ range: model.getFullModelRange(), text }]);
+    					editor.pushUndoStop();
+    					editor.setPosition(position);
+    				}
     			}
     		}
     	};
