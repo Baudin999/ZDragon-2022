@@ -2,8 +2,10 @@
     <slot></slot>
 </div>
 
-<style>
+
+<style lang="less">
+    @import "./../styles/colors";
     .tab-list {
-        border-bottom: 1px solid teal;
+        border-bottom: 1px solid @accent-background;
     }
 </style>

@@ -3,7 +3,7 @@ using Compiler.Parsers.Nodes;
 
 namespace Compiler.Transpilers;
 
-public class ArchitectureTranspiler : TranspilationVisitor
+public class ArchitectureTranspiler_old : TranspilationVisitor
 {
     private List<string> _renderedIds = new List<string>();
 
@@ -15,21 +15,15 @@ public class ArchitectureTranspiler : TranspilationVisitor
         
         string id = componentNode.Id;
         string title = componentNode.GetAttribute("Title")?.Value ?? componentNode.Id;
-        string? description = componentNode.GetAttribute("Description")?.Value ?? componentNode.Description;
+        string description = componentNode.GetAttribute("Description")?.Value ?? componentNode.Description;
         description = description.Replace(Environment.NewLine, " ").Trim();
-        if (description.Length == 0) description = null;
-
-        string? version = componentNode.GetAttribute("Version")?.Value;
-        string? technology = componentNode.GetAttribute("Technology")?.Value;
+        string technology = componentNode.GetAttribute("Technology")?.Value ?? "";
+        
+        Append(@$"Container({id}, {title}, {technology}, ""{description}"")");
         
         
-        Append(formatPlantUmlElement("rectangle", id, title, description, version, technology));
-        
-        // Append(@$"Container({id}, {title}, {technology}, ""{description}"")");
-        //
-        //
-        // var interactions  = componentNode.GetAttribute("Interactions")?.Items ?? new List<ComponentAttributeListItem>();
-        // visitInteractions(id, interactions);
+        var interactions  = componentNode.GetAttribute("Interactions")?.Items ?? new List<ComponentAttributeListItem>();
+        visitInteractions(id, interactions);
         
         _renderedIds.Add(componentNode.Id);
     }
@@ -110,65 +104,15 @@ public class ArchitectureTranspiler : TranspilationVisitor
     {
         // order the nodes
         
-        //Append("!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml");
-        Append(@"
-hide stereotype
-
-<style>
-rectangle {
-   HorizontalAlignment center
-}
-</style>
-");
+        
+        //
+        Append("!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml");
     }
 
     protected override void Stop()
     {
         foreach (var interaction in _interactions)
             Append(interaction);
-        //Append("SHOW_LEGEND()");
-    }
-    
-    
-    private string formatPlantUmlElement(string type, string id, string title, string? description, string? version, string? technology)
-    {
-        string sub = "";
-        if (version is not null && technology is not null)
-            sub = $"\\n<size 8>//[v{version},{technology}]//";
-        else if (version is not null) 
-            sub = $"\\n<size 8>//[v{version}]//";
-        else if (technology is not null)
-            sub = $"\\n<size 8>//[{technology}]//";
-
-        string wrappedDescription = "";
-        if(description is not null) 
-            wrappedDescription = "\\n\\n" + wrap(description, "<size 9>");
-
-        return $"{type} \"<b>{title}</b>{sub}{wrappedDescription}\" <<Component>> as {id}";
-    }
-
-    private string wrap(string text, string prefix = "", int width = 20)
-    {
-        string sentence = text;
-        sentence = sentence.Replace(Environment.NewLine, " ");
-        string[] words = sentence.Split(' ');
-
-        StringBuilder newSentence = new StringBuilder();
-        
-        string line = "";
-        foreach (string word in words)
-        {
-            if ((line + word).Length > width)
-            {
-                newSentence.Append(prefix + line.Trim() + "\\n");
-                line = "";
-            }
-            line += string.Format("{0} ", word);
-        }
-
-        if (line.Length > 0)
-            newSentence.Append(prefix + line.Trim());
-
-        return newSentence.ToString().Trim();
+        Append("SHOW_LEGEND()");
     }
 }

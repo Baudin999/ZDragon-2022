@@ -169,7 +169,7 @@ public partial class Grouper
         }
         else if (Current == TokenKind.NEWLINE && Next == TokenKind.INDENT)
         {
-            TakeCurrent();
+            values.Add(TakeCurrent());
             var indents = new Stack<Token>();
             indents.Push(TakeCurrent());
             while (indents.Count > 0 && Current != TokenKind.EOF)

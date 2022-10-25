@@ -5674,7 +5674,7 @@ var app = (function () {
     			t = space();
     			div = element("div");
     			if (default_slot) default_slot.c();
-    			attr_dev(div, "class", "tab-list svelte-169r4ms");
+    			attr_dev(div, "class", "tab-list svelte-c5rbnm");
     			add_location(div, file$6, 0, 1, 1);
     		},
     		l: function claim(nodes) {
@@ -5965,9 +5965,9 @@ var app = (function () {
     			t = space();
     			button = element("button");
     			if (default_slot) default_slot.c();
-    			attr_dev(button, "class", "svelte-txq0fm");
+    			attr_dev(button, "class", "svelte-1g15lvm");
     			toggle_class(button, "selected", /*$selectedTab*/ ctx[0] === /*tab*/ ctx[1]);
-    			add_location(button, file$4, 27, 0, 520);
+    			add_location(button, file$4, 24, 0, 454);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");

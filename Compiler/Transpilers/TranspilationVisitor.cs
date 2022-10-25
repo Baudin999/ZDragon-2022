@@ -45,6 +45,11 @@ public abstract class TranspilationVisitor
     protected abstract void visitParagraphNode(MarkdownParagraphNode paragraphNode);
     protected abstract void visitViewNode(ViewNode viewNode);
 
+    protected virtual List<AstNode> PrepNodes(List<AstNode> astNodes)
+    {
+        return astNodes;
+    }
+    
     protected abstract void Start();
     protected abstract void Stop();
 
@@ -60,9 +65,10 @@ public abstract class TranspilationVisitor
 
     public string Run(List<AstNode> nodes)
     {
-        this._nodes = nodes;
+        var __nodes = PrepNodes(nodes);
+        this._nodes = __nodes;
         Start();
-        foreach (var node in nodes)
+        foreach (var node in _nodes)
         {
             Visit(node);
         }
@@ -75,5 +81,10 @@ public abstract class TranspilationVisitor
     internal bool Has(string id)
     {
         return _nodes.OfType<IIdentifier>().FirstOrDefault(n => n.Id == id) is not null;
+    }
+    
+    internal AstNode? Get(string id)
+    {
+        return (AstNode)_nodes.OfType<IIdentifier>().FirstOrDefault(n => n.Id == id)!;
     }
 }

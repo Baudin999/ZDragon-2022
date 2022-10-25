@@ -8,7 +8,8 @@
     registerTab(tab);
 </script>
 
-<style>
+<style lang="less">
+    @import "./../styles/colors";
     button {
         background: none;
         border: none;
@@ -19,8 +20,8 @@
     }
 
     .selected {
-        border-bottom: 2px solid teal;
-        color: #333;
+        border-bottom: 4px solid @accent-background;
+        color: @accent-background;
     }
 </style>
 
