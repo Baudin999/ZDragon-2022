@@ -188,7 +188,6 @@ It is important to end with an empty line...
         Assert.Equal(6, zdragon.Nodes.Count);
 
         var html = await zdragon.MainPage(false);
-        
-
+       
     }
 }
