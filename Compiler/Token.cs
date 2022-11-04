@@ -74,8 +74,11 @@ namespace Compiler
         }
 
         public static Token INDENT => new Token(TokenKind.INDENT, "    ");
+        public static Token _INDENT (string content) => new Token(TokenKind.INDENT, content); 
         public static Token DEDENT => new Token(TokenKind.DEDENT);
+        public static Token _DEDENT (string content) => new Token(TokenKind.DEDENT, content); 
         public static Token SAMEDENT => new Token(TokenKind.SAMEDENT);
+        public static Token _SAMEDENT (string content) => new Token(TokenKind.SAMEDENT, content); 
         public static Token START_CONTEXT => new Token(TokenKind.START_CONTEXT);
         public static Token END_CONTEXT => new Token(TokenKind.END_CONTEXT);
         public static Token START => new Token(TokenKind.START);

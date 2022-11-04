@@ -82,29 +82,32 @@ namespace Compiler
                         c = _code[index];
                     }
 
+                    var content = "";
+                    for (int i = 0; i < depth; ++i)
+                        content += "    ";
+
                     if (depth > indentDepth)
                     {
                         for (var i = indentDepth; i < depth; i++)
-                            tokens.Add(Token.INDENT);
+                            tokens.Add(Token._INDENT(content));
                     }
                     else if (depth < indentDepth)
                     {
                         for (var i = depth; i < indentDepth; i++)
-                            tokens.Add(Token.DEDENT);
+                            tokens.Add(Token._DEDENT(content));
                     }
                     else
                     {
                         // if the depth is equal to the indentDepth, previously recorded
                         // we emit a "SAMEDENT" token.
                         if (depth > 0)
-                            tokens.Add(Token.SAMEDENT);
+                            tokens.Add(Token._SAMEDENT(content));
                     }
 
                     indentDepth = depth;
                 }
                 else if (c == NEWLINE)
                 {
-                    
                     if (indentDepth > 0 && index + 1 < _length && _code[index + 1] != NEWLINE && _code[index + 1] != INDENT)
                     {
                         for (var i = 0; i < indentDepth; ++i)

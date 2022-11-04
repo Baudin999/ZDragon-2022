@@ -1,5 +1,7 @@
 ﻿
 
+using System.Text.RegularExpressions;
+
 namespace Compiler.Parsers.Nodes;
 
 public class ComponentAttribute : IIdentifier
@@ -26,7 +28,13 @@ public class ComponentAttribute : IIdentifier
 
         if (ValueTokens is not null)
         {
-            this.Value = string.Join("", ValueTokens.Select(t => t.Value)).Trim();
+            // Lot of manipulations to get the content of the markdown notes in a component
+            // definition of remove the starting indentation values.
+            // This does not work when we're talking about markdown notes in View Components.
+            var temp = string.Join("", ValueTokens.Select(t => t.Value)).Trim();
+            var regex = new Regex("^        ");
+            this.Value = regex.Replace(temp, "");
+            this.Value = new Regex(Environment.NewLine + "        ").Replace(this.Value, Environment.NewLine);
         }
         else if (Items is not null)
         {
