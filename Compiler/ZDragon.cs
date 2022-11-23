@@ -148,7 +148,7 @@ namespace Compiler
                 formatted = System.Xml.Linq.XElement.Parse(html).ToString();
                 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //
             }

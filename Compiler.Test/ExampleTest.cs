@@ -2,8 +2,8 @@
 
 public class ExampleTest
 {
-    [Fact]
-    public async void TestSomething()
+    [Fact(DisplayName = "Test Larger Code")]
+    public async void TestLargerCode()
     {
         const string code = @"
 

@@ -4,18 +4,6 @@ namespace Compiler.Resolvers;
 
 public static class FileHelpers
 {
-    private static readonly JsonSerializerSettings JsonSerializationSettings = new JsonSerializerSettings
-    {
-        TypeNameHandling = TypeNameHandling.Objects,
-        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead,
-        Formatting = Formatting.Indented,
-        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-        Converters = new List<Newtonsoft.Json.JsonConverter>
-        {
-            new Newtonsoft.Json.Converters.StringEnumConverter()
-        }
-    };
-    
     public static string GetNamespaceFromFileName(string basePath, string fileName)
     {
         var relativePath = Path.GetRelativePath(basePath, fileName);
@@ -92,7 +80,7 @@ public static class FileHelpers
         if (File.Exists(path))
         {
             var json = await File.ReadAllTextAsync(path);
-            return JsonConvert.DeserializeObject<T>(json, JsonSerializationSettings);
+            return JsonHelpers.Deserialize<T>(json);
         }
         else
         {
@@ -132,7 +120,7 @@ public static class FileHelpers
 
         try
         {
-            var json = JsonConvert.SerializeObject(o, JsonSerializationSettings);
+            var json = JsonHelpers.Serialize(o);
             await File.WriteAllTextAsync(path, json);
         }
         catch (System.Exception ex)

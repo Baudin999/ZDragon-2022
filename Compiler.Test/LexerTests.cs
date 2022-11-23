@@ -5,7 +5,7 @@ namespace Compiler.Test
 {
     public class LexerTests
     {
-        [Fact]
+        [Fact(DisplayName = "01 - Simple Lexing")]
         public void SimpleLexing()
         {
             var code = @"
@@ -29,6 +29,7 @@ component Bar
             Assert.NotEmpty(result);
             Assert.Empty(errorSink.Errors);
             
+            Assert.Equal(85, result.Count);
         }
         
         
@@ -107,8 +108,8 @@ component Bar
             
         }
 
-        [Fact]
-        public void TestCharacters()
+        [Fact(DisplayName = "Test Operators")]
+        public void TestOperators()
         {
             const string code = "!@#$%^&*()_+=-`~'\":;[]{},./?><\\|";
 

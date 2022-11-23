@@ -105,7 +105,9 @@ namespace Compiler
         {
             if (obj is Token _obj)
             {
-                return _obj.Value == this.Value &&
+                return
+                    _obj.Kind == this.Kind &&
+                    _obj.Value == this.Value &&
                     _obj.StartLine == this.StartLine &&
                     _obj.EndLine == this.EndLine &&
                     _obj.StartColumn == this.StartColumn &&
