@@ -15,6 +15,17 @@ public partial class Parser
             _ = Take(TokenKind.Equal);
             while (Is(TokenKind.START))
             {
+                // silly hack where we get empty START-END combinations when we 
+                // have empty lines between record fields.
+                // TODO: Fix this bug in the lexer and grouper
+                if (Next == TokenKind.NEWLINE && Peek(2) == TokenKind.END)
+                {
+                    Take();
+                    Take();
+                    continue;
+                }
+                
+                
                 var field = parseRecordFieldNode();
                 if (field is not null) fields.Add(field);
                 Take(TokenKind.END);
@@ -35,7 +46,18 @@ public partial class Parser
         var colon = Take(TokenKind.Colon);
         var type = TakeWhile(TokenKind.Word).ToList();
 
-        return new RecordFieldNode(id, type, annotations);
+        var restrictions = new List<FieldRestriction>();
+        while (Next == TokenKind.And)
+        {
+            Take(TokenKind.And);
+            var key = Take(TokenKind.Word);
+            var value = Take();
+            restrictions.Add(new FieldRestriction(key, value));
+            
+            If(TokenKind.SemiColon, () => Take());
+        }
+
+        return new RecordFieldNode(id, type, annotations, restrictions);
     }
     
     private Token? TakeIdentifier(string name)

@@ -103,16 +103,47 @@ record Person =
     }
 
 
-    [Fact]
-    public void ParseRecordFieldWithRestrictions()
+    [Fact(DisplayName = "Field Restriction")]
+    public async void ParseRecordFieldWithRestrictions()
     {
         const string code = @"
 record Person =
+
+    @ The firstName of the person
     FirstName: String
         & min 4
         & max 12
+    
+    @ The last Name of the person
     LastName: String & min 2 & default ""asdadsas""
 ";
-        Assert.NotNull(code);
+        var zdragon = await new ZDragon().Compile(code);
+        Assert.NotNull(zdragon.Nodes);
+        Assert.Single(zdragon.Nodes);
+        Assert.IsType<RecordNode>(zdragon.Nodes[0]);
+
+        var personNode = (RecordNode)zdragon.Nodes.First();
+        Assert.Equal(2, personNode.Attributes.Count);
+
+        var firstNameAttribute = (RecordFieldNode)personNode.Attributes[0];
+        Assert.Equal("FirstName", firstNameAttribute.Id);
+        Assert.Equal("String", firstNameAttribute.Type);
+        Assert.Equal(2, firstNameAttribute.FieldRestrictions.Count);
+        Assert.Equal("min", firstNameAttribute.FieldRestrictions[0].Key);
+        Assert.Equal("4", firstNameAttribute.FieldRestrictions[0].Value);
+        Assert.Equal("max", firstNameAttribute.FieldRestrictions[1].Key);
+        Assert.Equal("12", firstNameAttribute.FieldRestrictions[1].Value);
+        
+        var lastNameAttribute = (RecordFieldNode)personNode.Attributes[1];
+        Assert.Equal("LastName", lastNameAttribute.Id);
+        Assert.Equal("String", lastNameAttribute.Type);
+        Assert.Equal(2, lastNameAttribute.FieldRestrictions.Count);
+        Assert.Equal(2, lastNameAttribute.FieldRestrictions.Count);
+        Assert.Equal("min", lastNameAttribute.FieldRestrictions[0].Key);
+        Assert.Equal("2", lastNameAttribute.FieldRestrictions[0].Value);
+        Assert.Equal("default", lastNameAttribute.FieldRestrictions[1].Key);
+        Assert.Equal("asdadsas", lastNameAttribute.FieldRestrictions[1].Value);
     }
+    
+    
 }
