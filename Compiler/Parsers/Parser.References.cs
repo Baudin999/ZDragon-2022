@@ -22,14 +22,14 @@ public partial class Parser
         }
         else if (node is RecordNode recordNode)
         {
-            References.Add(new NodeReference(recordNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn));
+            References.Add(new DataReference(recordNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn));
             foreach (var field in recordNode.Attributes)
             {
                 foreach (var value in field.TypeTokens)
                 {
                     if (!Helpers.BaseTypes.Contains(value.Value))
                     {
-                        References.Add(new NodeReference(recordNode.IdToken, value, ReferenceType.UsedInRecord));
+                        References.Add(new DataReference(recordNode.IdToken, value, ReferenceType.UsedInRecord));
                     }
                 }
             }

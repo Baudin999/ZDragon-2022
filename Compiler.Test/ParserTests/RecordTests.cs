@@ -145,5 +145,22 @@ record Person =
         Assert.Equal("asdadsas", lastNameAttribute.FieldRestrictions[1].Value);
     }
     
+    [Fact(DisplayName = "Validate the field types")]
+    public async void ValidateFieldType()
+    {
+        const string code = @"
+record Person =
+    FirstName: Name
+    LastName: String
+    Age: Age
+
+component Name
+component Age
+";
+        var zdragon = await new ZDragon().Compile(code);
+        Assert.Equal(2, zdragon.Errors.Count);
+    }
+    
+    
     
 }

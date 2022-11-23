@@ -1,13 +1,12 @@
 ﻿namespace Compiler.Parsers.Nodes;
 
-public class RecordNode : AttributesNode<RecordFieldNode>
+public class RecordNode : AttributesNode<RecordFieldNode>, IDataNode
 {
     public RecordNode(Token idToken, List<RecordFieldNode> fields, List<Token> annotationTokens) :
         base(idToken, fields, new List<Token>(), annotationTokens)
     {
     }
 }
-
 
 public class RecordFieldNode : IIdentifier
 {

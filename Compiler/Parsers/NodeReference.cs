@@ -21,6 +21,14 @@ public class NodeReference {
     }
 }
 
+public class DataReference : NodeReference
+{
+    public DataReference(Token from, Token to, ReferenceType type) : base(from, to, type)
+    {
+        // nothing to see
+    }
+}
+
 
 
 public enum ReferenceType

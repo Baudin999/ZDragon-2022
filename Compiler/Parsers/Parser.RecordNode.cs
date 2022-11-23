@@ -28,11 +28,12 @@ public partial class Parser
                 
                 var field = parseRecordFieldNode();
                 if (field is not null) fields.Add(field);
-                Take(TokenKind.END);
+
+                If(TokenKind.END, () => Take());
             }
         });
 
-
+        If(TokenKind.END_CONTEXT, () => Take(TokenKind.END_CONTEXT));
         return new RecordNode(id, fields, annotations);
     }
 

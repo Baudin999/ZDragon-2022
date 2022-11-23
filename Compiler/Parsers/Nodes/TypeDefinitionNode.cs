@@ -1,6 +1,6 @@
 ﻿namespace Compiler.Parsers.Nodes;
 
-public class TypeDefinitionNode : AstNode, IAttributesNode
+public class TypeDefinitionNode : AstNode, IAttributesNode, IDataNode
 {
     public Token IdToken { get; }
     public string Id => IdToken.Value;
