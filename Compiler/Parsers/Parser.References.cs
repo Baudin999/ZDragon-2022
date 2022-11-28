@@ -20,6 +20,16 @@ public partial class Parser
             ExtractReferences(endpointNode.Attributes, endpointNode.IdToken);
             ExtractReferences(endpointNode.Operation, endpointNode.IdToken);
         }
+        else if (node is TypeDefinitionNode typeDefinitionNode)
+        {
+            if (typeDefinitionNode.Body is IdentifierNode idNode)
+            {
+                if (!Helpers.BaseTypes.Contains(idNode.Id))
+                {
+                    References.Add(new DataReference(typeDefinitionNode.IdToken, idNode.IdToken, ReferenceType.TypeAlias));
+                }
+            }
+        }
         else if (node is RecordNode recordNode)
         {
             References.Add(new DataReference(recordNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn));

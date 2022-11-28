@@ -10,6 +10,7 @@ type Id = uuid
 ";
 
         var zdragon = await new ZDragon().Compile(code);
+        Assert.Empty(zdragon.Errors);
 
         Assert.NotNull(zdragon.Nodes);
         Assert.NotEmpty(zdragon.Nodes);

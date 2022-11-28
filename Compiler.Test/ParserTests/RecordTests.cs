@@ -24,7 +24,7 @@ record Person =
         Assert.Equal("age", record.Attributes[1].Id);
         Assert.Equal("int", record.Attributes[1].Type);
         
-        Assert.Equal(3, zdragon.References.Count);
+        Assert.Single(zdragon.References);
     }
     
     

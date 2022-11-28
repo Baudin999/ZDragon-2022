@@ -7,7 +7,7 @@ public static class Helpers
         return string.Join(Environment.NewLine, annotationTokens.Select(t => t.Value.Replace("@", "").Trim()));
     }
 
-    public static List<string> BaseTypes = new List<string>()
+    public static readonly List<string> BaseTypes = new ()
     {
         "Maybe",
         "List",
@@ -22,6 +22,13 @@ public static class Helpers
         "Uuid",
         "String",
         "Boolean",
-        "Char"
+        "Char",
+        "int",
+        "decimal",
+        "guid",
+        "uuid",
+        "string",
+        "bool",
+        "char"
     };
 }
