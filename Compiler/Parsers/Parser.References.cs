@@ -44,6 +44,20 @@ public partial class Parser
                 }
             }
         }
+        else if (node is DataNode dataNode)
+        {
+            References.Add(new DataReference(dataNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn));
+            foreach (var field in dataNode.Fields)
+            {
+                foreach (var value in field.TypeTokens)
+                {
+                    if (!Helpers.BaseTypes.Contains(value.Value))
+                    {
+                        References.Add(new DataReference(dataNode.IdToken, value, ReferenceType.UsedInData));
+                    }
+                }
+            }
+        }
         else if (node is ViewNode viewNode)
         {
             References.Add(new NodeReference(viewNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn));

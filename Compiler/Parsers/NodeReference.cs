@@ -41,5 +41,6 @@ public enum ReferenceType
     Aggregate,
     UsedInRecord,
     ViewedIn,
-    TypeAlias
+    TypeAlias,
+    UsedInData
 }

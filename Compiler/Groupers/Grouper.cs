@@ -113,9 +113,10 @@
                 {
                     GroupOpen();
                 }
-                else if (!_inContext && Current == TokenKind.NEWLINE && Next == TokenKind.At)
+                else if (Current == TokenKind.NEWLINE && Next == TokenKind.At)
                 {
                     // GROUP THE ANNOTATION
+                    _inContext = false;
                     
                     TakeCurrent(); // take the newline
                     var annotation = TakeWhileNot(TokenKind.NEWLINE).Merge(TokenKind.Annotation);
