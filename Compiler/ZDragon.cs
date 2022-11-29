@@ -170,6 +170,14 @@ namespace Compiler
             await FileHelpers.SaveFileAsync(path, bytes);
         }
 
+        public async Task RenderDataDiagram()
+        {
+            var plantuml = new DataTranspiler().Run(this.AllNodes);
+            var bytes = await TranspilationService.ToSvg(plantuml);
+            var path = Path.Combine(_outputPath, Module.Namespace, "data.svg");
+            await FileHelpers.SaveFileAsync(path, bytes);
+        }
+
         public async Task RenderViewNodes()
         {
             foreach (var view in this.AllNodes.OfType<ViewNode>())

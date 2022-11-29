@@ -7,6 +7,14 @@ public partial class Parser
         var kw = Take(TokenKind.KWRecord);
         var annotations = TakeWhile(TokenKind.Annotation).ToList();
         var id = TakeIdentifier("record");
+
+        var extensions = new List<Token>();
+        If(TokenKind.KWExtends, () =>
+        {
+            Take(TokenKind.KWExtends);
+            extensions = TakeWhile(TokenKind.Word).Select(t => t.Transform(TokenKind.Identifier)).ToList();
+        });
+        
         var fields = new List<RecordFieldNode>();
         if (id is null) return null;
 
@@ -34,7 +42,7 @@ public partial class Parser
         });
 
         If(TokenKind.END_CONTEXT, () => Take(TokenKind.END_CONTEXT));
-        return new RecordNode(id, fields, annotations);
+        return new RecordNode(id, fields, extensions, annotations);
     }
 
     private RecordFieldNode? parseRecordFieldNode()

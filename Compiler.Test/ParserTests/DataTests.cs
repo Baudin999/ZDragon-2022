@@ -33,6 +33,13 @@ sum type", dataNode.Description);
         Assert.Equal("HomeAddress", dataNode.Fields[0].TypeTokens[0].Value);
         Assert.Equal("The invoice address", dataNode.Fields[1].Description);
         Assert.Equal("InvoiceAddress", dataNode.Fields[1].TypeTokens[0].Value);
+        
+        
+        Assert.Equal("BaseAddress", ((IIdentifier)zdragon.Nodes[0]).Id);
+        Assert.Equal("HomeAddress", ((IIdentifier)zdragon.Nodes[1]).Id);
+        Assert.Equal("InvoiceAddress", ((IIdentifier)zdragon.Nodes[2]).Id);
+        
+        Assert.Empty(zdragon.Errors);
     }
     
     [Fact(DisplayName = "Field Types Must Exist")]
@@ -45,7 +52,7 @@ data Address =
 ";
         
         var zdragon = await new ZDragon().Compile(code);
-        Assert.Equal(1, zdragon.Nodes.Count);
+        Assert.Single(zdragon.Nodes);
         Assert.IsType<DataNode>(zdragon.Nodes.Last());
         var dataNode = (DataNode)zdragon.Nodes.Last();
         Assert.Equal("Address", dataNode.Id);

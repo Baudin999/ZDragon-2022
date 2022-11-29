@@ -26,6 +26,11 @@ public class HtmlTranspiler : TranspilationVisitor
         //
     }
 
+    protected override void visitDataNode(DataNode dataNode)
+    {
+        //
+    }
+
     protected override void visitChapterNode(MarkdownChapterNode chapterNode)
     {
         Append(Markdown.ToHtml(chapterNode.Value, pipeline));
@@ -135,6 +140,10 @@ public class HtmlTranspiler : TranspilationVisitor
     <h1>Component Diagram</h1>
     <div>
         <img src=""components.svg"" alt=""components.svg""/>
+    </div>
+    <h1>Data Diagram</h1>
+    <div>
+        <img src=""data.svg"" alt=""data.svg""/>
     </div>
 </div>
     <script>

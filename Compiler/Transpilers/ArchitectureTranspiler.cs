@@ -90,6 +90,12 @@ public class ArchitectureTranspiler : TranspilationVisitor
         //
     }
 
+    protected override void visitDataNode(DataNode dataNode)
+    {
+        //
+    }
+
+
     protected override void visitChapterNode(MarkdownChapterNode chapterNode)
     {
         //

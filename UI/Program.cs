@@ -54,8 +54,7 @@ app
     .MediatePut<CreateFile.CreateFileRequest>("/module")
     .MediateDelete<DeleteModule.DeleteModuleRequest>("/module")
     .MediatePut<GetModule.GetModuleRequest>("/page")
-    .MediateGet<GetProjectFile.GetProjectFileRequest>("/project-file/{basePath}/{currentPath}/{fileName}")
-    .MediateGet<HoiJasper.HoiJasperRequest>("/api/hoi");
+    .MediateGet<GetProjectFile.GetProjectFileRequest>("/project-file/{basePath}/{currentPath}/{fileName}");
 
 
 // Configure the HTTP request pipeline.

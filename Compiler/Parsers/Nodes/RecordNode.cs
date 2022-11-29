@@ -2,8 +2,8 @@
 
 public class RecordNode : AttributesNode<RecordFieldNode>, IDataNode
 {
-    public RecordNode(Token idToken, List<RecordFieldNode> fields, List<Token> annotationTokens) :
-        base(idToken, fields, new List<Token>(), annotationTokens)
+    public RecordNode(Token idToken, List<RecordFieldNode> fields, List<Token> extensionTokens, List<Token> annotationTokens) :
+        base(idToken, fields, extensionTokens, annotationTokens)
     {
     }
 }
