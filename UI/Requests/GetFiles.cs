@@ -11,7 +11,7 @@ namespace UI.Requests;
 
 public class GetFiles
 {
-    public class Request : IHttpRequest
+    public class GetFilesRequest : IHttpRequest
     {
         private string _basePath = default!;
         public string BasePath
@@ -22,11 +22,11 @@ public class GetFiles
     }
 
 
-    public class Handler : IRequestHandler<Request, IResult>
+    public class Handler : IRequestHandler<GetFilesRequest, IResult>
     {
-        public Task<IResult> Handle(Request request, CancellationToken cancellationToken)
+        public Task<IResult> Handle(GetFilesRequest getFilesRequest, CancellationToken cancellationToken)
         {
-            var result = new FileSystemService().GetFileSystemObjects(request.BasePath);
+            var result = new FileSystemService().GetFileSystemObjects(getFilesRequest.BasePath);
             return Task.FromResult<IResult>(Results.Ok(result));
         }
     }

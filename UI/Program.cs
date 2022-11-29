@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using UI;
 using UI.Requests;
 using UI.Services;
@@ -5,8 +6,18 @@ using UI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddMediatR(x => x.AsScoped(), typeof(Program));
-builder.Services.AddControllers();
+builder
+    .Services
+    .AddMediatR(x => x.AsScoped(), typeof(Program));
+
+builder
+    .Services
+    .AddControllers()
+    .AddJsonOptions(opts =>
+        {
+            var enumConverter = new JsonStringEnumConverter();
+            opts.JsonSerializerOptions.Converters.Add(enumConverter);
+        });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -21,8 +32,6 @@ var app = builder.Build();
 
 app.Use(async (context, next) => {
     var url = context.Request.Path.Value;
-
-
     var allowedPaths = new List<string> {
         "/editor", "/lexicon", "/about"
     };
@@ -38,14 +47,15 @@ app.Use(async (context, next) => {
 // register endpoints
 
 app
-    .MediateGet<GetFiles.Request>("/project/files/{basePath}")
-    .MediateGet<GetRelations.Request>("/relations/{basePath}/{type}")
+    .MediateGet<GetFiles.GetFilesRequest>("/project/files/{basePath}")
+    .MediateGet<GetRelations.GetRelationsRequest>("/relations/{basePath}/{type}")
     .MediatePut<SaveFile.SaveFileRequest>("/file")
     // module endpoints 
-    .MediatePut<CreateFile.Request>("/module")
-    .MediateDelete<DeleteModule.Request>("/module")
-    .MediatePut<GetModule.Request>("/page")
-    .MediateGet<GetProjectFile.GetProjectFileRequest>("/project-file/{basePath}/{currentPath}/{fileName}");
+    .MediatePut<CreateFile.CreateFileRequest>("/module")
+    .MediateDelete<DeleteModule.DeleteModuleRequest>("/module")
+    .MediatePut<GetModule.GetModuleRequest>("/page")
+    .MediateGet<GetProjectFile.GetProjectFileRequest>("/project-file/{basePath}/{currentPath}/{fileName}")
+    .MediateGet<HoiJasper.HoiJasperRequest>("/api/hoi");
 
 
 // Configure the HTTP request pipeline.

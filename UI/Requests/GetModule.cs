@@ -6,7 +6,7 @@
 /// </summary>
 public class GetModule
 {
-    public class Request : IHttpRequest
+    public class GetModuleRequest : IHttpRequest
     {
         public string Path { get; set; } = default!;
         private string _basePath = default!;
@@ -17,15 +17,15 @@ public class GetModule
         }
     }
 
-    public class Handler : IHttpHandler<GetModule.Request>
+    public class Handler : IHttpHandler<GetModule.GetModuleRequest>
     {
-        public async Task<IResult> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<IResult> Handle(GetModuleRequest getModuleRequest, CancellationToken cancellationToken)
         {
             // return content of the file if it exists
-            if (System.IO.File.Exists(request.Path))
+            if (System.IO.File.Exists(getModuleRequest.Path))
             {
-                var @namespace = FileHelpers.GetNamespaceFromFileName(request.BasePath, request.Path);
-                var text = await System.IO.File.ReadAllTextAsync(request.Path);
+                var @namespace = FileHelpers.GetNamespaceFromFileName(getModuleRequest.BasePath, getModuleRequest.Path);
+                var text = await System.IO.File.ReadAllTextAsync(getModuleRequest.Path);
                 return Results.Ok(new
                 {
                     text,

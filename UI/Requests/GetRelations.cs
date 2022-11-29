@@ -1,8 +1,11 @@
-﻿namespace UI.Requests;
+﻿using Compiler;
+using Compiler.Parsers;
+
+namespace UI.Requests;
 
 public static class GetRelations
 {
-    public class Request : IHttpRequest
+    public class GetRelationsRequest : IHttpRequest
     {
         private string _basePath = default!;
         public string BasePath
@@ -13,15 +16,21 @@ public static class GetRelations
         public string Type { get; set; } = default!;
     }
 
-    public class Handler : IHttpHandler<Request>
+    public class Handler : IHttpHandler<GetRelationsRequest>
     {
-        public Task<IResult> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<IResult> Handle(GetRelationsRequest getRelationsRequest, CancellationToken cancellationToken)
         {
-            // do things
-            return Task.FromResult(Results.Ok(new 
+            var references = new List<NodeReference>();
+            var binFolder = FileHelpers.GetBinPathFromBasePath(getRelationsRequest.BasePath);
+            foreach (var fileName in Directory.GetFiles(binFolder).Where(f => f.EndsWith("refs.json")))
             {
-                message = "success"
-            }));
+                var result = await FileHelpers.ReadObjectAsync<List<NodeReference>>(fileName);
+                if (result is not null)
+                    references.AddRange(result);
+            }
+
+            return Results.Ok(references);
+            
         }
     }
 }

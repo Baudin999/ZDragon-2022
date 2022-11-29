@@ -4,7 +4,7 @@ namespace UI.Requests;
 
 public class DeleteModule
 {
-    public class Request : IHttpRequest
+    public class DeleteModuleRequest : IHttpRequest
     {
         private string _basePath = default!;
         public string BasePath
@@ -15,23 +15,23 @@ public class DeleteModule
         public string FileName { get; set; } = default!;
     }
 
-    public class Handler : IHttpHandler<DeleteModule.Request>
+    public class Handler : IHttpHandler<DeleteModule.DeleteModuleRequest>
     {
-        public async Task<IResult> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<IResult> Handle(DeleteModuleRequest deleteModuleRequest, CancellationToken cancellationToken)
         {
             // delete a file
-            if (File.Exists(request.FileName))
-                File.Delete(request.FileName);
+            if (File.Exists(deleteModuleRequest.FileName))
+                File.Delete(deleteModuleRequest.FileName);
             else
                 return Results.NotFound();
             
             
             // get the namespace form the file name and delete the .out folder and .bin folder entries
-            var @namespace = FileHelpers.GetNamespaceFromFileName(request.BasePath, request.FileName);
-            var outPath = Path.Combine(request.BasePath, ".out", @namespace);
+            var @namespace = FileHelpers.GetNamespaceFromFileName(deleteModuleRequest.BasePath, deleteModuleRequest.FileName);
+            var outPath = Path.Combine(deleteModuleRequest.BasePath, ".out", @namespace);
             if (Directory.Exists(outPath))
                 Directory.Delete(outPath, true);
-            var binPath = Path.Combine(request.BasePath, ".bin");
+            var binPath = Path.Combine(deleteModuleRequest.BasePath, ".bin");
 
             var options = new []{
                 Path.Combine(binPath,  @namespace + ".nodes.json"),
@@ -46,17 +46,17 @@ public class DeleteModule
             }
             
             // recursively delete empty directories
-            recursivelyDeleteEmptyDirectories(request.BasePath);
+            recursivelyDeleteEmptyDirectories(deleteModuleRequest.BasePath);
 
             await Task.Delay(1);
 
             // return the result of deleting the file            
             return Results.Ok(new
             {
-                message = $"Successfully deleted {request.FileName}",
-                basePath = request.BasePath,
-                fullName = request.FileName,
-                files =  new FileSystemService().GetFileSystemObjects(request.BasePath)
+                message = $"Successfully deleted {deleteModuleRequest.FileName}",
+                basePath = deleteModuleRequest.BasePath,
+                fullName = deleteModuleRequest.FileName,
+                files =  new FileSystemService().GetFileSystemObjects(deleteModuleRequest.BasePath)
             });
             
         }

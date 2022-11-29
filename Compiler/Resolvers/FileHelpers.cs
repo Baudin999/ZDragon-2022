@@ -45,6 +45,12 @@ public static class FileHelpers
     }
 
 
+    public static string GetBinPathFromBasePath(string basePath)
+    {
+        return Path.Combine(basePath, ".bin");
+    }
+
+
     public static async Task<string?> ReadFileAsync(string path)
     {
         if (File.Exists(path))

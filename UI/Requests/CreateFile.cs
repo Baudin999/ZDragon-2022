@@ -3,7 +3,7 @@
 namespace UI.Requests;
 public static class CreateFile
 {
-    public class Request : IHttpRequest
+    public class CreateFileRequest : IHttpRequest
     {
         public string Namespace { get; set; } = default!;
 
@@ -15,12 +15,12 @@ public static class CreateFile
         }
     }
 
-    public class Handler : IRequestHandler<Request, IResult>
+    public class Handler : IRequestHandler<CreateFileRequest, IResult>
     {
-        public async Task<IResult> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<IResult> Handle(CreateFileRequest createFileRequest, CancellationToken cancellationToken)
         {
             
-            var fileName = FileHelpers.GetCarFileFromNamespaceAndBasePath(request.BasePath, request.Namespace);
+            var fileName = FileHelpers.GetCarFileFromNamespaceAndBasePath(createFileRequest.BasePath, createFileRequest.Namespace);
             var directory = Path.GetDirectoryName(fileName);
             
             // directory is not allowed to be null
@@ -38,11 +38,11 @@ public static class CreateFile
             
             return Results.Ok(new
             {
-                message = $"You asked for: {request.Namespace}",
-                ns = request.Namespace,
-                basePath = request.BasePath,
+                message = $"You asked for: {createFileRequest.Namespace}",
+                ns = createFileRequest.Namespace,
+                basePath = createFileRequest.BasePath,
                 fullName = fileName,
-                files =  new FileSystemService().GetFileSystemObjects(request.BasePath)
+                files =  new FileSystemService().GetFileSystemObjects(createFileRequest.BasePath)
             });
         }
     }

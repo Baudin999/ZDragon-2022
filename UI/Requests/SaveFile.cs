@@ -26,8 +26,7 @@ public static class SaveFile
             {
                 throw new Exception("Invalid message");
             }
-        
-        
+            
             var module = new FileModule(saveFileRequest.BasePath, saveFileRequest.Path, saveFileRequest.Text);
             await module.SaveText();
             var resolver = new FileResolver(saveFileRequest.BasePath);

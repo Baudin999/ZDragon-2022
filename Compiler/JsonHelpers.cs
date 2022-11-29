@@ -21,6 +21,6 @@ public static class JsonHelpers
 
     public static T Deserialize<T>(string s)
     {
-        return JsonConvert.DeserializeObject<T>(s);
+        return JsonConvert.DeserializeObject<T>(s, JsonSerializationSettings);
     }
 }

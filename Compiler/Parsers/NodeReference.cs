@@ -1,10 +1,10 @@
 namespace Compiler.Parsers;
 
 public class NodeReference {
-    public NodeReference(Token from, Token to, ReferenceType type)
+    public NodeReference(Token fromToken, Token toToken, ReferenceType type)
     {
-        FromToken = from;
-        ToToken = to;
+        FromToken = fromToken;
+        ToToken = toToken;
         Type = type;
     }
 
@@ -23,7 +23,7 @@ public class NodeReference {
 
 public class DataReference : NodeReference
 {
-    public DataReference(Token from, Token to, ReferenceType type) : base(from, to, type)
+    public DataReference(Token fromToken, Token toToken, ReferenceType type) : base(fromToken, toToken, type)
     {
         // nothing to see
     }
