@@ -68,15 +68,26 @@ public class ComponentAttributeListItem
     public string? Technology { get; }
     public List<Token>? DirectionTokens { get; }
     public string? Direction { get; }
+    public Token? ReferenceVersionToken { get; } = null;
 
     public string Value => IdTokens.Last().Value;
+
     
 
     [JsonConstructor]
     public ComponentAttributeListItem(List<Token> idTokens, List<Token>? titleTokens, List<Token>? technologyTokens, List<Token>? directionTokens)
     {
-        this.IdTokens = idTokens;
-        this.Id = string.Join("", idTokens.Select(t => t.Value)).Trim();
+        if (idTokens.Count == 4 && idTokens[1] == TokenKind.Colon && idTokens[2] == TokenKind.Colon)
+        {
+            this.IdTokens = new List<Token> { idTokens[0] };
+            this.ReferenceVersionToken = idTokens[3];
+        }
+        else
+        {
+            this.IdTokens = idTokens;
+        }
+        
+        this.Id = string.Join("", this.IdTokens.Select(t => t.Value)).Trim();
         this.TitleTokens = titleTokens;
         if (titleTokens is not null)
             this.Title = string.Join("", titleTokens.Select(t => t.Value)).Trim();
@@ -87,6 +98,8 @@ public class ComponentAttributeListItem
         if (directionTokens is not null)
             this.Direction = string.Join("", directionTokens.Select(t => t.Value)).Trim();
     }
+
+    
 
     public ComponentAttributeListItem Clone()
     {

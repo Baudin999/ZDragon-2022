@@ -78,7 +78,7 @@ public partial class Parser
                 foreach (var item in componentAttribute.Items)
                 {
                     var itemToken = item.IdTokens.Where(r => r == TokenKind.Word)?.Last() ?? Token.EMPTY;
-                    References.Add(new NodeReference(id, itemToken, referenceType));
+                    References.Add(new NodeReference(id, itemToken, referenceType, item.ReferenceVersionToken));
                 }
             }
             else

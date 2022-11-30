@@ -247,5 +247,58 @@ write anything we want:
     * Indent 1
  * Bullet 3", attribute.Value);
         }
+        
+        [Fact(DisplayName = "Component Version Checking - 01")]
+        public async void ComponentVersionChecking_01()
+        {
+            const string code = @"
+component Foo =
+    Version: v01
+
+component Bar =
+    Interactions:
+        - Foo::v01
+";
+
+            var zdragon = await new ZDragon().Compile(code);
+            Assert.Equal(2, zdragon.Nodes.Count);
+
+            var barNode = (ComponentNode)zdragon.Nodes[1];
+            Assert.Single(barNode.Attributes);
+            var interactions = barNode.Attributes[0].Items ?? new List<ComponentAttributeListItem>();
+            Assert.Single(interactions);
+            var fooInteraction = interactions.First();
+            Assert.Equal("Foo", fooInteraction.Id);
+            Assert.Equal("v01", fooInteraction.ReferenceVersionToken?.Value);
+
+            Assert.Empty(zdragon.Errors);
+        }
+        
+        [Fact(DisplayName = "Component Version Checking - 02")]
+        public async void ComponentVersionChecking_02()
+        {
+            const string code = @"
+component Foo =
+    Version: v01
+
+component Bar =
+    Interactions:
+        - Foo::v02
+";
+
+            var zdragon = await new ZDragon().Compile(code);
+            Assert.Equal(2, zdragon.Nodes.Count);
+
+            var barNode = (ComponentNode)zdragon.Nodes[1];
+            Assert.Single(barNode.Attributes);
+            var interactions = barNode.Attributes[0].Items ?? new List<ComponentAttributeListItem>();
+            Assert.Single(interactions);
+            var fooInteraction = interactions.First();
+            Assert.Equal("Foo", fooInteraction.Id);
+            Assert.Equal("v02", fooInteraction.ReferenceVersionToken?.Value);
+
+            Assert.Single(zdragon.Errors);
+            Assert.Equal("The interaction on the 'Bar' component, references a non existent version of the 'Foo' component.", zdragon.Errors[0].Message);
+        }
     }
 }

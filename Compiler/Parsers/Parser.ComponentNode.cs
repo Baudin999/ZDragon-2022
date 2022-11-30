@@ -119,6 +119,11 @@
                         i++;
                         TakeCurrent();
                     }
+                    else if (i == 0 && parts.Count == 0 && Current == TokenKind.SPACE)
+                    {
+                        // ignore spaces at the start of the Id portion of the reference
+                        TakeCurrent();
+                    }
                     else
                     {
                         while (parts.Count < i + 1)

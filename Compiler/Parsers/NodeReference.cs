@@ -1,11 +1,12 @@
 namespace Compiler.Parsers;
 
 public class NodeReference {
-    public NodeReference(Token fromToken, Token toToken, ReferenceType type)
+    public NodeReference(Token fromToken, Token toToken, ReferenceType type, Token? versionToken = null)
     {
         FromToken = fromToken;
         ToToken = toToken;
         Type = type;
+        VersionToken = versionToken;
     }
 
     public Token ToToken { get; }
@@ -13,6 +14,7 @@ public class NodeReference {
     public Token FromToken { get; }
     public string From => FromToken.Value;
     public ReferenceType Type { get; }
+    public Token? VersionToken { get; }
 
 
     public override string ToString()

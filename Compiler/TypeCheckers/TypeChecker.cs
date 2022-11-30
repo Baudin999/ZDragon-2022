@@ -29,6 +29,18 @@ public class TypeChecker
         {
             var to = _zdragon.Get(nodeReference.To);
             if (to is null) _zdragon.Errors.Add(new Error(nodeReference.ToToken, @$"Type '{nodeReference.To}' does not exist"));
+            else
+            {
+                if (nodeReference.VersionToken is not null && to is AttributesNode<ComponentAttribute> an)
+                {
+                    var attribute = an.GetAttribute("Version");
+                    if (attribute is not null && attribute.Value.Trim() != nodeReference.VersionToken.Value.Trim())
+                    {
+                        var error = new Error(nodeReference.ToToken, $"The interaction on the '{nodeReference.From}' component, references a non existent version of the '{nodeReference.To}' component.");
+                        _zdragon.Errors.Add(error);
+                    }
+                }
+            }
         }
 
     }
