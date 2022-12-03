@@ -1,5 +1,5 @@
 ﻿<script>
-	export let location;
+	export const location = "";
 </script>
 
 <div>

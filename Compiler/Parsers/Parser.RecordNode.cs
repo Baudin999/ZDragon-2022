@@ -38,6 +38,8 @@ public partial class Parser
                 if (field is not null) fields.Add(field);
 
                 If(TokenKind.END, () => Take());
+
+                _ = TakeWhile(TokenKind.SemiColon).ToList();
             }
         });
 
@@ -63,9 +65,8 @@ public partial class Parser
             var value = Take();
             restrictions.Add(new FieldRestriction(key, value));
             
-            If(TokenKind.SemiColon, () => Take());
         }
-
+        _ = TakeWhile(TokenKind.SemiColon).ToList();
         return new RecordFieldNode(id, type, annotations, restrictions);
     }
     

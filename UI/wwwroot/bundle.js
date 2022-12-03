@@ -2761,7 +2761,7 @@ var app = (function () {
     			t0 = space();
     			div = element("div");
     			div.textContent = "About";
-    			add_location(div, file$e, 4, 0, 47);
+    			add_location(div, file$e, 4, 0, 54);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2793,27 +2793,14 @@ var app = (function () {
     function instance$f($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('About', slots, []);
-    	let { location } = $$props;
-    	const writable_props = ['location'];
+    	const location = "";
+    	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<About> was created with unknown prop '${key}'`);
     	});
 
-    	$$self.$$set = $$props => {
-    		if ('location' in $$props) $$invalidate(0, location = $$props.location);
-    	};
-
     	$$self.$capture_state = () => ({ location });
-
-    	$$self.$inject_state = $$props => {
-    		if ('location' in $$props) $$invalidate(0, location = $$props.location);
-    	};
-
-    	if ($$props && "$$inject" in $$props) {
-    		$$self.$inject_state($$props.$$inject);
-    	}
-
     	return [location];
     }
 
@@ -2828,17 +2815,10 @@ var app = (function () {
     			options,
     			id: create_fragment$f.name
     		});
-
-    		const { ctx } = this.$$;
-    		const props = options.props || {};
-
-    		if (/*location*/ ctx[0] === undefined && !('location' in props)) {
-    			console.warn("<About> was created without expected prop 'location'");
-    		}
     	}
 
     	get location() {
-    		throw new Error("<About>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		return this.$$.ctx[0];
     	}
 
     	set location(value) {
@@ -3136,11 +3116,11 @@ var app = (function () {
     			t1 = space();
     			span = element("span");
     			t2 = text(/*name*/ ctx[0]);
-    			attr_dev(i, "class", "fa fa-file-o svelte-dy7jcd");
+    			attr_dev(i, "class", "fa fa-file-o svelte-19re4u5");
     			add_location(i, file$c, 14, 4, 373);
-    			attr_dev(span, "class", "svelte-dy7jcd");
+    			attr_dev(span, "class", "svelte-19re4u5");
     			add_location(span, file$c, 15, 4, 407);
-    			attr_dev(div, "class", "file-name-container svelte-dy7jcd");
+    			attr_dev(div, "class", "file-name-container svelte-19re4u5");
     			toggle_class(div, "selected", /*selected*/ ctx[1]);
     			add_location(div, file$c, 13, 0, 319);
     		},
@@ -5690,7 +5670,7 @@ var app = (function () {
     			t = space();
     			div = element("div");
     			if (default_slot) default_slot.c();
-    			attr_dev(div, "class", "tab-list svelte-c5rbnm");
+    			attr_dev(div, "class", "tab-list svelte-123llh6");
     			add_location(div, file$6, 0, 1, 1);
     		},
     		l: function claim(nodes) {
@@ -5981,9 +5961,9 @@ var app = (function () {
     			t = space();
     			button = element("button");
     			if (default_slot) default_slot.c();
-    			attr_dev(button, "class", "svelte-1g15lvm");
+    			attr_dev(button, "class", "svelte-16v7wsi");
     			toggle_class(button, "selected", /*$selectedTab*/ ctx[0] === /*tab*/ ctx[1]);
-    			add_location(button, file$4, 24, 0, 454);
+    			add_location(button, file$4, 24, 0, 456);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7068,11 +7048,11 @@ var app = (function () {
     			t0 = space();
     			span = element("span");
     			t1 = text(/*title*/ ctx[0]);
-    			attr_dev(i, "class", i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-1exyscz");
+    			attr_dev(i, "class", i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-11t5qlb");
     			add_location(i, file$1, 19, 12, 498);
-    			attr_dev(span, "class", "svelte-1exyscz");
+    			attr_dev(span, "class", "svelte-11t5qlb");
     			add_location(span, file$1, 20, 12, 540);
-    			attr_dev(div, "class", "nav-item--inner svelte-1exyscz");
+    			attr_dev(div, "class", "nav-item--inner svelte-11t5qlb");
     			add_location(div, file$1, 18, 8, 455);
     		},
     		m: function mount(target, anchor) {
@@ -7083,7 +7063,7 @@ var app = (function () {
     			append_dev(span, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*icon*/ 4 && i_class_value !== (i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-1exyscz")) {
+    			if (dirty & /*icon*/ 4 && i_class_value !== (i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-11t5qlb")) {
     				attr_dev(i, "class", i_class_value);
     			}
 
@@ -7125,7 +7105,7 @@ var app = (function () {
     			t = space();
     			div = element("div");
     			create_component(link.$$.fragment);
-    			attr_dev(div, "class", "nav-item svelte-1exyscz");
+    			attr_dev(div, "class", "nav-item svelte-11t5qlb");
     			toggle_class(div, "selected", /*selected*/ ctx[3]);
     			add_location(div, file$1, 16, 0, 372);
     		},
