@@ -31,6 +31,11 @@ public class HtmlTranspiler : TranspilationVisitor
         //
     }
 
+    protected override void visitEnumNode(EnumNode enumNode)
+    {
+        //
+    }
+
     protected override void visitChapterNode(MarkdownChapterNode chapterNode)
     {
         Append(Markdown.ToHtml(chapterNode.Value, pipeline));

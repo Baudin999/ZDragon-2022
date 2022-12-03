@@ -13,6 +13,7 @@ public abstract class TranspilationVisitor
         else if (node is EndpointNode endpointNode) visitEndpointNode(endpointNode);
         else if (node is RecordNode recordNode) visitRecordNode(recordNode);
         else if (node is DataNode dataNode) visitDataNode(dataNode);
+        else if (node is EnumNode enumNode) visitEnumNode(enumNode);
         else if (node is MarkdownChapterNode chapterNode) visitChapterNode(chapterNode);
         else if (node is MarkdownParagraphNode paragraphNode) visitParagraphNode(paragraphNode);
         else if (node is ViewNode viewNode) visitViewNode(viewNode);
@@ -41,6 +42,7 @@ public abstract class TranspilationVisitor
     // type system nodes
     protected abstract void visitRecordNode(RecordNode recordNode);
     protected abstract void visitDataNode(DataNode dataNode);
+    protected abstract void visitEnumNode(EnumNode enumNode);
     
     // document nodes
     protected abstract void visitChapterNode(MarkdownChapterNode chapterNode);

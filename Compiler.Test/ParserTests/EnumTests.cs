@@ -21,6 +21,8 @@ enum MyEnum =
         Assert.Equal("A", enumNode.Fields[0].Value);
         Assert.Equal("B", enumNode.Fields[1].Value);
         Assert.Equal("C", enumNode.Fields[2].Value);
+        
+        Assert.Empty(zdragon.Errors);
     }
     
     [Fact(DisplayName = "Create annotated string enum")]
@@ -54,5 +56,37 @@ This is a second annotation", enumNode.Description);
         Assert.Equal("C", enumNode.Fields[2].Value);
         Assert.Equal(@"The third value C
 With a longer annotation", enumNode.Fields[2].Description);
+        
+        Assert.Empty(zdragon.Errors);
+    }
+    
+    [Fact(DisplayName = "Combined Entities")]
+    public async void CombinedEntities()
+    {
+        const string code = @"
+@ This is a test enum
+@ This is a second annotation
+enum MyEnum =
+    @ The first value A
+    | ""A""
+    @ The second value B
+    | ""B""
+    @ The third value C
+    @ With a longer annotation
+    | ""C""
+
+data Home =
+    | Address
+    | HomeAddress
+
+record Address =
+    street: String
+    city: String
+    zip: String
+record HomeAddress extends Address
+";
+        var zdragon = await new ZDragon().Compile(code);
+        Assert.Equal(4, zdragon.Nodes.Count);
+        Assert.Empty(zdragon.Errors);
     }
 }

@@ -33,7 +33,7 @@ public class DataTranspiler : TranspilationVisitor
 ";
         
         this.Append($@"
-entity {recordNode.Id} {{
+entity {recordNode.Id} << (R, lightgreen) >> {{
 {fieldsString.Trim()} 
 {description.Trim()}
 }}
@@ -44,8 +44,8 @@ entity {recordNode.Id} {{
 
     protected override void visitDataNode(DataNode dataNode)
     {
-        var fields = dataNode.Fields.Select(a => $"    {a.TypeTokens[0].Value}\n");
-        var fieldsString = string.Join("", fields);
+        var fields = dataNode.Fields.Select(a => $"    {a.TypeTokens[0].Value}");
+        var fieldsString = string.Join(Environment.NewLine, fields);
         var relations = dataNode.Fields
             .Where(f => Has(f.TypeTokens[0].Value))
             .Select(n => $"{dataNode.Id} --> {n.TypeTokens[0].Value}");
@@ -56,11 +56,27 @@ entity {recordNode.Id} {{
 ";
         
         this.Append($@"
-struct {dataNode.Id} {{
+struct {dataNode.Id} << (D, orchid) >> {{
 {fieldsString.Trim()} 
 {description.Trim()}
 }}
 {relationsString}
+");
+    }
+
+    protected override void visitEnumNode(EnumNode enumNode)
+    {
+        var fields = enumNode.Fields.Select(a => $"    {a.Value}");
+        var fieldsString = string.Join(Environment.NewLine, fields);
+        var description = string.IsNullOrEmpty(enumNode.Description) ? "" : $@"
+-- description --
+{enumNode.Description}
+";
+        this.Append($@"
+enum {enumNode.Id} {{
+{fieldsString.Trim()}
+{description.Trim()}
+}}
 ");
     }
 

@@ -95,6 +95,11 @@ public class ArchitectureTranspiler : TranspilationVisitor
         //
     }
 
+    protected override void visitEnumNode(EnumNode enumNode)
+    {
+        //
+    }
+
 
     protected override void visitChapterNode(MarkdownChapterNode chapterNode)
     {

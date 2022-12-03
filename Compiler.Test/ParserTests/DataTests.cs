@@ -64,5 +64,6 @@ data Address =
         Assert.Equal(2, zdragon.Errors.Count);
         Assert.Equal("Type 'HomeAddress' does not exist", zdragon.Errors[0].Message);
         Assert.Equal("Type 'InvoiceAddress' does not exist", zdragon.Errors[1].Message);
+        
     }
 }

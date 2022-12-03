@@ -42,7 +42,9 @@ public partial class Parser
         var annotations = TakeWhile(TokenKind.Annotation).ToList();
         Take(TokenKind.Or);
         var typeDefinition = TakeWhile(TokenKind.Word).ToList();
-        Take(TokenKind.END);
+        // this check is here because we encounter situations where the next token
+        // is not an END token, but an END_CONTEXT token. This is a bug in the grouper
+        If(TokenKind.END, () => Take(TokenKind.END));
         return new DataFieldNode(typeDefinition, annotations);
     } 
 
