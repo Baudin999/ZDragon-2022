@@ -83,7 +83,7 @@
                          Current == TokenKind.KWLet ||
                          Current == TokenKind.KWRecord ||
                          Current == TokenKind.KWData ||
-                         Current == TokenKind.KWChoice ||
+                         Current == TokenKind.KWEnum ||
                          Current == TokenKind.KWFlow)
                 {
                     _inContext = true;

@@ -191,7 +191,7 @@ namespace Compiler
                 { "record", TokenKind.KWRecord },
                 { "type", TokenKind.KWType },
                 { "data", TokenKind.KWData },
-                { "choice", TokenKind.KWChoice },
+                { "enum", TokenKind.KWEnum },
                 { "open", TokenKind.KWOpen },
                 { "extends", TokenKind.KWExtends },
                 { "aggregate", TokenKind.KWAggregate },

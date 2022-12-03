@@ -76,7 +76,7 @@ public enum TokenKind: ulong
     KWType,
     KWRecord,
     KWData,
-    KWChoice,
+    KWEnum,
     KWFlow,
     KWOpen,
     KWAggregate,
