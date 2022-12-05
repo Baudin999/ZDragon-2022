@@ -4,6 +4,9 @@ public class TranspilationService
 {
     internal static async Task<byte[]> ToSvg(string puml)
     {
+        if (string.IsNullOrWhiteSpace(puml))
+            return new byte[0];
+        
         var renderUrl = "http://localhost:8080/svg";
         try
         {

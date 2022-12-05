@@ -164,17 +164,27 @@ namespace Compiler
 
         public async Task RenderComponentDiagram()
         {
+            var namespacePath = Path.Combine(_outputPath, Module.Namespace);
+            
             var plantuml = new ArchitectureTranspiler().Run(this.AllNodes);
+            var pumlPath = Path.Combine(namespacePath, "architecture.puml");
+            _ = FileHelpers.SaveFileAsync(pumlPath, plantuml);
+            
             var bytes = await TranspilationService.ToSvg(plantuml);
-            var path = Path.Combine(_outputPath, Module.Namespace, "components.svg");
+            var path = Path.Combine(namespacePath, "components.svg");
             await FileHelpers.SaveFileAsync(path, bytes);
         }
 
         public async Task RenderDataDiagram()
         {
+            var namespacePath = Path.Combine(_outputPath, Module.Namespace);
+            
             var plantuml = new DataTranspiler().Run(this.AllNodes);
+            var pumlPath = Path.Combine(namespacePath, "data.puml");
+            _ = FileHelpers.SaveFileAsync(pumlPath, plantuml);
+            
             var bytes = await TranspilationService.ToSvg(plantuml);
-            var path = Path.Combine(_outputPath, Module.Namespace, "data.svg");
+            var path = Path.Combine(namespacePath, "data.svg");
             await FileHelpers.SaveFileAsync(path, bytes);
         }
 

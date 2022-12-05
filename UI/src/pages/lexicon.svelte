@@ -15,6 +15,7 @@
 	fileState.subscribe(state => {
 		if (state.directory && state.directory !== basePath) {
 			getRelations(state.directory);
+			basePath = state.directory;
 		}
 	});
 	
@@ -22,8 +23,37 @@
 	
 </script>
 
-<div>
+<div class="lexicon">
 	{#each relations as relation}
-		<div>{JSON.stringify(relation)}</div>
+		{#if relation.to && relation.to.length > 0}
+			<div class="lexicon--item">
+				<div>{relation.namespace}</div>
+				<div>
+					{relations.nodeType} {relation.from} {relation.type} {relation.to}
+				</div>
+			</div>
+		{:else}
+			<div class="lexicon--item">
+				<div>{relation.namespace}</div>
+				<div>
+					{relations.nodeType} {relation.from} {relation.type} {relation.namespace}
+				</div>
+			</div>
+		{/if}
 	{/each}
 </div>
+
+
+<style lang="less">
+	@import "../styles/colors.less";
+	.lexicon {
+		&--item {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			padding: 0.5rem;
+			border-bottom: 1px solid @accent-background;
+		}
+	}
+	
+</style>
