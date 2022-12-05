@@ -113,7 +113,8 @@
                 {
                     GroupOpen();
                 }
-                else if (Current == TokenKind.NEWLINE && Next == TokenKind.At)
+                else if (Current == TokenKind.NEWLINE && Next == TokenKind.At ||
+                         _index == 0 && Current == TokenKind.At)
                 {
                     // GROUP THE ANNOTATION
                     _inContext = false;
@@ -122,6 +123,17 @@
                     var annotation = TakeWhileNot(TokenKind.NEWLINE).Merge(TokenKind.Annotation);
                     if (annotation is not null)
                         annotations.Add(annotation);
+                }
+                else if (Current == TokenKind.NEWLINE && Next == TokenKind.Percentage ||
+                         _index == 0 && Current == TokenKind.Percentage)
+                {
+                    // GROUP THE DIRECTIVE
+                    _inContext = false;
+                    
+                    if (Current == TokenKind.NEWLINE) TakeCurrent(); // take the newline
+                    var directive = TakeWhileNot(TokenKind.NEWLINE).Merge(TokenKind.Directive);
+                    if (directive is not null)
+                        tokens.Add(directive);
                 }
                 else if (_inContext && Current == TokenKind.At)
                 {
@@ -137,6 +149,7 @@
                     annotationToken.Kind = TokenKind.Annotation;
                     tokens.Add(annotationToken);
                 }
+                
                 else if (_inContext && Current == TokenKind.Minus && Next == TokenKind.GreaterThen)
                 {
                     var nextToken = Current.Clone();

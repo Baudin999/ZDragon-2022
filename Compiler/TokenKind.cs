@@ -58,6 +58,7 @@ public enum TokenKind: ulong
     EmptyParamList,
     Comma,
     Annotation,
+    Directive,
     Apostrophe,
         
     Lambda,

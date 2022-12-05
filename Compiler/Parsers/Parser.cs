@@ -57,6 +57,10 @@
                     Take(TokenKind.END_CONTEXT);
                     Nodes.Add(new OpenNode(openTokens));
                 }
+                else if (Current == TokenKind.Directive)
+                {
+                    Nodes.Add(new DirectiveNode(TakeCurrent()));
+                }
                 else if (Current == TokenKind.Hash)
                 {
                     Token? chapterToken = null;
