@@ -20,13 +20,18 @@ public static class GetRelations
     {
         public async Task<IResult> Handle(GetRelationsRequest getRelationsRequest, CancellationToken cancellationToken)
         {
-            var references = new List<NodeReference>();
+            var references = new Dictionary<string, List<NodeReference>>();
             var binFolder = FileHelpers.GetBinPathFromBasePath(getRelationsRequest.BasePath);
+
             foreach (var fileName in Directory.GetFiles(binFolder).Where(f => f.EndsWith("refs.json")))
             {
+                // remove .refs.json from the end of the file name
+                var @namespace = fileName.Replace(".refs.json", "").Replace(binFolder, "").Replace("\\", "");
                 var result = await FileHelpers.ReadObjectAsync<List<NodeReference>>(fileName);
-                if (result is not null)
-                    references.AddRange(result);
+                if (result is not null && result.Count > 0)
+                {
+                    references.Add(@namespace, result);
+                }
             }
 
             return Results.Ok(references);

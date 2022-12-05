@@ -12,4 +12,12 @@ public class DataFieldNode
         _annotationTokens = annotationTokens;
         Description = Helpers.DescriptionFromAnnotations(annotationTokens);
     }
+
+    public DataFieldNode Clone()
+    {
+        return new DataFieldNode(
+            TypeTokens.Select(t => t.Clone()).ToList(),
+            _annotationTokens.Select(t => t.Clone()).ToList()
+        );
+    }
 }

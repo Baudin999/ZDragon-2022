@@ -12,4 +12,9 @@ public class BinaryOperationExpression : Expression
         Op = op;
         Right = right;
     }
+
+    public override AstNode Clone()
+    {
+        return new BinaryOperationExpression((Expression)Left.Clone(), Op.Clone(), (Expression)Right.Clone());
+    }
 }

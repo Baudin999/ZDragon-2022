@@ -1,14 +1,19 @@
 namespace Compiler.Parsers.Nodes;
 
-public class AssignmentExpression : AstNode
+public class AssignmentExpression : AstNode, IIdentifier
 {
-    private readonly Token _idToken;
-    public string Id => _idToken.Value;
+    public readonly Token IdToken;
+    public string Id => IdToken.Value;
     public Expression Body { get; }
     
     public AssignmentExpression(Token id, Expression body)
     {
-        _idToken = id;
+        IdToken = id;
         Body = body;
+    }
+
+    public override AstNode Clone()
+    {
+        return new AssignmentExpression(IdToken.Clone(), (Expression) Body.Clone());
     }
 }

@@ -3,7 +3,7 @@
     public class ComponentTests
     {
         
-        [Fact]
+        [Fact(DisplayName = "001 - Simple Component")]
         public async void SimpleComponent()
         {
             const string code = @"
@@ -16,7 +16,7 @@ component Foo
             Assert.NotEmpty(zdragon.Nodes);
         }
 
-        [Fact]
+        [Fact(DisplayName = "002 - Component should have an Identifier")]
         public async void ComponentShouldHaveAnIdentifier()
         {
             const string code = @"component";
@@ -38,7 +38,7 @@ Where 'Foo' is the identifier of the component.", zdragon.Errors[0].Message);
             Assert.Equal(9, zdragon.Errors[0].Source.EndColumn);
         }
 
-        [Fact]
+        [Fact(DisplayName = "003 - Simple component 02")]
         public async void SimpleComponent2()
         {
             const string code = @"
@@ -59,7 +59,7 @@ component Foo =
             Assert.Equal(3, fooNode.Attributes.Count);
         }
         
-        [Fact]
+        [Fact (DisplayName = "004 - Simple component 03")]
         public async void SimpleComponent3()
         {
             const string code = @"
@@ -87,7 +87,7 @@ component Foo =
             Assert.Equal(5, fooNode.Attributes.Count);
         }
 
-        [Fact]
+        [Fact (DisplayName = "005 - Single interaction")]
         public async void TestInteractions()
         {
             const string code = @"
@@ -112,7 +112,7 @@ component Foo =
             Assert.Single(zdragon.Errors);
         }
 
-        [Fact]
+        [Fact(DisplayName = "006 - Extend component")]
         public async void ExtendComponent()
         {
             const string code = @"
@@ -143,7 +143,7 @@ component Other =
             Assert.Equal("Bar Component", fooNode.Attributes[1].Value);
         }
         
-        [Fact]
+        [Fact(DisplayName = "007 - Component with a list attribute")]
         public async void ComponentListAttribute()
         {
             const string code = @"
@@ -172,7 +172,7 @@ component JusticeLeague =
             Assert.Equal("Tech Man", members.Items?[2].Id);
         }
 
-        [Fact(DisplayName = "Component with annotations")]
+        [Fact(DisplayName = "008 - Component with annotations")]
         public async void ComponentWithAnnotations()
         {
             const string code = @"
@@ -211,7 +211,7 @@ of America", justiceLeagueNode.Description);
             Assert.Equal("Wonder Woman", members.Items?[2].Id);
         }
 
-        [Fact]
+        [Fact(DisplayName = "009 - Component with markdown notes")]
         public async void ComponentWithMarkdownNotes()
         {
             const string code = @"
@@ -248,7 +248,7 @@ write anything we want:
  * Bullet 3", attribute.Value);
         }
         
-        [Fact(DisplayName = "Component Version Checking - 01")]
+        [Fact(DisplayName = "010 - Component Version Checking - 01")]
         public async void ComponentVersionChecking_01()
         {
             const string code = @"
@@ -274,7 +274,7 @@ component Bar =
             Assert.Empty(zdragon.Errors);
         }
         
-        [Fact(DisplayName = "Component Version Checking - 02")]
+        [Fact(DisplayName = "011 - Component Version Checking - 02")]
         public async void ComponentVersionChecking_02()
         {
             const string code = @"
@@ -299,6 +299,27 @@ component Bar =
 
             Assert.Single(zdragon.Errors);
             Assert.Equal("The interaction on the 'Bar' component, references a non existent version of the 'Foo' component.", zdragon.Errors[0].Message);
+        }
+
+        [Fact(DisplayName = "012 - Clone Component")]
+        public async void CloneComponent() 
+        {
+            const string code = @"
+component Foo =
+    Version: v01
+";
+            var zdragon = await new ZDragon().Compile(code);
+            Assert.Single(zdragon.Nodes);
+            var componentNode = (ComponentNode)zdragon.Nodes[0];
+            Assert.NotNull(componentNode);
+            if (componentNode is not null)
+            {
+                var clone = componentNode.Clone();
+                Assert.Equal(componentNode.Id, clone.Id);
+                var equals = componentNode.GetAttribute("Version")?.Equals(clone.GetAttribute("Version"));
+                Assert.True(equals);
+            }
+
         }
     }
 }

@@ -10,11 +10,21 @@
         {
         }
 
-        public ComponentNode Clone(List<ComponentAttribute>? newAttributes = null)
+        public ComponentNode Clone(List<ComponentAttribute> newAttributes)
         {
             return new ComponentNode(
                 this.IdToken.Clone(),
-                newAttributes ?? this.Attributes.Select(a => a.Clone()).ToList(),
+                newAttributes,
+                this.ExtensionTokens.Select(a => a.Clone()).ToList(),
+                this.AnnotationTokens.Select(a => a.Clone()).ToList()
+            );
+        }
+
+        public override ComponentNode Clone()
+        {
+            return new ComponentNode(
+                this.IdToken.Clone(),
+                this.Attributes.Select(a => a.Clone()).ToList(),
                 this.ExtensionTokens.Select(a => a.Clone()).ToList(),
                 this.AnnotationTokens.Select(a => a.Clone()).ToList()
             );

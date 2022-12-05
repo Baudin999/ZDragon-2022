@@ -1,12 +1,17 @@
 namespace Compiler.Parsers.Nodes;
 
-public class ValueExpression : Expression
+public class ValueExpression : Expression, IIdentifier
 {
-    private readonly Token _idToken;
-    public string Id => _idToken.Value;
+    public readonly Token IdToken;
+    public string Id => IdToken.Value;
 
     public ValueExpression(Token idToken)
     {
-        _idToken = idToken;
+        IdToken = idToken;
+    }
+
+    public override AstNode Clone()
+    {
+        return new ValueExpression(IdToken.Clone());
     }
 }

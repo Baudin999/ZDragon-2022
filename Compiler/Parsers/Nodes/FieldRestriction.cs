@@ -15,4 +15,9 @@ public class FieldRestriction
         this.ValueToken = value;
     }
 
+    public FieldRestriction Clone()
+    {
+        return new FieldRestriction(KeyToken.Clone(), ValueToken.Clone());
+    }
+
 }

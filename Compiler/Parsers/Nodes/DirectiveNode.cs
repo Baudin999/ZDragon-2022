@@ -22,4 +22,9 @@ public class DirectiveNode: AstNode
         Key = parts[0].Trim();
         Value = parts[1].Trim();
     }
+
+    public override AstNode Clone()
+    {
+        return new DirectiveNode(Key, Value);
+    }
 }

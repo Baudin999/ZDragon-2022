@@ -16,6 +16,15 @@ public class EnumNode : AstNode
         Fields = fields;
         this.Description = Helpers.DescriptionFromAnnotations(annotationTokens);
     }
+
+    public override AstNode Clone()
+    {
+        return new EnumNode(
+            IdToken.Clone(),
+            Fields.Select(f => (EnumFieldNode)f.Clone()).ToList(),
+            _annotationTokens.Select(t => t.Clone()).ToList()
+        );
+    }
 }
 
 
@@ -32,6 +41,14 @@ public class EnumFieldNode
         ValueToken = valueToken;
         AnnotationTokens = annotationTokens;
         Description = Helpers.DescriptionFromAnnotations(annotationTokens);
+    }
+    
+    public EnumFieldNode Clone()
+    {
+        return new EnumFieldNode(
+            ValueToken.Clone(),
+            AnnotationTokens.Select(t => t.Clone()).ToList()
+        );
     }
 
 }

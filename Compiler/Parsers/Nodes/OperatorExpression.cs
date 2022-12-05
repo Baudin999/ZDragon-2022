@@ -8,4 +8,9 @@ public class OperatorExpression : Expression
     {
         Op = op;
     }
+
+    public override OperatorExpression Clone()
+    {
+        return new OperatorExpression(Op.Clone());
+    }
 }

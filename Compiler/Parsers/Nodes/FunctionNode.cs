@@ -1,11 +1,11 @@
 ﻿namespace Compiler.Parsers.Nodes;
 
-public class FunctionNode : AstNode
+public class FunctionNode : AstNode, IIdentifier
 {
-    private readonly Token _idToken;
+    public readonly Token IdToken;
     public List<Token> Parameters { get; }
     public Expression Body { get; }
-    public string Id => _idToken.Value;
+    public string Id => IdToken.Value;
 
     public FunctionNode(Token idToken, List<Token> parameters, Expression body)
     {
@@ -14,8 +14,17 @@ public class FunctionNode : AstNode
             parameters = new List<Token>();
         }
         
-        _idToken = idToken;
+        IdToken = idToken;
         Parameters = parameters;
         Body = body;
+    }
+
+    public override AstNode Clone()
+    {
+        return new FunctionNode(
+            IdToken.Clone(),
+            Parameters.Select(p => p.Clone()).ToList(),
+            (Expression)Body.Clone()
+        );
     }
 }

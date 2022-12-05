@@ -9,6 +9,11 @@ public class IdentifierNode : AstNode
     {
         IdToken = id;
     }
+
+    public override AstNode Clone()
+    {
+        return new IdentifierNode(IdToken.Clone());
+    }
 }
 
 public class TypeApplicationNode : AstNode
@@ -21,5 +26,13 @@ public class TypeApplicationNode : AstNode
     {
         IdToken = id;
         TypeArgs = typeArgs;
+    }
+
+    public override AstNode Clone()
+    {
+        return new TypeApplicationNode(
+            IdToken.Clone(),
+            TypeArgs.Select(t => t.Clone()).ToArray()
+        );
     }
 }

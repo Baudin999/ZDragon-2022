@@ -14,6 +14,14 @@ public class TypeDefinitionNode : AstNode, IAttributesNode, IDataNode
         Body = body;
         this.Description = "";
     }
+
+    public override AstNode Clone()
+    {
+        return new TypeDefinitionNode(
+            IdToken.Clone(), 
+            Body.Clone()
+        );
+    }
 }
 
 

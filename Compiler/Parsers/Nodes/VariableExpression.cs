@@ -1,12 +1,17 @@
 namespace Compiler.Parsers.Nodes;
 
-public class VariableExpression : Expression
+public class VariableExpression : Expression, IIdentifier
 {
-    private readonly Token _idToken;
-    public string Id => _idToken.Value;
+    private readonly Token IdToken;
+    public string Id => IdToken.Value;
 
     public VariableExpression(Token idToken)
     {
-        _idToken = idToken;
+        IdToken = idToken;
+    }
+
+    public override AstNode Clone()
+    {
+        return new VariableExpression(IdToken.Clone());
     }
 }

@@ -31,6 +31,15 @@ public class ViewNode : AstNode, IIdentifier
 
         return childNode;
     }
+
+    public override AstNode Clone()
+    {
+        return new ViewNode(
+            IdToken.Clone(), 
+            Children.Select(c => (ViewChildNode)c.Clone()).ToList(), 
+            ExtensionTokens.Select(e => e.Clone()).ToList()
+        );
+    }
 }
 
 public class ViewChildNode : AstNode
@@ -49,5 +58,13 @@ public class ViewChildNode : AstNode
     public bool HasAttribute(string attributeId)
     {
         return Attributes.Find(a => a.Id == attributeId) is not null;
+    }
+
+    public override AstNode Clone()
+    {
+        return new ViewChildNode(
+            IdToken.Clone(), 
+            Attributes.Select(a => a.Clone()).ToList()
+        );
     }
 }

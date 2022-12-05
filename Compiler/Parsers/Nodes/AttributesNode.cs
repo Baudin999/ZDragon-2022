@@ -5,7 +5,7 @@ public interface IAttributesNode : IIdentifier
     string Description { get;  }
 }
 
-public class AttributesNode<T> : AstNode, IAttributesNode where T : IIdentifier
+public abstract class AttributesNode<T> : AstNode, IAttributesNode where T : IIdentifier
 {
     public Token IdToken { get; }
     public string Id => IdToken.Value;
@@ -39,4 +39,6 @@ public class AttributesNode<T> : AstNode, IAttributesNode where T : IIdentifier
     {
         return Attributes.FirstOrDefault(a => a.Id == id);
     }
+    
+    
 }

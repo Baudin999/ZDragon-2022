@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Compiler.Parsers.Nodes;
 
-public class ComponentAttribute : IIdentifier
+public class ComponentAttribute : IIdentifier, IEqualityComparer<ComponentAttribute>
 {
 
     public Token IdToken { get; }
@@ -55,6 +55,30 @@ public class ComponentAttribute : IIdentifier
                 AnnotationTokens.Select(v => v.Clone()).ToList()
             );
         
+    }
+
+    public bool Equals(ComponentAttribute? x, ComponentAttribute? y)
+    {
+        if (ReferenceEquals(x, y)) return true;
+        if (ReferenceEquals(x, null)) return false;
+        if (ReferenceEquals(y, null)) return false;
+        if (x.GetType() != y.GetType()) return false;
+        return x.Id == y.Id && x.Value == y.Value;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj switch
+        {
+            null => false,
+            ComponentAttribute attribute => Equals(this, attribute),
+            _ => false
+        };
+    }
+
+    public int GetHashCode(ComponentAttribute obj)
+    {
+        return HashCode.Combine(obj.Items, obj.IdToken, obj.ValueTokens, obj.IsList, obj.AnnotationTokens, obj.Description, obj.Value);
     }
 }
 

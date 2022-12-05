@@ -10,4 +10,12 @@ public class OperationExpression : Expression
         Op = op;
         Right = right;
     }
+
+    public override OperationExpression Clone()
+    {
+        return new OperationExpression(
+            Op.Clone(),
+            (Expression)Right.Clone()
+        );
+    }
 }

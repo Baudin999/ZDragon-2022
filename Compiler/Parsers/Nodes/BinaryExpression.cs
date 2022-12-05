@@ -10,4 +10,9 @@ public class BinaryExpression : Expression
         Left = left;
         Right = right;
     }
+
+    public override Expression Clone()
+    {
+        return new BinaryExpression((Expression)Left.Clone(), (Expression)Right.Clone());
+    }
 }

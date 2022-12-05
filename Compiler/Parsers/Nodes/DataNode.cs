@@ -15,4 +15,13 @@ public class DataNode: AstNode, IIdentifier
         Fields = fields;
         this.Description = Helpers.DescriptionFromAnnotations(annotationTokens);
     }
+
+    public override AstNode Clone()
+    {
+        return new DataNode(
+            IdToken.Clone(), 
+            Fields.Select(f => (DataFieldNode)f.Clone()).ToList(), 
+            _annotationTokens.Select(a => a.Clone()).ToList()
+        );
+    }
 }

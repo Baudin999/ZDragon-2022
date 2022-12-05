@@ -8,4 +8,11 @@ public class OpenNode : AstNode
     {
         _openTokens = openTokens;
     }
+
+    public override AstNode Clone()
+    {
+        return new OpenNode(
+            _openTokens.Select(o => o.Clone()).ToList()
+        );
+    }
 }

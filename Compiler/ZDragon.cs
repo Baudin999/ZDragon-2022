@@ -223,6 +223,10 @@ namespace Compiler
                     {
                         return sn.Clone(n.Attributes);
                     }
+                    else if (source is EndpointNode epn)
+                    {
+                        return epn.Clone(n.Attributes);
+                    }
 
                     return null;
                 }).OfType<AstNode>().ToList();

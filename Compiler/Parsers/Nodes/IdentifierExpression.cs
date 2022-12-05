@@ -9,4 +9,9 @@ public class IdentifierExpression : Expression
     {
         IdToken = id;
     }
+
+    public override Expression Clone()
+    {
+        return new IdentifierExpression(IdToken.Clone());
+    }
 }
