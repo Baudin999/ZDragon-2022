@@ -3116,11 +3116,11 @@ var app = (function () {
     			t1 = space();
     			span = element("span");
     			t2 = text(/*name*/ ctx[0]);
-    			attr_dev(i, "class", "fa fa-file-o svelte-19re4u5");
+    			attr_dev(i, "class", "fa fa-file-o svelte-1r8mmco");
     			add_location(i, file$c, 14, 4, 373);
-    			attr_dev(span, "class", "svelte-19re4u5");
+    			attr_dev(span, "class", "svelte-1r8mmco");
     			add_location(span, file$c, 15, 4, 407);
-    			attr_dev(div, "class", "file-name-container svelte-19re4u5");
+    			attr_dev(div, "class", "file-name-container svelte-1r8mmco");
     			toggle_class(div, "selected", /*selected*/ ctx[1]);
     			add_location(div, file$c, 13, 0, 319);
     		},
@@ -5670,7 +5670,7 @@ var app = (function () {
     			t = space();
     			div = element("div");
     			if (default_slot) default_slot.c();
-    			attr_dev(div, "class", "tab-list svelte-123llh6");
+    			attr_dev(div, "class", "tab-list svelte-qxa2w7");
     			add_location(div, file$6, 0, 1, 1);
     		},
     		l: function claim(nodes) {
@@ -5961,7 +5961,7 @@ var app = (function () {
     			t = space();
     			button = element("button");
     			if (default_slot) default_slot.c();
-    			attr_dev(button, "class", "svelte-16v7wsi");
+    			attr_dev(button, "class", "svelte-ncxfna");
     			toggle_class(button, "selected", /*$selectedTab*/ ctx[0] === /*tab*/ ctx[1]);
     			add_location(button, file$4, 24, 0, 456);
     		},
@@ -7325,11 +7325,11 @@ var app = (function () {
     			t0 = space();
     			span = element("span");
     			t1 = text(/*title*/ ctx[0]);
-    			attr_dev(i, "class", i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-11t5qlb");
+    			attr_dev(i, "class", i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-77nxqj");
     			add_location(i, file$1, 19, 12, 498);
-    			attr_dev(span, "class", "svelte-11t5qlb");
+    			attr_dev(span, "class", "svelte-77nxqj");
     			add_location(span, file$1, 20, 12, 540);
-    			attr_dev(div, "class", "nav-item--inner svelte-11t5qlb");
+    			attr_dev(div, "class", "nav-item--inner svelte-77nxqj");
     			add_location(div, file$1, 18, 8, 455);
     		},
     		m: function mount(target, anchor) {
@@ -7340,7 +7340,7 @@ var app = (function () {
     			append_dev(span, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*icon*/ 4 && i_class_value !== (i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-11t5qlb")) {
+    			if (dirty & /*icon*/ 4 && i_class_value !== (i_class_value = "fa fa-" + /*icon*/ ctx[2] + " svelte-77nxqj")) {
     				attr_dev(i, "class", i_class_value);
     			}
 
@@ -7382,7 +7382,7 @@ var app = (function () {
     			t = space();
     			div = element("div");
     			create_component(link.$$.fragment);
-    			attr_dev(div, "class", "nav-item svelte-11t5qlb");
+    			attr_dev(div, "class", "nav-item svelte-77nxqj");
     			toggle_class(div, "selected", /*selected*/ ctx[3]);
     			add_location(div, file$1, 16, 0, 372);
     		},

@@ -20,8 +20,8 @@
     }
 
     .selected {
-        border-bottom: 4px solid @accent-background;
-        color: @accent-background;
+        border-bottom: 4px solid @accent-color;
+        color: @accent-color;
     }
 </style>
 

@@ -57,7 +57,7 @@
     &.selected {
       background: @accent-background;
       * {
-        color: darken(@accent-background, 30%);
+        color: @accent-color;
       }
     }
   }
