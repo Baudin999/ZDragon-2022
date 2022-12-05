@@ -3,7 +3,7 @@ namespace Compiler.Parsers;
 public class NodeReference {
     
     [JsonConstructor]
-    public NodeReference(Token fromToken, Token toToken, ReferenceType referenceType, string nodeType, string @namespace, Token? versionToken = null)
+    public NodeReference(Token fromToken, Token? toToken, ReferenceType referenceType, string fromNodeType, string @namespace, Token? versionToken = null)
     {
         FromToken = fromToken;
         ToToken = toToken;
@@ -11,22 +11,21 @@ public class NodeReference {
         VersionToken = versionToken;
         Namespace = @namespace;
         Type = referenceType.ToString();
-        NodeType = nodeType;
+        FromNodeType = fromNodeType;
     }
 
-    public Token ToToken { get; }
-    public string To => ToToken.Value;
+    public Token? ToToken { get; }
+    public string To => ToToken?.Value ?? "";
     public Token FromToken { get; }
     public string From => FromToken.Value;
     public ReferenceType ReferenceType { get; }
     public string Namespace { get; }
-    public string NodeType { get; }
+    public string FromNodeType { get; }
+    public string ToNodeType { get; set; } = "";
     public Token? VersionToken { get; }
     
     public string Type { get; } 
     public string Version => VersionToken?.Value ?? string.Empty;
-    public string ToType => ToToken.Kind.ToString();
-    public string FromType => FromToken.Kind.ToString();
 
     public override string ToString()
     {
@@ -36,8 +35,8 @@ public class NodeReference {
 
 public class DataReference : NodeReference
 {
-    public DataReference(Token fromToken, Token toToken, ReferenceType referenceType, string nodeType, string @namespace) : 
-        base(fromToken, toToken, referenceType, nodeType, @namespace)
+    public DataReference(Token fromToken, Token toToken, ReferenceType referenceType, string fromNodeType, string @namespace) : 
+        base(fromToken, toToken, referenceType, fromNodeType, @namespace)
     {
         // nothing to see
     }

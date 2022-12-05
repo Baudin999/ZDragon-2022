@@ -6,7 +6,7 @@ public partial class Parser
     {
         if (node is ComponentNode componentNode)
         {
-            References.Add(new NodeReference(componentNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn, "Component", node.Namespace));
+            References.Add(new NodeReference(componentNode.IdToken, null, ReferenceType.DefinedIn, "Component", node.Namespace));
             ExtractReferences(componentNode.Attributes, componentNode.IdToken, "Component", node.Namespace);
             foreach (var ext in componentNode.ExtensionTokens)
             {
@@ -15,7 +15,7 @@ public partial class Parser
         }
         else if (node is SystemNode systemNode)
         {
-            References.Add(new NodeReference(systemNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn, "System", node.Namespace));
+            References.Add(new NodeReference(systemNode.IdToken, null, ReferenceType.DefinedIn, "System", node.Namespace));
             ExtractReferences(systemNode.Attributes, systemNode.IdToken, "System", node.Namespace);
             foreach (var ext in systemNode.ExtensionTokens)
             {
@@ -24,7 +24,7 @@ public partial class Parser
         }
         else if (node is EndpointNode endpointNode)
         {
-            References.Add(new NodeReference(endpointNode.IdToken, Token.EMPTY, ReferenceType.DefinedIn, "Endpoint", node.Namespace));
+            References.Add(new NodeReference(endpointNode.IdToken, null, ReferenceType.DefinedIn, "Endpoint", node.Namespace));
             ExtractReferences(endpointNode.Attributes, endpointNode.IdToken, "Endpoint", node.Namespace);
             ExtractReferences(endpointNode.Operation, endpointNode.IdToken, "Endpoint", node.Namespace);
             foreach (var ext in endpointNode.ExtensionTokens)

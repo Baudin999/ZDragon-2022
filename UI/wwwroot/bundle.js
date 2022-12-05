@@ -7107,71 +7107,59 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (35:2) {:else}
+    // (37:3) {:else}
     function create_else_block(ctx) {
-    	let div2;
+    	let div1;
     	let div0;
-    	let t0_value = /*relation*/ ctx[4].namespace + "";
+    	let t0_value = /*relation*/ ctx[4].fromNodeType + "";
     	let t0;
     	let t1;
-    	let div1;
-    	let t2_value = /*relations*/ ctx[0].nodeType + "";
+    	let t2_value = /*relation*/ ctx[4].from + "";
     	let t2;
     	let t3;
-    	let t4_value = /*relation*/ ctx[4].from + "";
+    	let t4_value = /*relation*/ ctx[4].type + "";
     	let t4;
     	let t5;
-    	let t6_value = /*relation*/ ctx[4].type + "";
+    	let t6_value = /*relation*/ ctx[4].namespace + "";
     	let t6;
     	let t7;
-    	let t8_value = /*relation*/ ctx[4].namespace + "";
-    	let t8;
-    	let t9;
 
     	const block = {
     		c: function create() {
-    			div2 = element("div");
+    			div1 = element("div");
     			div0 = element("div");
     			t0 = text(t0_value);
-    			t1 = space();
-    			div1 = element("div");
+    			t1 = text("::");
     			t2 = text(t2_value);
     			t3 = space();
     			t4 = text(t4_value);
     			t5 = space();
     			t6 = text(t6_value);
     			t7 = space();
-    			t8 = text(t8_value);
-    			t9 = space();
-    			add_location(div0, file$2, 36, 4, 850);
-    			add_location(div1, file$2, 37, 4, 887);
-    			attr_dev(div2, "class", "lexicon--item svelte-r7qr5");
-    			add_location(div2, file$2, 35, 3, 817);
+    			add_location(div0, file$2, 38, 5, 937);
+    			attr_dev(div1, "class", "lexicon--item svelte-1qppf9z");
+    			add_location(div1, file$2, 37, 4, 903);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, div0);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
     			append_dev(div0, t0);
-    			append_dev(div2, t1);
-    			append_dev(div2, div1);
-    			append_dev(div1, t2);
-    			append_dev(div1, t3);
-    			append_dev(div1, t4);
-    			append_dev(div1, t5);
-    			append_dev(div1, t6);
+    			append_dev(div0, t1);
+    			append_dev(div0, t2);
+    			append_dev(div0, t3);
+    			append_dev(div0, t4);
+    			append_dev(div0, t5);
+    			append_dev(div0, t6);
     			append_dev(div1, t7);
-    			append_dev(div1, t8);
-    			append_dev(div2, t9);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*relations*/ 1 && t0_value !== (t0_value = /*relation*/ ctx[4].namespace + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*relations*/ 1 && t2_value !== (t2_value = /*relations*/ ctx[0].nodeType + "")) set_data_dev(t2, t2_value);
-    			if (dirty & /*relations*/ 1 && t4_value !== (t4_value = /*relation*/ ctx[4].from + "")) set_data_dev(t4, t4_value);
-    			if (dirty & /*relations*/ 1 && t6_value !== (t6_value = /*relation*/ ctx[4].type + "")) set_data_dev(t6, t6_value);
-    			if (dirty & /*relations*/ 1 && t8_value !== (t8_value = /*relation*/ ctx[4].namespace + "")) set_data_dev(t8, t8_value);
+    			if (dirty & /*relations*/ 1 && t0_value !== (t0_value = /*relation*/ ctx[4].fromNodeType + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*relations*/ 1 && t2_value !== (t2_value = /*relation*/ ctx[4].from + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*relations*/ 1 && t4_value !== (t4_value = /*relation*/ ctx[4].type + "")) set_data_dev(t4, t4_value);
+    			if (dirty & /*relations*/ 1 && t6_value !== (t6_value = /*relation*/ ctx[4].namespace + "")) set_data_dev(t6, t6_value);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div2);
+    			if (detaching) detach_dev(div1);
     		}
     	};
 
@@ -7179,14 +7167,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(35:2) {:else}",
+    		source: "(37:3) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (28:2) {#if relation.to && relation.to.length > 0}
+    // (30:3) {#if relation.toToken && relation.to && relation.to.length > 0}
     function create_if_block(ctx) {
     	let div2;
     	let div0;
@@ -7194,7 +7182,7 @@ var app = (function () {
     	let t0;
     	let t1;
     	let div1;
-    	let t2_value = /*relations*/ ctx[0].nodeType + "";
+    	let t2_value = /*relation*/ ctx[4].fromNodeType + "";
     	let t2;
     	let t3;
     	let t4_value = /*relation*/ ctx[4].from + "";
@@ -7203,9 +7191,12 @@ var app = (function () {
     	let t6_value = /*relation*/ ctx[4].type + "";
     	let t6;
     	let t7;
-    	let t8_value = /*relation*/ ctx[4].to + "";
+    	let t8_value = /*relation*/ ctx[4].toNodeType + "";
     	let t8;
     	let t9;
+    	let t10_value = /*relation*/ ctx[4].to + "";
+    	let t10;
+    	let t11;
 
     	const block = {
     		c: function create() {
@@ -7215,17 +7206,19 @@ var app = (function () {
     			t1 = space();
     			div1 = element("div");
     			t2 = text(t2_value);
-    			t3 = space();
+    			t3 = text("::");
     			t4 = text(t4_value);
     			t5 = space();
     			t6 = text(t6_value);
     			t7 = space();
     			t8 = text(t8_value);
-    			t9 = space();
-    			add_location(div0, file$2, 29, 4, 663);
-    			add_location(div1, file$2, 30, 4, 700);
-    			attr_dev(div2, "class", "lexicon--item svelte-r7qr5");
-    			add_location(div2, file$2, 28, 3, 630);
+    			t9 = text("::");
+    			t10 = text(t10_value);
+    			t11 = space();
+    			add_location(div0, file$2, 31, 5, 716);
+    			add_location(div1, file$2, 32, 5, 754);
+    			attr_dev(div2, "class", "lexicon--item svelte-1qppf9z");
+    			add_location(div2, file$2, 30, 4, 682);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -7240,14 +7233,17 @@ var app = (function () {
     			append_dev(div1, t6);
     			append_dev(div1, t7);
     			append_dev(div1, t8);
-    			append_dev(div2, t9);
+    			append_dev(div1, t9);
+    			append_dev(div1, t10);
+    			append_dev(div2, t11);
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*relations*/ 1 && t0_value !== (t0_value = /*relation*/ ctx[4].namespace + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*relations*/ 1 && t2_value !== (t2_value = /*relations*/ ctx[0].nodeType + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*relations*/ 1 && t2_value !== (t2_value = /*relation*/ ctx[4].fromNodeType + "")) set_data_dev(t2, t2_value);
     			if (dirty & /*relations*/ 1 && t4_value !== (t4_value = /*relation*/ ctx[4].from + "")) set_data_dev(t4, t4_value);
     			if (dirty & /*relations*/ 1 && t6_value !== (t6_value = /*relation*/ ctx[4].type + "")) set_data_dev(t6, t6_value);
-    			if (dirty & /*relations*/ 1 && t8_value !== (t8_value = /*relation*/ ctx[4].to + "")) set_data_dev(t8, t8_value);
+    			if (dirty & /*relations*/ 1 && t8_value !== (t8_value = /*relation*/ ctx[4].toNodeType + "")) set_data_dev(t8, t8_value);
+    			if (dirty & /*relations*/ 1 && t10_value !== (t10_value = /*relation*/ ctx[4].to + "")) set_data_dev(t10, t10_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
@@ -7258,19 +7254,19 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(28:2) {#if relation.to && relation.to.length > 0}",
+    		source: "(30:3) {#if relation.toToken && relation.to && relation.to.length > 0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (27:1) {#each relations as relation}
+    // (29:2) {#each relations as relation}
     function create_each_block(ctx) {
     	let if_block_anchor;
 
     	function select_block_type(ctx, dirty) {
-    		if (/*relation*/ ctx[4].to && /*relation*/ ctx[4].to.length > 0) return create_if_block;
+    		if (/*relation*/ ctx[4].toToken && /*relation*/ ctx[4].to && /*relation*/ ctx[4].to.length > 0) return create_if_block;
     		return create_else_block;
     	}
 
@@ -7309,7 +7305,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(27:1) {#each relations as relation}",
+    		source: "(29:2) {#each relations as relation}",
     		ctx
     	});
 
@@ -7317,8 +7313,11 @@ var app = (function () {
     }
 
     function create_fragment$2(ctx) {
-    	let t;
-    	let div;
+    	let t0;
+    	let div2;
+    	let div0;
+    	let t1;
+    	let div1;
     	let each_value = /*relations*/ ctx[0];
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -7329,26 +7328,38 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			t = space();
-    			div = element("div");
+    			t0 = space();
+    			div2 = element("div");
+    			div0 = element("div");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div, "class", "lexicon");
-    			add_location(div, file$2, 25, 0, 525);
+    			t1 = space();
+    			div1 = element("div");
+    			div1.textContent = "aksjdlkjsa";
+    			attr_dev(div0, "class", "lexicon svelte-1qppf9z");
+    			add_location(div0, file$2, 27, 1, 554);
+    			attr_dev(div1, "class", "information svelte-1qppf9z");
+    			add_location(div1, file$2, 46, 1, 1088);
+    			attr_dev(div2, "class", "container svelte-1qppf9z");
+    			add_location(div2, file$2, 25, 0, 525);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, t, anchor);
-    			insert_dev(target, div, anchor);
+    			insert_dev(target, t0, anchor);
+    			insert_dev(target, div2, anchor);
+    			append_dev(div2, div0);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div, null);
+    				each_blocks[i].m(div0, null);
     			}
+
+    			append_dev(div2, t1);
+    			append_dev(div2, div1);
     		},
     		p: function update(ctx, [dirty]) {
     			if (dirty & /*relations*/ 1) {
@@ -7364,7 +7375,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(div, null);
+    						each_blocks[i].m(div0, null);
     					}
     				}
 
@@ -7378,8 +7389,8 @@ var app = (function () {
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(t);
-    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t0);
+    			if (detaching) detach_dev(div2);
     			destroy_each(each_blocks, detaching);
     		}
     	};

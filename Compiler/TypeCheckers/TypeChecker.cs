@@ -25,12 +25,18 @@ public class TypeChecker
 
     private void checkReference(NodeReference nodeReference)
     {
-        if (!string.IsNullOrWhiteSpace(nodeReference.To))
+        if (!string.IsNullOrWhiteSpace(nodeReference.To) && nodeReference.ToToken is not null)
         {
             var to = _zdragon.Get(nodeReference.To);
-            if (to is null) _zdragon.Errors.Add(new Error(nodeReference.ToToken, @$"Type '{nodeReference.To}' does not exist"));
+            if (to is null)
+            {
+                _zdragon.Errors.Add(new Error(nodeReference.ToToken, @$"Type '{nodeReference.To}' does not exist"));
+            }
             else
             {
+                var nodeType = to.GetType().Name;
+                nodeReference.ToNodeType = nodeType;
+                
                 if (nodeReference.VersionToken is not null && to is AttributesNode<ComponentAttribute> an)
                 {
                     var attribute = an.GetAttribute("Version");
@@ -48,7 +54,7 @@ public class TypeChecker
 
     private void checkDataReference(DataReference dr)
     {
-        if (!string.IsNullOrWhiteSpace(dr.To))
+        if (!string.IsNullOrWhiteSpace(dr.To) && dr.ToToken is not null)
         {
             var to = _zdragon.Get(dr.To);
             if (to is null) _zdragon.Errors.Add(new Error(dr.ToToken, @$"Type '{dr.To}' does not exist"));
