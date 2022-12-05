@@ -57,6 +57,27 @@ public class ComponentAttribute : IIdentifier, ICloneable<ComponentAttribute>, I
         
     }
 
+    public string Hydrate()
+    {
+        var descriptionItems = AnnotationTokens.Select(t => "    " + t.Value).ToList();
+        var description = string.Join(Environment.NewLine, descriptionItems);
+        if (description.Length > 0)
+        {
+            description += Environment.NewLine;
+        }
+        var value = ValueTokens is not null ? string.Join("", ValueTokens.Select(t => t.Value)) : null;
+        if (value is not null)
+        {
+            // regex to add 4 spaces to the beginning of each line if they don't already have it
+            var regex = new Regex("(?m)^((?!       ).)*$");
+            value = regex.Replace(value, "        $0").Trim();
+        }
+
+        var items = Items is not null ? string.Join(Environment.NewLine, Items.Select(i => i.Hydrate())) : null;
+        var fieldInfo = IsList ? Environment.NewLine + items : value;
+        return $@"{description}    {Id}: {fieldInfo}";
+    }
+
     public bool Equals(ComponentAttribute? x, ComponentAttribute? y)
     {
         if (ReferenceEquals(x, y)) return true;
@@ -138,6 +159,12 @@ public class ComponentAttributeListItem
             TechnologyTokens?.Select(t => t.Clone()).ToList(),
             DirectionTokens?.Select(t => t.Clone()).ToList()
         );
+    }
+
+    public string Hydrate()
+    {
+        var values = IdTokens.Select(t => "        - " + t.Value);
+        return $@"{string.Join(Environment.NewLine, values)}";
     }
 
     public override string ToString()

@@ -321,5 +321,55 @@ component Foo =
             }
 
         }
+        
+        [Fact(DisplayName = "013 - Hydrate Component")]
+        public async void HydrateComponent() 
+        {
+            const string code = @"
+@ The Foo component's annotations
+@ This will span multiple lines
+component Foo =
+    @ The Foo component
+    Title: Foo
+
+    Description: I would love to see
+        the description span multiple lines
+        as well.
+
+    @ The 1st version
+    Version: v01
+
+    Interactions:
+        - Bar
+        - Baz
+";
+            var zdragon = await new ZDragon().Compile(code);
+            Assert.Single(zdragon.Nodes);
+            var componentNode = (ComponentNode)zdragon.Nodes[0];
+            Assert.NotNull(componentNode);
+            if (componentNode is not null)
+            {
+                string definition = componentNode.Hydrate();
+                Assert.NotNull(definition);
+                Assert.NotEmpty(definition);
+
+                Assert.Equal(@"
+@ The Foo component's annotations
+@ This will span multiple lines
+component Foo =
+    @ The Foo component
+    Title: Foo
+    Description: I would love to see
+        the description span multiple lines
+        as well.
+    @ The 1st version
+    Version: v01
+    Interactions: 
+        - Bar
+        - Baz
+".Trim(), definition);
+            }
+
+        }
     }
 }

@@ -29,5 +29,22 @@
                 this.AnnotationTokens.Select(a => a.Clone()).ToList()
             );
         }
+
+        public string Hydrate()
+        {
+            var descriptionItems = AnnotationTokens.Select(t => t.Value.Trim()).ToList();
+            var description = string.Join(Environment.NewLine, descriptionItems);
+            if (description.Length > 0)
+            {
+                description += Environment.NewLine;
+            }
+            var attributes = this.Attributes.Select(a => a.Hydrate()).ToList();
+            var hydratedString = $@"
+{description}component {this.Id} =
+{string.Join(Environment.NewLine, attributes)}
+";
+            
+            return hydratedString.Trim();
+        }
     }
 }
