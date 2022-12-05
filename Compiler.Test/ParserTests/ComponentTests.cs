@@ -107,7 +107,7 @@ component Foo =
             var reference = zdragon.References[1];
             Assert.Equal("Foo", reference.From);
             Assert.Equal("Bar", reference.To);
-            Assert.Equal(ReferenceType.InteractsWith, reference.Type);
+            Assert.Equal(ReferenceType.InteractsWith, reference.ReferenceType);
 
             Assert.Single(zdragon.Errors);
         }

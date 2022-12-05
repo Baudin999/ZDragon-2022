@@ -10,7 +10,7 @@ public partial class Parser
         if (id is null) return null;
 
         var extensions = new List<Token>();
-        parseExtensions(extensions, id);
+        parseExtensions(extensions);
         
         If(TokenKind.Equal, () => Take());
         _ = TakeWhile(t => t == TokenKind.NEWLINE).ToList();

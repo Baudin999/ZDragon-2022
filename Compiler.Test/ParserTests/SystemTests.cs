@@ -54,7 +54,7 @@ system Foo =
         var containsReferences = zdragon.References.Skip(1);
         foreach (var item in containsReferences)
         {
-            Assert.Equal(ReferenceType.Contains, item.Type);
+            Assert.Equal(ReferenceType.Contains, item.ReferenceType);
             Assert.Equal("Foo", item.From);
             
             // not testing the To yet

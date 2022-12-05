@@ -21,7 +21,7 @@
             var attributes = new List<ComponentAttribute>();
             var extensions = new List<Token>();
 
-            parseExtensions(extensions, id);
+            parseExtensions(extensions);
 
             // parse the body of the component
             parseAchitectureBody(attributes);
@@ -31,17 +31,13 @@
             return new (id, attributes, extensions, annotations);
         }
 
-        private void parseExtensions(List<Token> extensions, Token id)
+        private void parseExtensions(List<Token> extensions)
         {
             // parse the extensions
             If(TokenKind.KWExtends, () =>
             {
                 _ = Take(TokenKind.KWExtends);
                 extensions.AddRange(TakeWhile(TokenKind.Identifier).ToList());
-                foreach (var ext in extensions)
-                {
-                    References.Add(new NodeReference(id, ext, ReferenceType.ExtendedBy));
-                }
             });
         }
 
