@@ -82,7 +82,24 @@ public class ArchitectureTranspiler : TranspilationVisitor
 
     protected override void visitEndpointNode(EndpointNode endpointNode)
     {
-        //
+        if (_renderedIds.Contains(endpointNode.Id)) return;
+        
+        _renderedIds.Add(endpointNode.Id);
+        
+        string id = endpointNode.Id;
+        string title = endpointNode.GetAttribute("Title")?.Value ?? endpointNode.Id;
+        string? description = endpointNode.GetAttribute("Description")?.Value ?? endpointNode.Description;
+        description = description.Replace(Environment.NewLine, " ").Trim();
+        if (description.Length == 0) description = null;
+
+        string? version = endpointNode.GetAttribute("Version")?.Value;
+        string? technology = endpointNode.GetAttribute("Technology")?.Value;
+        
+        elements.Add(id, formatPlantUmlElement("circle", "component_default", id, title, description, version, technology));
+
+        var interactions = endpointNode.GetAttribute("Interactions");
+        if (interactions is not null && interactions.IsList)
+            visitInteractions(id, interactions.Items!);
     }
 
     protected override void visitRecordNode(RecordNode recordNode)

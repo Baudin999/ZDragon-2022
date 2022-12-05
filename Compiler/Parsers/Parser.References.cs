@@ -22,12 +22,10 @@ public partial class Parser
         }
         else if (node is TypeDefinitionNode typeDefinitionNode)
         {
-            if (typeDefinitionNode.Body is IdentifierNode idNode)
+            if (typeDefinitionNode.Body is not IdentifierNode idNode) return;
+            if (!Helpers.BaseTypes.Contains(idNode.Id))
             {
-                if (!Helpers.BaseTypes.Contains(idNode.Id))
-                {
-                    References.Add(new DataReference(typeDefinitionNode.IdToken, idNode.IdToken, ReferenceType.TypeAlias));
-                }
+                References.Add(new DataReference(typeDefinitionNode.IdToken, idNode.IdToken, ReferenceType.TypeAlias));
             }
         }
         else if (node is RecordNode recordNode)

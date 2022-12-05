@@ -2,7 +2,7 @@
 
 public class EndpointTests
 {
-    [Fact]
+    [Fact(DisplayName = "001 - Simple Endpoint")]
     public async void SimpleEndpoint()
     {
         const string code = @"
@@ -21,7 +21,7 @@ endpoint Foo
     }
     
     
-    [Fact]
+    [Fact(DisplayName = "002 - Endpoint Extension")]
     public async void SimpleEndpointExtensions()
     {
         const string code = @"
@@ -41,7 +41,7 @@ endpoint Bar
         Assert.Single(endpointNode.ExtensionTokens);
     }
     
-    [Fact]
+    [Fact(DisplayName = "003 - Endpoint with operation")]
     public async void EndpointWithOperation()
     {
         const string code = @"
@@ -64,7 +64,7 @@ endpoint Add :: Number -> Number -> Number =
         Assert.Equal(2, endpointNode.Attributes.Count);
     }
     
-    [Fact]
+    [Fact(DisplayName = "004 - Endpoint with external operation")]
     public async void EndpointWithOperation2()
     {
         const string code = @"
@@ -88,7 +88,7 @@ type Add = Number -> Number -> Number
         Assert.Equal(2, endpointNode.Attributes.Count);
     }
     
-    [Fact]
+    [Fact(DisplayName = "005 - Endpoint with operation and annotations")]
     public async void EndpointWithAnnotations()
     {
         const string code = @"
@@ -119,12 +119,12 @@ endpoint Add :: Int -> Int -> Int =
         Assert.Equal("The description of the endpoint", endpointNode.Attributes[1].Description);
     }
     
-    [Fact]
+    [Fact(DisplayName = "006 - Endpoint with errors")]
     public async void EndpointFunctionResultsInReferences()
     {
         const string code = @"
 @ This endpoint calculates the addition of two numbers
-endpoint Add :: Person -> Guid -> String =
+endpoint Add :: Person -> Guid -> Address =
     @ The title of the endpoint
     Title: Addition
 
@@ -136,6 +136,9 @@ endpoint Add :: Person -> Guid -> String =
         Assert.IsType<EndpointNode>(zdragon.Nodes[0]);
         var endpointNode = (EndpointNode)zdragon.Nodes[0];
 
-        Assert.Equal(2, zdragon.References.Count);
+        Assert.Equal(3, zdragon.References.Count);
+        Assert.Equal(2, zdragon.Errors.Count);
+        Assert.Equal("Type 'Person' does not exist", zdragon.Errors[0].Message);
+        Assert.Equal("Type 'Address' does not exist", zdragon.Errors[1].Message);
     }
 }

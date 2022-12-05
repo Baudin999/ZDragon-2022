@@ -53,6 +53,7 @@
 			<TabList>
 				<Tab>Page</Tab>
 				<Tab>Component Diagram</Tab>
+				<Tab>Data Diagram</Tab>
 				<Tab>Views</Tab>
 			</TabList>
 			
@@ -69,6 +70,13 @@
 				{:else}
 					<div>Nothing to see</div>	
 				{/if}		
+			</TabPanel>
+			<TabPanel>
+				{#if cPath && dir}
+					<iframe title="result" src={`/project-file/${dir}/${cPath}/data.svg?${time}`} />
+				{:else}
+					<div>Nothing to see</div>
+				{/if}
 			</TabPanel>
 			<TabPanel>
 				<div>Views</div>
