@@ -26,6 +26,20 @@ namespace Compiler
         public IModule Module { get; set; }
         public List<IModule> ResolvedModules { get; set; } = new List<IModule>();
 
+        public List<DirectiveNode> Directives
+        {
+            get
+            {
+                return this.Nodes.OfType<DirectiveNode>().ToList();
+            }
+        }
+
+        public DirectiveNode? GetDirective(string key)
+        {
+            return Directives.FirstOrDefault(d => d.Key == key);
+        }
+        
+        public RenderingOptions RenderingOptions = new RenderingOptions();
         public IIdentifier? Get(string id)
         {
             var result = (Nodes.Concat(Imports))
@@ -135,13 +149,18 @@ namespace Compiler
             // type-check the nodes in the module
             var typeChecker = new TypeChecker(this);
             var errors = typeChecker.Check(); // type-check errors
+            
+            this.RenderingOptions.RenderComponents = this.GetDirective("components")?.Value == "true";
+            this.RenderingOptions.RenderData = this.GetDirective("data")?.Value == "true";
+            this.RenderingOptions.RenderTables = this.GetDirective("tables")?.Value == "true";
+            
 
             return this;
         }
 
         public async Task<string> MainPage(bool save = true)
         {
-            var html = new HtmlTranspiler().Run(this.AllNodes);
+            var html = new HtmlTranspiler(this.RenderingOptions).Run(this.AllNodes);
             string? formatted = null;
             try
             {
@@ -287,5 +306,13 @@ namespace Compiler
         }
 
         
+    }
+
+    public class RenderingOptions
+    {
+        public bool RenderComponents { get; set; } = false;
+        public bool RenderData { get; set; } = false;
+        public bool RenderTables { get; set; } = false;
+        public bool RenderViews { get; set; } = true;
     }
 }

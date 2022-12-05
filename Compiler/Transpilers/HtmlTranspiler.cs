@@ -5,7 +5,12 @@ namespace Compiler.Transpilers;
 public class HtmlTranspiler : TranspilationVisitor
 {
     private MarkdownPipeline pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-    
+    private RenderingOptions options;
+    public HtmlTranspiler(RenderingOptions renderingOptions)
+    {
+        this.options = renderingOptions;
+    }
+
     protected override void visitComponentNode(ComponentNode componentNode)
     {
         //
@@ -141,15 +146,32 @@ public class HtmlTranspiler : TranspilationVisitor
 
     protected override void Stop()
     {
-        Append(@"
+
+        var components = "";
+        if (options.RenderComponents)
+        {
+            components = @"
     <h1>Component Diagram</h1>
     <div>
         <img src=""components.svg"" alt=""components.svg""/>
     </div>
+";
+        }
+
+        var data = "";
+        if (options.RenderData)
+        {
+            data = @"
     <h1>Data Diagram</h1>
     <div>
         <img src=""data.svg"" alt=""data.svg""/>
     </div>
+";
+        }
+
+        Append($@"
+    {components}
+    {data}
 </div>
     <script>
         hljs.highlightAll();
