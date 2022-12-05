@@ -10,7 +10,7 @@ public class FunctionDefinitionNode : AstNode
         Parameters = parameters;
     }
 
-    public override AstNode Clone()
+    public override FunctionDefinitionNode Clone()
     {
         return new FunctionDefinitionNode(
             Parameters.Select(p => p.Clone()).ToList()

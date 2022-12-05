@@ -28,7 +28,7 @@ public class EndpointNode : AttributesNode<ComponentAttribute>, IArchitectureNod
         );
     }
 
-    public override AstNode Clone()
+    public override EndpointNode Clone()
     {
         return new EndpointNode(
             this.IdToken.Clone(),

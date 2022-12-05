@@ -13,7 +13,7 @@ public class BinaryOperationExpression : Expression
         Right = right;
     }
 
-    public override AstNode Clone()
+    public override BinaryOperationExpression Clone()
     {
         return new BinaryOperationExpression((Expression)Left.Clone(), Op.Clone(), (Expression)Right.Clone());
     }

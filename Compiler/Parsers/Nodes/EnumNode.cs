@@ -17,7 +17,7 @@ public class EnumNode : AstNode
         this.Description = Helpers.DescriptionFromAnnotations(annotationTokens);
     }
 
-    public override AstNode Clone()
+    public override EnumNode Clone()
     {
         return new EnumNode(
             IdToken.Clone(),

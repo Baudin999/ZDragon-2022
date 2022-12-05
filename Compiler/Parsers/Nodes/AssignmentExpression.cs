@@ -12,7 +12,7 @@ public class AssignmentExpression : AstNode, IIdentifier
         Body = body;
     }
 
-    public override AstNode Clone()
+    public override AssignmentExpression Clone()
     {
         return new AssignmentExpression(IdToken.Clone(), (Expression) Body.Clone());
     }

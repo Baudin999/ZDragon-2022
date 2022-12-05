@@ -10,7 +10,7 @@ public class VariableExpression : Expression, IIdentifier
         IdToken = idToken;
     }
 
-    public override AstNode Clone()
+    public override VariableExpression Clone()
     {
         return new VariableExpression(IdToken.Clone());
     }

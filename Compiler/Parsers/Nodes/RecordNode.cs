@@ -7,7 +7,7 @@ public class RecordNode : AttributesNode<RecordFieldNode>, IDataNode
     {
     }
 
-    public override AstNode Clone()
+    public override RecordNode Clone()
     {
         return new RecordNode(
             IdToken, 

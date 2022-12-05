@@ -23,7 +23,7 @@ public class DirectiveNode: AstNode
         Value = parts[1].Trim();
     }
 
-    public override AstNode Clone()
+    public override DirectiveNode Clone()
     {
         return new DirectiveNode(Key, Value);
     }

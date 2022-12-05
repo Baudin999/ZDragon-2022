@@ -19,7 +19,7 @@ public class FunctionNode : AstNode, IIdentifier
         Body = body;
     }
 
-    public override AstNode Clone()
+    public override FunctionNode Clone()
     {
         return new FunctionNode(
             IdToken.Clone(),

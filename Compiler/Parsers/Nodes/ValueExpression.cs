@@ -10,7 +10,7 @@ public class ValueExpression : Expression, IIdentifier
         IdToken = idToken;
     }
 
-    public override AstNode Clone()
+    public override ValueExpression Clone()
     {
         return new ValueExpression(IdToken.Clone());
     }

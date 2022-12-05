@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Compiler.Parsers.Nodes;
 
-public class ComponentAttribute : IIdentifier, IEqualityComparer<ComponentAttribute>
+public class ComponentAttribute : IIdentifier, ICloneable<ComponentAttribute>, IEqualityComparer<ComponentAttribute>
 {
 
     public Token IdToken { get; }
@@ -74,6 +74,11 @@ public class ComponentAttribute : IIdentifier, IEqualityComparer<ComponentAttrib
             ComponentAttribute attribute => Equals(this, attribute),
             _ => false
         };
+    }
+    
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Value);
     }
 
     public int GetHashCode(ComponentAttribute obj)

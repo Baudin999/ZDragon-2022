@@ -16,7 +16,7 @@ public class DataNode: AstNode, IIdentifier
         this.Description = Helpers.DescriptionFromAnnotations(annotationTokens);
     }
 
-    public override AstNode Clone()
+    public override DataNode Clone()
     {
         return new DataNode(
             IdToken.Clone(), 

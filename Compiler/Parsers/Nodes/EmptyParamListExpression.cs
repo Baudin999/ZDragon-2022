@@ -7,7 +7,7 @@ public class EmptyParamListExpression : Expression
         
     }
 
-    public override AstNode Clone()
+    public override EmptyParamListExpression Clone()
     {
         return new EmptyParamListExpression();
     }

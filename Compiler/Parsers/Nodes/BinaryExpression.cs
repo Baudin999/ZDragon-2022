@@ -11,7 +11,7 @@ public class BinaryExpression : Expression
         Right = right;
     }
 
-    public override Expression Clone()
+    public override BinaryExpression Clone()
     {
         return new BinaryExpression((Expression)Left.Clone(), (Expression)Right.Clone());
     }

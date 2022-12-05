@@ -15,7 +15,7 @@ public class TypeDefinitionNode : AstNode, IAttributesNode, IDataNode
         this.Description = "";
     }
 
-    public override AstNode Clone()
+    public override TypeDefinitionNode Clone()
     {
         return new TypeDefinitionNode(
             IdToken.Clone(), 

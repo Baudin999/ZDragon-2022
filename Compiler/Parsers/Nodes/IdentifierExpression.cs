@@ -10,7 +10,7 @@ public class IdentifierExpression : Expression
         IdToken = id;
     }
 
-    public override Expression Clone()
+    public override IdentifierExpression Clone()
     {
         return new IdentifierExpression(IdToken.Clone());
     }

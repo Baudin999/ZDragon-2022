@@ -32,7 +32,7 @@ public class ViewNode : AstNode, IIdentifier
         return childNode;
     }
 
-    public override AstNode Clone()
+    public override ViewNode Clone()
     {
         return new ViewNode(
             IdToken.Clone(), 
