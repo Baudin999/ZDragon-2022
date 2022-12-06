@@ -3,7 +3,7 @@
 public class EndpointNode : AttributesNode<ComponentAttribute>, IArchitectureNode
 {
    
-    public AstNode? Operation { get; }
+    public AstNode? Operation { get; set; }
 
     [JsonConstructor]
     public EndpointNode(

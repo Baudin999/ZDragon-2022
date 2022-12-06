@@ -296,6 +296,18 @@ namespace Compiler
                     }
                 }
             }
+
+            foreach (var endpointNode in module.Nodes.OfType<EndpointNode>())
+            {
+                if (endpointNode.Operation is IdentifierNode idNode)
+                {
+                    var typeDefinition = Get(idNode.Id);
+                    if (typeDefinition is TypeDefinitionNode tdNode && tdNode.Body is FunctionDefinitionNode fdNode)
+                    {
+                        endpointNode.Operation = fdNode.Clone();
+                    }
+                }
+            }
         }
 
         public void Dispose()
