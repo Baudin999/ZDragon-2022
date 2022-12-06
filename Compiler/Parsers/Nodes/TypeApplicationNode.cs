@@ -4,11 +4,11 @@ public class TypeApplicationNode : AstNode
 {
     public Token IdToken { get; }
     public string Id => IdToken.Value;
-    public Token[] TypeArgs { get; }
+    public List<Token> TypeArgs { get; }
     
-    public TypeApplicationNode(Token id, Token[] typeArgs)
+    public TypeApplicationNode(Token idToken, List<Token> typeArgs)
     {
-        IdToken = id;
+        IdToken = idToken;
         TypeArgs = typeArgs;
     }
 
@@ -16,7 +16,7 @@ public class TypeApplicationNode : AstNode
     {
         return new TypeApplicationNode(
             IdToken.Clone(),
-            TypeArgs.Select(t => t.Clone()).ToArray()
+            TypeArgs.Select(t => t.Clone()).ToList()
         );
     }
 }

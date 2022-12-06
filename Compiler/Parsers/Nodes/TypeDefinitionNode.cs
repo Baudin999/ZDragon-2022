@@ -8,6 +8,7 @@ public class TypeDefinitionNode : AstNode, IAttributesNode, IDataNode
     
     public string Description { get; }
 
+    [JsonConstructor]
     public TypeDefinitionNode(Token idToken, AstNode body)
     {
         IdToken = idToken;

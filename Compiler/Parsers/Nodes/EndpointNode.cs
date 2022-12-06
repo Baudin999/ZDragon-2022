@@ -5,13 +5,14 @@ public class EndpointNode : AttributesNode<ComponentAttribute>, IArchitectureNod
    
     public AstNode? Operation { get; }
 
+    [JsonConstructor]
     public EndpointNode(
-        Token isTokenToken, 
+        Token idToken, 
         List<ComponentAttribute> attributes, 
         List<Token> extensionTokens, 
-        List<Token> annotations,
+        List<Token> annotationTokens,
         AstNode? operation) :
-        base(isTokenToken, attributes, extensionTokens, annotations)
+        base(idToken, attributes, extensionTokens, annotationTokens)
     {
         Operation = operation;
     }

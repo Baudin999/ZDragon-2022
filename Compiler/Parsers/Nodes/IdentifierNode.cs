@@ -5,9 +5,10 @@ public class IdentifierNode : AstNode
     public Token IdToken { get; }
     public string Id => IdToken.Value;
     
-    public IdentifierNode(Token id)
+    [JsonConstructor]
+    public IdentifierNode(Token idToken)
     {
-        IdToken = id;
+        IdToken = idToken;
     }
 
     public override IdentifierNode Clone()

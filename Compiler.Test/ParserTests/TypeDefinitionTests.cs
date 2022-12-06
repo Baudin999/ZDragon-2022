@@ -101,4 +101,20 @@ type Add = (int -> int) -> Maybe string -> int
         Assert.IsType<IdentifierNode>(thirdParam);
         Assert.Equal("int", ((IdentifierNode)thirdParam).Id);
     }
+    
+    [Fact(DisplayName = "011 - Serialize type definition")]
+    public async void SerializeTypeDefinition()
+    {
+        const string code = @"
+type Add = (int -> int) -> Maybe string -> int
+";
+
+        var zdragon = await new ZDragon().Compile(code);
+        var json = JsonHelpers.Serialize(zdragon.Nodes[0]);
+        var node = JsonHelpers.Deserialize<TypeDefinitionNode>(json);
+        Assert.NotNull(node);
+        Assert.IsType<FunctionDefinitionNode>(node.Body);
+        var addBody = (FunctionDefinitionNode)node.Body;
+        Assert.Equal(3, addBody.Parameters.Count);
+    }
 }

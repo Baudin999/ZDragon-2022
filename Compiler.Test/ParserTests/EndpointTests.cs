@@ -141,4 +141,22 @@ endpoint Add :: Person -> Guid -> Address =
         Assert.Equal("Type 'Person' does not exist", zdragon.Errors[0].Message);
         Assert.Equal("Type 'Address' does not exist", zdragon.Errors[1].Message);
     }
+    
+    [Fact(DisplayName = "007 - Serialization test 01")]
+    public async void SerializationTest01()
+    {
+        const string code = @"
+endpoint Add :: Number -> Number -> Number =
+    Title: Addition
+    Description: Add two numbers
+";
+
+        var zdragon = await new ZDragon().Compile(code);
+
+        var json = JsonHelpers.Serialize(zdragon.Nodes[0]);
+        var node = JsonHelpers.Deserialize<EndpointNode>(json);
+        Assert.NotNull(node);
+        Assert.Equal("Add", node.Id);
+        Assert.Equal(2, node.Attributes.Count);
+    }
 }

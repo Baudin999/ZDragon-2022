@@ -2,7 +2,7 @@ namespace Compiler.Parsers.Nodes;
 
 public class VariableExpression : Expression, IIdentifier
 {
-    private readonly Token IdToken;
+    public Token IdToken { get; }
     public string Id => IdToken.Value;
 
     public VariableExpression(Token idToken)

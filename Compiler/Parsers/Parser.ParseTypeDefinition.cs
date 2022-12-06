@@ -44,7 +44,7 @@ public partial class Parser
         {
             0 => throw new Exception("Expected at least one parameter"),
             1 => new IdentifierNode(parameters[0]),
-            _ => new TypeApplicationNode(parameters[0], parameters.Skip(1).ToArray())
+            _ => new TypeApplicationNode(parameters[0], parameters.Skip(1).ToList())
         };
     }
 
