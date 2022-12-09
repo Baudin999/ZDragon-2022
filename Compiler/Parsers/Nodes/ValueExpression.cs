@@ -2,16 +2,21 @@ namespace Compiler.Parsers.Nodes;
 
 public class ValueExpression : Expression, IIdentifier
 {
-    public readonly Token IdTokenToken;
-    public string Id => IdTokenToken.Value;
+    public Token IdToken { get; }
+    public string Id => IdToken.Value;
 
-    public ValueExpression(Token idTokenToken)
+    public ValueExpression(Token idToken)
     {
-        IdTokenToken = idTokenToken;
+        IdToken = idToken;
     }
 
     public override ValueExpression Clone()
     {
-        return new ValueExpression(IdTokenToken.Clone());
+        return new ValueExpression(IdToken.Clone());
+    }
+    
+    public string Hydrate()
+    {
+        return "Hydration not implemented";
     }
 }

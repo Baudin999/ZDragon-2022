@@ -1,10 +1,15 @@
 ﻿using Compiler;
 using Compiler.Parsers;
+using UI.Services;
 
 namespace UI.Requests;
 
 public static class GetRelations
 {
+    
+
+    
+    
     public class GetRelationsRequest : IHttpRequest
     {
         private string _basePath = default!;
@@ -18,24 +23,19 @@ public static class GetRelations
 
     public class Handler : IHttpHandler<GetRelationsRequest>
     {
+        private readonly RelationsService _relationsService;
+        public Handler(RelationsService relationsService)
+        {
+            this._relationsService = relationsService;
+        }
+        
         public async Task<IResult> Handle(GetRelationsRequest getRelationsRequest, CancellationToken cancellationToken)
         {
-            var references = new Dictionary<string, List<NodeReference>>();
-            var binFolder = FileHelpers.GetBinPathFromBasePath(getRelationsRequest.BasePath);
+            if (_relationsService.Relations is null)
+                await _relationsService.GetRelations(getRelationsRequest.BasePath);
 
-            foreach (var fileName in Directory.GetFiles(binFolder).Where(f => f.EndsWith("refs.json")))
-            {
-                // remove .refs.json from the end of the file name
-                var @namespace = fileName.Replace(".refs.json", "").Replace(binFolder, "").Replace("\\", "");
-                var result = await FileHelpers.ReadObjectAsync<List<NodeReference>>(fileName);
-                if (result is not null && result.Count > 0)
-                {
-                    references.Add(@namespace, result);
-                }
-            }
-
-            return Results.Ok(references);
-            
+            return Results.Ok(_relationsService.Relations);
         }
     }
+
 }

@@ -2,7 +2,7 @@ namespace Compiler.Parsers.Nodes;
 
 public class AssignmentExpression : AstNode, IIdentifier
 {
-    public readonly Token IdToken;
+    public Token IdToken { get; }
     public string Id => IdToken.Value;
     public Expression Body { get; }
     
@@ -15,5 +15,10 @@ public class AssignmentExpression : AstNode, IIdentifier
     public override AssignmentExpression Clone()
     {
         return new AssignmentExpression(IdToken.Clone(), (Expression) Body.Clone());
+    }
+
+    public string Hydrate()
+    {
+        return "Hydration not implemented";
     }
 }

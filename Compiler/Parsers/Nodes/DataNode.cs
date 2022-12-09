@@ -2,7 +2,7 @@
 
 public class DataNode: AstNode, IIdentifier
 {
-    public readonly Token IdToken;
+    public Token IdToken { get; }
     public string Id => IdToken.Value;
     public List<DataFieldNode> Fields { get; }
     private List<Token> _annotationTokens;
@@ -23,5 +23,10 @@ public class DataNode: AstNode, IIdentifier
             Fields.Select(f => (DataFieldNode)f.Clone()).ToList(), 
             _annotationTokens.Select(a => a.Clone()).ToList()
         );
+    }
+    
+    public string Hydrate()
+    {
+        return "Hydration not implemented";
     }
 }

@@ -30,7 +30,7 @@
             );
         }
 
-        public string Hydrate()
+        public override string Hydrate()
         {
             var descriptionItems = AnnotationTokens.Select(t => t.Value.Trim()).ToList();
             var description = string.Join(Environment.NewLine, descriptionItems);

@@ -23,6 +23,11 @@ public class TypeDefinitionNode : AstNode, IAttributesNode, IDataNode
             Body.Clone()
         );
     }
+    
+    public string Hydrate()
+    {
+        return "Hydration not implemented";
+    }
 }
 
 

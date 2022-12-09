@@ -2,8 +2,8 @@
 
 public class RecordNode : AttributesNode<RecordFieldNode>, IDataNode
 {
-    public RecordNode(Token idToken, List<RecordFieldNode> fields, List<Token> extensionTokens, List<Token> annotationTokens) :
-        base(idToken, fields, extensionTokens, annotationTokens)
+    public RecordNode(Token idToken, List<RecordFieldNode> attributes, List<Token> extensionTokens, List<Token> annotationTokens) :
+        base(idToken, attributes, extensionTokens, annotationTokens)
     {
     }
 
@@ -11,7 +11,7 @@ public class RecordNode : AttributesNode<RecordFieldNode>, IDataNode
     {
         return new RecordNode(
             IdToken, 
-            Attributes.Select(f => (RecordFieldNode)f.Clone()).ToList(), 
+            Attributes.Select(f => f.Clone()).ToList(), 
             ExtensionTokens.Select(t => t.Clone()).ToList(), 
             AnnotationTokens.Select(a => a.Clone()).ToList()
         );
@@ -20,12 +20,12 @@ public class RecordNode : AttributesNode<RecordFieldNode>, IDataNode
 
 public class RecordFieldNode : IIdentifier
 {
-    public readonly Token IdToken;
+    public Token IdToken { get; }
     public string Id => IdToken.Value;
     public List<Token> TypeTokens { get; }
     public List<FieldRestriction> FieldRestrictions { get; }
     public string Type => string.Join(" ", TypeTokens.Select(t => t.Value)).Trim();
-    private List<Token> _annotationTokens;
+    public readonly List<Token> AnnotationTokens;
     public readonly string Description;
     
     [JsonConstructor]
@@ -35,7 +35,7 @@ public class RecordFieldNode : IIdentifier
         this.IdToken = idToken;
         this.TypeTokens = typeTokens;
         FieldRestrictions = fieldRestrictions;
-        this._annotationTokens = annotationTokens;
+        this.AnnotationTokens = annotationTokens;
         this.Description = Helpers.DescriptionFromAnnotations(annotationTokens);
     }
 
@@ -44,9 +44,14 @@ public class RecordFieldNode : IIdentifier
         return new RecordFieldNode(
             IdToken.Clone(),
             TypeTokens.Select(t => t.Clone()).ToList(),
-            _annotationTokens.Select(a => a.Clone()).ToList(),
+            AnnotationTokens.Select(a => a.Clone()).ToList(),
             FieldRestrictions.Select(r => r.Clone()).ToList()
         );
+    }
+    
+    public string Hydrate()
+    {
+        return "Hydration not implemented";
     }
 
 }

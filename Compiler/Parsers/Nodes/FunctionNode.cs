@@ -2,7 +2,7 @@
 
 public class FunctionNode : AstNode, IIdentifier
 {
-    public readonly Token IdToken;
+    public Token IdToken { get; }
     public List<Token> Parameters { get; }
     public Expression Body { get; }
     public string Id => IdToken.Value;
@@ -26,5 +26,10 @@ public class FunctionNode : AstNode, IIdentifier
             Parameters.Select(p => p.Clone()).ToList(),
             (Expression)Body.Clone()
         );
+    }
+    
+    public string Hydrate()
+    {
+        return "Hydration not implemented";
     }
 }

@@ -40,6 +40,11 @@ public class ViewNode : AstNode, IIdentifier
             ExtensionTokens.Select(e => e.Clone()).ToList()
         );
     }
+    
+    public string Hydrate()
+    {
+        return "Hydration not implemented";
+    }
 }
 
 public class ViewChildNode : AstNode

@@ -25,6 +25,7 @@ builder.Services.AddSwaggerGen();
 
 // add injection services
 builder.Services.AddSingleton<SessionParameters>();
+builder.Services.AddSingleton<RelationsService>();
 
 var app = builder.Build();
 
@@ -54,7 +55,8 @@ app
     .MediatePut<CreateFile.CreateFileRequest>("/module")
     .MediateDelete<DeleteModule.DeleteModuleRequest>("/module")
     .MediatePut<GetModule.GetModuleRequest>("/page")
-    .MediateGet<GetProjectFile.GetProjectFileRequest>("/project-file/{basePath}/{currentPath}/{fileName}");
+    .MediateGet<GetProjectFile.GetProjectFileRequest>("/project-file/{basePath}/{currentPath}/{fileName}")
+    .MediateGet<GetElementDetails.GetElementDetailsRequest>("/module/element/{basePath}/{namespace}/{name}");
 
 
 // Configure the HTTP request pipeline.

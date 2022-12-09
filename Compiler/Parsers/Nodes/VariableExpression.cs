@@ -14,4 +14,9 @@ public class VariableExpression : Expression, IIdentifier
     {
         return new VariableExpression(IdToken.Clone());
     }
+    
+    public string Hydrate()
+    {
+        return "Hydration not implemented";
+    }
 }

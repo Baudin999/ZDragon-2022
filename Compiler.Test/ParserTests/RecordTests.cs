@@ -2,7 +2,7 @@
 
 public class RecordTests
 {
-    [Fact(DisplayName = "Create simple record")]
+    [Fact(DisplayName = "001- Create simple record")]
     public async void CreateSimpleRecord()
     {
         const string code = @"
@@ -28,7 +28,7 @@ record Person =
     }
     
     
-    [Fact(DisplayName = "Create simple record with annotations")]
+    [Fact(DisplayName = "002 - Create simple record with annotations")]
     public async void CreateSimpleRecordWithAnnotations()
     {
         const string code = @"
@@ -67,7 +67,7 @@ with a second annotation", record.Attributes[1].Description);
     }
 
 
-    [Fact(DisplayName = "Fields with maybe and list types")]
+    [Fact(DisplayName = "003 - Fields with maybe and list types")]
     public async void FieldWith()
     {
         const string code = @"
@@ -103,7 +103,7 @@ record Person =
     }
 
 
-    [Fact(DisplayName = "Field Restriction")]
+    [Fact(DisplayName = "004 - Field Restriction")]
     public async void ParseRecordFieldWithRestrictions()
     {
         const string code = @"
@@ -145,7 +145,7 @@ record Person =
         Assert.Equal("asdadsas", lastNameAttribute.FieldRestrictions[1].Value);
     }
     
-    [Fact(DisplayName = "Validate the field types")]
+    [Fact(DisplayName = "005 - Validate the field types")]
     public async void ValidateFieldType()
     {
         const string code = @"
@@ -160,7 +160,34 @@ component Age
         var zdragon = await new ZDragon().Compile(code);
         Assert.Equal(2, zdragon.Errors.Count);
     }
-    
-    
-    
+
+
+    [Fact(DisplayName = "006 - Serialize a record")]
+    public async void SerializeRecord()
+    {
+        const string code = @"
+record Person =
+    FirstName: Name
+    LastName: String
+    Age: Age
+";
+        var zdragon = await new ZDragon().Compile(code);
+
+        var json = JsonHelpers.Serialize(zdragon.Nodes);
+        var nodes = JsonHelpers.Deserialize<List<AstNode>>(json);
+        
+        Assert.Single(nodes);
+        Assert.IsType<RecordNode>(nodes[0]);
+        var record = (RecordNode)nodes[0];
+        Assert.Equal("Person", record.Id);
+        Assert.Equal(3, record.Attributes.Count);
+        Assert.Equal("FirstName", record.Attributes[0].Id);
+        Assert.Equal("Name", record.Attributes[0].Type);
+        Assert.Equal("LastName", record.Attributes[1].Id);
+        Assert.Equal("String", record.Attributes[1].Type);
+        Assert.Equal("Age", record.Attributes[2].Id);
+        Assert.Equal("Age", record.Attributes[2].Type);
+        
+    }
+
 }

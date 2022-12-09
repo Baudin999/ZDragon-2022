@@ -2,11 +2,11 @@ namespace Compiler.Parsers.Nodes;
 
 public class NumberLiteralExpression : ValueExpression
 {
-    public Token ValueTokenToken { get; }
-    public string Value => ValueTokenToken.Value;
+    public Token ValueToken { get; }
+    public string Value => ValueToken.Value;
     
-    public NumberLiteralExpression(Token valueTokenToken) : base(valueTokenToken)
+    public NumberLiteralExpression(Token valueToken) : base(valueToken)
     {
-        ValueTokenToken = valueTokenToken;
+        ValueToken = valueToken;
     }
 }

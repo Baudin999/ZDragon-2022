@@ -40,5 +40,8 @@ public abstract class AttributesNode<T> : AstNode, IAttributesNode where T : IId
         return Attributes.FirstOrDefault(a => a.Id == id);
     }
     
-    
+    public virtual string Hydrate()
+    {
+        return "Hydration not implemented";
+    }
 }

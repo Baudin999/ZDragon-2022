@@ -15,7 +15,7 @@
 <main>
     <div class="container">
         <div class="root header">
-            Header
+            ZDragon
         </div>
         <div class="root middle">
             <Router {url}>
@@ -47,7 +47,7 @@
 
     </div>
 
-
+    <div class="small" style="display: none;"></div>
 </main>
 
 <style lang="less" global>
@@ -90,6 +90,16 @@
           overflow: hidden;
         }
       }
+    }
+
+    .small {
+      font: normal 10px sans-serif;
+    }
+    .medium {
+      font: normal 13px sans-serif;
+    }
+    .large {
+      font: normal 16px sans-serif;
     }
 
   }
